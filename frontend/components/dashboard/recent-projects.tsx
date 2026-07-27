@@ -15,21 +15,28 @@ import {
 } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { cn } from "@/lib/utils"
-import type { Project, ProjectPriority } from "@/types/dashboard"
+import type { Project, ProjectPriority } from "@/types"
 
 interface RecentProjectsProps {
   projects: Project[]
 }
 
 const priorityStyles: Record<ProjectPriority, string> = {
-  Haute: "border-red-500/20 bg-red-500/10 text-red-600 dark:text-red-400",
-  Moyenne: "border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400",
-  Basse: "border-border bg-muted text-muted-foreground",
+  HIGH: "border-red-500/20 bg-red-500/10 text-red-600 dark:text-red-400",
+  MEDIUM:
+    "border-yellow-500/20 bg-yellow-500/10 text-yellow-600 dark:text-yellow-400",
+  LOW: "border-green-500/20 bg-green-500/10 text-green-600 dark:text-green-400",
+  URGENT:
+    "border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400",
 }
 
-function getInitials(name: string) {
+function getInitials(name?: string): string {
+  if (!name || typeof name !== "string") return "?"
+
   return name
-    .split(" ")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
     .map((part) => part[0])
     .join("")
     .slice(0, 2)
@@ -59,7 +66,7 @@ export function RecentProjects({ projects }: RecentProjectsProps) {
                   {project.priority}
                 </Badge>
               </div>
-              <span className="shrink-0 text-sm font-medium tabular-nums text-muted-foreground">
+              <span className="shrink-0 text-sm font-medium text-muted-foreground tabular-nums">
                 {project.progress}%
               </span>
             </div>
@@ -73,13 +80,17 @@ export function RecentProjects({ projects }: RecentProjectsProps) {
               {project.members.slice(0, 3).map((member) => (
                 <Avatar key={member.id} size="sm">
                   {member.avatarUrl && (
-                    <AvatarImage src={member.avatarUrl} alt={member.name} />
+                    <AvatarImage src={member.avatarUrl} alt={member.username} />
                   )}
-                  <AvatarFallback>{getInitials(member.name)}</AvatarFallback>
+                  <AvatarFallback>
+                    {getInitials(member.username)}
+                  </AvatarFallback>
                 </Avatar>
               ))}
               {project.members.length > 3 && (
-                <AvatarGroupCount>+{project.members.length - 3}</AvatarGroupCount>
+                <AvatarGroupCount>
+                  +{project.members.length - 3}
+                </AvatarGroupCount>
               )}
             </AvatarGroup>
           </div>

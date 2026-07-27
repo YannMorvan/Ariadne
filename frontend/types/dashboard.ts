@@ -1,5 +1,6 @@
-export type StatIconName = "flame" | "folder-kanban" | "check-circle" | "trophy"
+import type { Project } from "./project"
 
+export type StatIconName = "flame" | "folder-kanban" | "check-circle" | "trophy"
 export type TrendDirection = "up" | "down" | "neutral"
 
 export interface StatTrend {
@@ -23,22 +24,6 @@ export interface StatMetric {
   progress?: StatProgress
 }
 
-export type ProjectPriority = "Haute" | "Moyenne" | "Basse"
-
-export interface ProjectMember {
-  id: string
-  name: string
-  avatarUrl?: string
-}
-
-export interface Project {
-  id: string
-  name: string
-  priority: ProjectPriority
-  progress: number
-  members: ProjectMember[]
-}
-
 export interface ActivityDataPoint {
   day: string
   hours: number
@@ -52,11 +37,4 @@ export interface ActivityItem {
   type: ActivityType
   message: string
   timestamp: Date
-}
-
-export interface PriorityTask {
-  id: string
-  title: string
-  project: string
-  dueTime?: string
 }

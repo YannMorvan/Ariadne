@@ -1,12 +1,10 @@
 import type {
   ActivityDataPoint,
   ActivityItem,
-  PriorityTask,
-  Project,
   StatMetric,
 } from "@/types/dashboard"
-
-export const DASHBOARD_USERNAME = "Yann"
+import type { Project } from "@/types/project"
+import type { Task } from "@/types/task"
 
 export const statMetrics: StatMetric[] = [
   {
@@ -58,34 +56,34 @@ export const recentProjects: Project[] = [
   {
     id: "1",
     name: "Ariadne MVP",
-    priority: "Haute",
+    priority: "HIGH",
     progress: 72,
     members: [
-      { id: "m1", name: "Yann", avatarUrl: undefined },
-      { id: "m2", name: "Léa", avatarUrl: undefined },
-      { id: "m3", name: "Tom", avatarUrl: undefined },
+      { id: "m1", username: "Yann", avatarUrl: undefined },
+      { id: "m2", username: "Léa", avatarUrl: undefined },
+      { id: "m3", username: "Tom", avatarUrl: undefined },
     ],
   },
   {
     id: "2",
     name: "API NestJS Auth",
-    priority: "Haute",
+    priority: "HIGH",
     progress: 45,
     members: [
-      { id: "m4", name: "Yann", avatarUrl: undefined },
-      { id: "m5", name: "Sarah", avatarUrl: undefined },
+      { id: "m4", username: "Yann", avatarUrl: undefined },
+      { id: "m5", username: "Sarah", avatarUrl: undefined },
     ],
   },
   {
     id: "3",
     name: "Design System",
-    priority: "Moyenne",
+    priority: "MEDIUM",
     progress: 88,
     members: [
-      { id: "m6", name: "Léa", avatarUrl: undefined },
-      { id: "m7", name: "Marc", avatarUrl: undefined },
-      { id: "m8", name: "Inès", avatarUrl: undefined },
-      { id: "m9", name: "Paul", avatarUrl: undefined },
+      { id: "m6", username: "Léa", avatarUrl: undefined },
+      { id: "m7", username: "Marc", avatarUrl: undefined },
+      { id: "m8", username: "Inès", avatarUrl: undefined },
+      { id: "m9", username: "Paul", avatarUrl: undefined },
     ],
   },
 ]
@@ -123,7 +121,7 @@ export const recentActivities: ActivityItem[] = [
   },
 ]
 
-export const priorityTasks: PriorityTask[] = [
+export const priorityTasks: Task[] = [
   {
     id: "t1",
     title: "Finaliser le middleware d'authentification",

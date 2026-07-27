@@ -1,0 +1,18 @@
+import { apiClient } from "@/lib/api-client"
+import type { Project } from "@/types/project"
+import type { CreateProjectInput } from "@/lib/validations/project"
+
+export const projectApi = {
+  createProject: async (payload: CreateProjectInput): Promise<Project> => {
+    return apiClient<Project>("/projects", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    })
+  },
+
+  getProjects: async (): Promise<Project[]> => {
+    return apiClient<Project[]>("/projects", {
+      method: "GET",
+    })
+  },
+}

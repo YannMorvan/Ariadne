@@ -1,29 +1,25 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"
-
 export async function apiClient<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null
-
-  const headers: HeadersInit = {
+  const headers: Record<string, string> = {
     "Content-Type": "application/json",
-    ...(token && { Authorization: `Bearer ${token}` }),
-    ...options.headers,
+    ...(options.headers as Record<string, string>),
   }
 
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers,
-    credentials: "include",
-  })
-
-  const data = await response.json()
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`,
+    {
+      ...options,
+      credentials: "include",
+      headers,
+    }
+  )
 
   if (!response.ok) {
-    throw new Error(data.message || "Une erreur est survenue")
+    const errorData = await response.json().catch(() => ({}))
+    throw new Error(errorData.message || "Une erreur est survenue")
   }
 
-  return data as T
+  return response.json()
 }

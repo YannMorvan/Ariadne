@@ -12,13 +12,13 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
-import type { PriorityTask } from "@/types/dashboard"
+import type { Task } from "@/types/task"
 
-interface PriorityTasksProps {
-  tasks: PriorityTask[]
+interface TasksProps {
+  tasks: Task[]
 }
 
-export function PriorityTasks({ tasks: initialTasks }: PriorityTasksProps) {
+export function PriorityTasks({ tasks: initialTasks }: TasksProps) {
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set())
 
   function toggleTask(id: string) {
@@ -61,7 +61,7 @@ export function PriorityTasks({ tasks: initialTasks }: PriorityTasksProps) {
                 <div className="min-w-0 flex-1">
                   <p
                     className={cn(
-                      "text-sm font-medium leading-snug transition-all",
+                      "text-sm leading-snug font-medium transition-all",
                       isCompleted && "text-muted-foreground line-through"
                     )}
                   >

@@ -12,10 +12,7 @@ import {
   Trophy,
 } from "lucide-react"
 
-import {
-  Avatar,
-  AvatarFallback,
-} from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
   Sidebar,
   SidebarContent,
@@ -30,7 +27,7 @@ import {
   SidebarRail,
   SidebarSeparator,
 } from "@/components/ui/sidebar"
-import { DASHBOARD_USERNAME } from "@/lib/mock/dashboard-data"
+import { useUser } from "@/context/user-context"
 
 const mainNav = [
   { title: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -49,6 +46,7 @@ function getInitials(name: string) {
 
 export function AppSidebar() {
   const pathname = usePathname()
+  const { user } = useUser()
 
   function isActive(href: string) {
     if (href === "/") return pathname === "/"
@@ -124,10 +122,14 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg">
               <Avatar size="sm">
-                <AvatarFallback>{getInitials(DASHBOARD_USERNAME)}</AvatarFallback>
+                <AvatarFallback>
+                  {getInitials(user?.username || "JD")}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{DASHBOARD_USERNAME}</span>
+                <span className="truncate font-medium">
+                  {user?.username || "JD"}
+                </span>
                 <span className="truncate text-xs text-muted-foreground">
                   Niveau 8
                 </span>
