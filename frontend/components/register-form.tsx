@@ -74,7 +74,6 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {/* Message d'erreur API global */}
         {apiError && (
           <div className="mb-4 rounded-md bg-destructive/15 p-3 text-sm font-medium text-destructive">
             {apiError}
@@ -83,7 +82,6 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
-            {/* Champ Username */}
             <Field>
               <FieldLabel htmlFor="username">Nom d'utilisateur</FieldLabel>
               <Input
@@ -99,7 +97,6 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
               )}
             </Field>
 
-            {/* Champ Email */}
             <Field>
               <FieldLabel htmlFor="email">Email</FieldLabel>
               <Input
