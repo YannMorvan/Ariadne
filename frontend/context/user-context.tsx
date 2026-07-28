@@ -5,6 +5,7 @@ import {
   useContext,
   useEffect,
   useState,
+  useCallback,
   ReactNode,
 } from "react"
 import { userApi } from "@/api/user"
@@ -21,25 +22,43 @@ const UserContext = createContext<UserContextType | undefined>(undefined)
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-
-  const fetchUser = async () => {
-    try {
-      const data = await userApi.getProfile()
-      setUser(data)
-    } catch (error) {
-      console.error("Error fetching user profile:", error)
-      setUser(null)
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  const [reloadIndex, setReloadIndex] = useState(0)
 
   useEffect(() => {
-    fetchUser()
+    let isCancelled = false
+
+    async function loadUser() {
+      try {
+        const data = await userApi.getProfile()
+        if (!isCancelled) {
+          setUser(data)
+        }
+      } catch (error: unknown) {
+        console.error("Error fetching user profile:", error)
+        if (!isCancelled) {
+          setUser(null)
+        }
+      } finally {
+        if (!isCancelled) {
+          setIsLoading(false)
+        }
+      }
+    }
+
+    loadUser()
+
+    return () => {
+      isCancelled = true
+    }
+  }, [reloadIndex])
+
+  const refetchUser = useCallback(async () => {
+    setIsLoading(true)
+    setReloadIndex((prev) => prev + 1)
   }, [])
 
   return (
-    <UserContext.Provider value={{ user, isLoading, refetchUser: fetchUser }}>
+    <UserContext.Provider value={{ user, isLoading, refetchUser }}>
       {children}
     </UserContext.Provider>
   )

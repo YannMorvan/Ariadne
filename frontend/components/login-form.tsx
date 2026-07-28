@@ -54,10 +54,15 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
       })
 
       router.push("/")
-    } catch (error: any) {
-      setApiError(
-        error.message || "Une erreur est survenue lors de la connexion"
-      )
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setApiError(
+          error.message || "Unexpected error occurred. Please try again."
+        )
+      } else {
+        console.error("Unexpected error:", error)
+        setApiError("Unexpected error occurred. Please try again.")
+      }
     } finally {
       setIsLoading(false)
     }
@@ -94,20 +99,20 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
                 </p>
               ) : (
                 <FieldDescription>
-                  Utilise l'adresse email associée à ton compte.
+                  Use your email address associated with your account.
                 </FieldDescription>
               )}
             </Field>
 
             <Field>
               <div className="flex items-center">
-                <FieldLabel htmlFor="password">Mot de passe</FieldLabel>
+                <FieldLabel htmlFor="password">Password</FieldLabel>
 
                 <Link
                   href="/forgot-password"
                   className="ml-auto text-sm text-primary underline"
                 >
-                  Mot de passe oublié ?
+                  Forgot password?
                 </Link>
               </div>
 
@@ -123,7 +128,7 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
             <FieldGroup className="mt-2">
               <Field>
                 <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Connexion..." : "Se connecter"}
+                  {isLoading ? "Connecting..." : "Sign in"}
                 </Button>
 
                 {/* À réactiver lorsque Google OAuth sera implémenté */}
@@ -138,12 +143,12 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
                 */}
 
                 <FieldDescription className="mt-4 px-6 text-center">
-                  Pas encore de compte ?{" "}
+                  Still no account?{" "}
                   <Link
                     href="/register"
                     className="font-medium text-primary underline"
                   >
-                    Créer un compte
+                    Register
                   </Link>
                 </FieldDescription>
               </Field>

@@ -59,10 +59,15 @@ export function CreateProjectDialog() {
       await projectApi.createProject(data)
       reset()
       setOpen(false)
-    } catch (error: any) {
-      setApiError(
-        error.message || "Une erreur est survenue lors de la création du projet"
-      )
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setApiError(
+          error.message || "Unexpected error occurred. Please try again."
+        )
+      } else {
+        console.error("Unexpected error:", error)
+        setApiError("Unexpected error occurred. Please try again.")
+      }
     } finally {
       setIsLoading(false)
     }
