@@ -61,7 +61,6 @@ export function ProjectGrid({
 
   function handleProjectDeleted() {
     setProjectToDelete(null)
-    // Déclenche le re-fetch serveur pour être 100% à jour
     onProjectsUpdated?.()
   }
 
@@ -71,7 +70,6 @@ export function ProjectGrid({
 
   return (
     <div className="space-y-6">
-      {/* 1. Header & Dialog de création */}
       <motion.div
         custom={0}
         variants={sectionVariants}
@@ -89,7 +87,6 @@ export function ProjectGrid({
         <CreateProjectDialog onSuccess={handleProjectCreated} />
       </motion.div>
 
-      {/* 2. Métriques */}
       {metrics && metrics.length > 0 && (
         <motion.div
           custom={1}
@@ -101,7 +98,6 @@ export function ProjectGrid({
         </motion.div>
       )}
 
-      {/* 3. Filtres & Vue */}
       <motion.div
         custom={2}
         variants={sectionVariants}
@@ -147,7 +143,6 @@ export function ProjectGrid({
         </div>
       </motion.div>
 
-      {/* 4. Grille ou Liste */}
       <motion.div
         custom={3}
         variants={sectionVariants}
@@ -181,7 +176,6 @@ export function ProjectGrid({
         )}
       </motion.div>
 
-      {/* Dialogue de suppression */}
       <DeleteProjectDialog
         projectId={projectToDelete?.id || null}
         projectName={projectToDelete?.name}

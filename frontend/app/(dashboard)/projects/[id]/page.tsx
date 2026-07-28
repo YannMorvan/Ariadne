@@ -19,12 +19,12 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DeleteProjectDialog } from "@/components/projects/delete-project-dialog"
-import { EditProjectDialog } from "@/components/projects/edit-project-dialog"
 import { ProjectTasksTab } from "@/components/projects/project-tasks-tab"
 import { ProjectNotesTab } from "@/components/projects/project-notes-tab"
 import { projectApi } from "@/api/project"
+import { taskApi } from "@/api/task"
 import { cn } from "@/lib/utils"
-import type { Project } from "@/types"
+import type { ProjectWithTasks } from "@/types"
 
 interface ProjectPageProps {
   params: Promise<{ id: string }>
@@ -53,7 +53,7 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
   const { id } = use(params)
   const router = useRouter()
 
-  const [project, setProject] = useState<Project | null>(null)
+  const [project, setProject] = useState<ProjectWithTasks | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -64,8 +64,11 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
     try {
       setIsLoading(true)
       setError(null)
-      const data = await projectApi.getProjectById(id)
-      setProject(data)
+      const [projectData, tasksData] = await Promise.all([
+        projectApi.getProjectById(id),
+        taskApi.getTasksByProjectId(id).catch(() => []),
+      ])
+      setProject({ ...projectData, tasks: tasksData })
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message || "Impossible de charger le projet")
@@ -201,21 +204,17 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
         </TabsList>
 
         <TabsContent value="tasks" className="mt-0">
-          <ProjectTasksTab projectId={project.id} />
+          <ProjectTasksTab
+            projectId={project.id}
+            tasks={project.tasks}
+            onTasksUpdated={fetchProject}
+          />
         </TabsContent>
 
         <TabsContent value="notes" className="mt-0">
           <ProjectNotesTab projectId={project.id} />
         </TabsContent>
       </Tabs>
-
-      {/* Dialogues Édition & Suppression */}
-      <EditProjectDialog
-        project={project}
-        open={isEditOpen}
-        onOpenChange={setIsEditOpen}
-        onSuccess={fetchProject}
-      />
 
       <DeleteProjectDialog
         projectId={project.id}

@@ -12,11 +12,15 @@ import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { TasksService } from '../tasks/tasks.service';
 
 @Controller('projects')
 @UseGuards(JwtAuthGuard)
 export class ProjectsController {
-  constructor(private readonly projectsService: ProjectsService) {}
+  constructor(
+    private readonly projectsService: ProjectsService,
+    private readonly tasksService: TasksService,
+  ) {}
 
   @Post()
   async create(
@@ -49,6 +53,20 @@ export class ProjectsController {
       );
     }
     return project;
+  }
+
+  @Get(':id/tasks')
+  async findTasks(
+    @CurrentUser('id') userId: string,
+    @Param('id') projectId: string,
+  ) {
+    const project = await this.projectsService.getProjectById(projectId);
+    if (project.ownerId !== userId) {
+      throw new ConflictException(
+        "You don't have permission to access this project",
+      );
+    }
+    return this.tasksService.getTasksByProjectId(userId, projectId);
   }
 
   @Delete(':id')
