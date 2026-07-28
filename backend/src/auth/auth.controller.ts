@@ -45,7 +45,7 @@ export class AuthController {
 
   @Post('logout')
   @HttpCode(HttpStatus.OK)
-  async logout(@Res({ passthrough: true }) response: express.Response) {
+  logout(@Res({ passthrough: true }) response: express.Response) {
     response.clearCookie('access_token', { path: '/' });
     return { message: 'Déconnexion réussie' };
   }

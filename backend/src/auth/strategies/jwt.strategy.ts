@@ -6,7 +6,8 @@ import { PrismaService } from '../../prisma/prisma.service';
 
 const cookieExtractor = (req: Request): string | null => {
   if (req && req.cookies) {
-    return req.cookies['access_token'] || null;
+    const token = (req.cookies as Record<string, unknown>)['access_token'];
+    return typeof token === 'string' ? token : null;
   }
   return null;
 };

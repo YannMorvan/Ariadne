@@ -31,6 +31,6 @@ export class UserEntity implements Omit<PrismaUser, 'password'> {
 
   constructor(partial: Partial<UserEntity>) {
     Object.assign(this, partial);
-    delete (this as any).password;
+    delete (this as Record<string, unknown>).password;
   }
 }
