@@ -1,4 +1,12 @@
-import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Get,
+  Delete,
+  Param,
+} from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -26,5 +34,14 @@ export class ProjectsController {
   @Get()
   async findAll(@CurrentUser('id') userId: string) {
     return this.projectsService.getProjectsByUserId(userId);
+  }
+
+  @Delete(':id')
+  async deleteProject(
+    @CurrentUser('id') userId: string,
+    @Param('id') projectId: string,
+  ) {
+    await this.projectsService.deleteProject(userId, projectId);
+    return { message: 'Project deleted successfully' };
   }
 }

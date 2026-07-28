@@ -15,4 +15,11 @@ export const projectApi = {
       method: "GET",
     })
   },
+
+  deleteProject: async (id: string): Promise<void> => {
+    return apiClient<void>(`/projects/${id}`, {
+      method: "DELETE",
+      body: JSON.stringify({ id }),
+    })
+  },
 }

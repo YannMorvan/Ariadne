@@ -19,7 +19,7 @@ export class ProjectsService {
     });
 
     if (existingProject) {
-      throw new ConflictException('Vous avez déjà un projet portant ce nom');
+      throw new ConflictException('You already have a project with this name');
     }
 
     const newProject = await this.prisma.project.create({
@@ -40,5 +40,23 @@ export class ProjectsService {
     });
 
     return projects.map((project) => new ProjectEntity(project));
+  }
+
+  async deleteProject(userId: string, projectId: string): Promise<void> {
+    const project = await this.prisma.project.findUnique({
+      where: { id: projectId },
+    });
+
+    if (!project) {
+      throw new ConflictException('Project not found');
+    }
+    if (project.ownerId !== userId) {
+      throw new ConflictException(
+        "You don't have permission to delete this project",
+      );
+    }
+    await this.prisma.project.delete({
+      where: { id: projectId },
+    });
   }
 }
