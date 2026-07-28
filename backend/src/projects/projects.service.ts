@@ -42,6 +42,17 @@ export class ProjectsService {
     return projects.map((project) => new ProjectEntity(project));
   }
 
+  async getProjectById(projectId: string): Promise<ProjectEntity> {
+    const project = await this.prisma.project.findUnique({
+      where: { id: projectId },
+    });
+
+    if (!project) {
+      throw new ConflictException('Project not found');
+    }
+    return new ProjectEntity(project);
+  }
+
   async deleteProject(userId: string, projectId: string): Promise<void> {
     const project = await this.prisma.project.findUnique({
       where: { id: projectId },

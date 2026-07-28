@@ -6,6 +6,7 @@ import {
   Get,
   Delete,
   Param,
+  ConflictException,
 } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
@@ -34,6 +35,20 @@ export class ProjectsController {
   @Get()
   async findAll(@CurrentUser('id') userId: string) {
     return this.projectsService.getProjectsByUserId(userId);
+  }
+
+  @Get(':id')
+  async findOne(
+    @CurrentUser('id') userId: string,
+    @Param('id') projectId: string,
+  ) {
+    const project = await this.projectsService.getProjectById(projectId);
+    if (project.ownerId !== userId) {
+      throw new ConflictException(
+        "You don't have permission to access this project",
+      );
+    }
+    return project;
   }
 
   @Delete(':id')
