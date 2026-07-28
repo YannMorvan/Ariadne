@@ -44,7 +44,8 @@ export class AuthService {
       },
     });
 
-    const { password: _, ...userWithoutPassword } = user;
+    const userWithoutPassword = { ...user };
+    delete (userWithoutPassword as { password?: string }).password;
 
     return {
       message: 'Inscription réussie',
