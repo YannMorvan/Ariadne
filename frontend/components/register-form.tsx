@@ -56,10 +56,15 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
       })
 
       router.push("/login?registered=true")
-    } catch (error: any) {
-      setApiError(
-        error.message || "Une erreur est survenue lors de l'inscription"
-      )
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setApiError(
+          error.message || "Unexpected error occurred. Please try again."
+        )
+      } else {
+        console.error("Unexpected error:", error)
+        setApiError("Unexpected error occurred. Please try again.")
+      }
     } finally {
       setIsLoading(false)
     }
@@ -83,7 +88,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
         <form onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="username">Nom d'utilisateur</FieldLabel>
+              <FieldLabel htmlFor="username">Username</FieldLabel>
               <Input
                 id="username"
                 type="text"
@@ -111,30 +116,27 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
                 </p>
               ) : (
                 <FieldDescription>
-                  Ton email servira uniquement pour la connexion.
+                  Your email will be used for account verification and
+                  notifications.
                 </FieldDescription>
               )}
             </Field>
 
-            {/* Champ Mot de Passe */}
             <Field>
-              <FieldLabel htmlFor="password">Mot de passe</FieldLabel>
+              <FieldLabel htmlFor="password">Password</FieldLabel>
               <Input id="password" type="password" {...register("password")} />
               {errors.password ? (
                 <p className="mt-1 text-xs text-destructive">
                   {errors.password.message}
                 </p>
               ) : (
-                <FieldDescription>
-                  Au moins 8 caractères requis.
-                </FieldDescription>
+                <FieldDescription>At least 8 characters</FieldDescription>
               )}
             </Field>
 
-            {/* Confirmation Mot de Passe */}
             <Field>
               <FieldLabel htmlFor="confirmPassword">
-                Confirmer le mot de passe
+                Confirm Password
               </FieldLabel>
               <Input
                 id="confirmPassword"
@@ -148,19 +150,18 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
               )}
             </Field>
 
-            {/* Boutons et soumission */}
             <FieldGroup className="mt-2">
               <Field>
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? "Création du compte..." : "Créer un compte"}
                 </Button>
                 <FieldDescription className="mt-4 px-6 text-center">
-                  Déjà un compte ?{" "}
+                  Already have an account?{" "}
                   <Link
                     href="/login"
                     className="font-medium text-primary underline"
                   >
-                    Se connecter
+                    Sign in
                   </Link>
                 </FieldDescription>
               </Field>

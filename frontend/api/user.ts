@@ -1,5 +1,4 @@
 import { apiClient } from "@/lib/api-client"
-import type { Project } from "@/types/project"
 import { User } from "@/types/user"
 
 export const userApi = {

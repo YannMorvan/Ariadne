@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Command, Plus } from "lucide-react"
+import { Command } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { CreateProjectDialog } from "./create-project-dialog"

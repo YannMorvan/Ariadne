@@ -10,17 +10,17 @@ import { StatCards } from "@/components/dashboard/stat-cards"
 import type {
   ActivityDataPoint,
   ActivityItem,
-  PriorityTask,
+  Task,
   Project,
   StatMetric,
-} from "@/types/dashboard"
+} from "@/types"
 
 interface DashboardGridProps {
   metrics: StatMetric[]
   weeklyActivity: ActivityDataPoint[]
   projects: Project[]
   activities: ActivityItem[]
-  tasks: PriorityTask[]
+  tasks: Task[]
 }
 
 const sectionVariants = {

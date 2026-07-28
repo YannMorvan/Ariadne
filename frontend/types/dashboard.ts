@@ -1,5 +1,3 @@
-import type { Project } from "./project"
-
 export type StatIconName = "flame" | "folder-kanban" | "check-circle" | "trophy"
 export type TrendDirection = "up" | "down" | "neutral"
 
