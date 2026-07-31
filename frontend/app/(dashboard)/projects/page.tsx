@@ -23,8 +23,32 @@ export default function ProjectsPage() {
   }, [])
 
   useEffect(() => {
-    void fetchProjects()
-  }, [fetchProjects])
+    let isCancelled = false
+
+    async function loadInitialData() {
+      try {
+        setIsLoading(true)
+        const data = await projectApi.getProjects()
+        if (!isCancelled) {
+          setProjects(data)
+        }
+      } catch (error: unknown) {
+        if (!isCancelled) {
+          console.error("Error fetching projects:", error)
+        }
+      } finally {
+        if (!isCancelled) {
+          setIsLoading(false)
+        }
+      }
+    }
+
+    void loadInitialData()
+
+    return () => {
+      isCancelled = true
+    }
+  }, [])
 
   if (isLoading) {
     return (

@@ -1,7 +1,6 @@
 "use client"
 
-import { FolderKanban, Plus } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { FolderKanban } from "lucide-react"
 import { CreateProjectDialog } from "./create-project-dialog"
 
 interface EmptyProjectsStateProps {
@@ -15,12 +14,12 @@ export function EmptyProjectsState({ hasFilters }: EmptyProjectsStateProps) {
         <FolderKanban className="size-6" />
       </div>
       <h3 className="text-base font-semibold tracking-tight">
-        {hasFilters ? "Aucun projet trouvé" : "Aucun projet pour le moment"}
+        {hasFilters ? "No projects found" : "No projects at the moment"}
       </h3>
       <p className="mt-1 mb-6 max-w-sm text-sm text-muted-foreground">
         {hasFilters
-          ? "Modifie tes filtres ou ta recherche pour afficher d'autres résultats."
-          : "Commence par créer ton premier projet pour suivre tes tâches et ton avancement."}
+          ? "Modify your filters or search to display other results."
+          : "Start by creating your first project to track your tasks and progress."}
       </p>
       {!hasFilters && <CreateProjectDialog />}
     </div>

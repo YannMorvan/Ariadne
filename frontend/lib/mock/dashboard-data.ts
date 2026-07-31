@@ -92,31 +92,31 @@ export const recentActivities: ActivityItem[] = [
   {
     id: "a1",
     type: "task",
-    message: "Tâche « Setup NestJS JWT » terminée",
+    message: "Task « Setup NestJS JWT » completed",
     timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
   },
   {
     id: "a2",
     type: "achievement",
-    message: "Nouveau succès « Bug Hunter » débloqué",
+    message: "New achievement « Bug Hunter » unlocked",
     timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000),
   },
   {
     id: "a3",
     type: "project",
-    message: "Projet « Ariadne MVP » mis à jour — 72% complété",
+    message: "Project « Ariadne MVP » updated — 72% completed",
     timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000),
   },
   {
     id: "a4",
     type: "comment",
-    message: "Commentaire ajouté sur « Dashboard Bento Grid »",
+    message: "Comment added to « Dashboard Bento Grid »",
     timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000),
   },
   {
     id: "a5",
     type: "task",
-    message: "Tâche « Intégration Recharts » terminée",
+    message: "Task « Integration Recharts » completed",
     timestamp: new Date(Date.now() - 26 * 60 * 60 * 1000),
   },
 ]
@@ -124,26 +124,26 @@ export const recentActivities: ActivityItem[] = [
 export const priorityTasks: Task[] = [
   {
     id: "t1",
-    title: "Finaliser le middleware d'authentification",
+    title: "Finish the authentication middleware",
     project: "API NestJS Auth",
-    dueTime: "Aujourd'hui, 18h",
+    dueTime: "Today, 6pm",
   },
   {
     id: "t2",
-    title: "Revue du composant ActivityChart",
+    title: "Review the ActivityChart component",
     project: "Ariadne MVP",
-    dueTime: "Aujourd'hui, 20h",
+    dueTime: "Today, 8pm",
   },
   {
     id: "t3",
-    title: "Documenter les tokens du design system",
+    title: "Document the design system tokens",
     project: "Design System",
-    dueTime: "Demain, 10h",
+    dueTime: "Tomorrow, 10am",
   },
   {
     id: "t4",
-    title: "Préparer la démo investisseurs",
+    title: "Prepare the investor presentation",
     project: "Ariadne MVP",
-    dueTime: "Demain, 14h",
+    dueTime: "Tomorrow, 2pm",
   },
 ]

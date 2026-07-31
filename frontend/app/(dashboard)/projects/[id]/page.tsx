@@ -73,9 +73,9 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
       setProject({ ...projectData, tasks: tasksData })
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setError(err.message || "Impossible de charger le projet")
+        setError(err.message || "Error occurred while loading the project")
       } else {
-        setError("Erreur lors du chargement du projet")
+        setError("Error occurred while loading the project")
       }
     } finally {
       setIsLoading(false)
@@ -83,10 +83,42 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
   }, [id])
 
   useEffect(() => {
-    void fetchProject()
-  }, [fetchProject])
+    let isCancelled = false
 
-  // 🎯 Calcul du progrès : Tâches faites / Tâches totales
+    async function loadProjectData() {
+      try {
+        setIsLoading(true)
+        setError(null)
+        const [projectData, tasksData] = await Promise.all([
+          projectApi.getProjectById(id),
+          taskApi.getTasksByProjectId(id).catch(() => []),
+        ])
+
+        if (!isCancelled) {
+          setProject({ ...projectData, tasks: tasksData })
+        }
+      } catch (err: unknown) {
+        if (!isCancelled) {
+          if (err instanceof Error) {
+            setError(err.message || "Error occurred while loading the project")
+          } else {
+            setError("Error occurred while loading the project")
+          }
+        }
+      } finally {
+        if (!isCancelled) {
+          setIsLoading(false)
+        }
+      }
+    }
+
+    void loadProjectData()
+
+    return () => {
+      isCancelled = true
+    }
+  }, [id])
+
   const { progressPercentage, completedTasksCount, totalTasksCount } =
     useMemo(() => {
       const tasks = project?.tasks || []
@@ -126,14 +158,14 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
   if (error || !project) {
     return (
       <div className="mx-auto max-w-7xl space-y-4 px-4 py-12 text-center">
-        <h2 className="text-xl font-semibold">Projet introuvable</h2>
+        <h2 className="text-xl font-semibold">Project not found</h2>
         <p className="text-sm text-muted-foreground">
-          {error || "Ce projet n'existe pas ou a été supprimé."}
+          {error || "This project does not exist or has been deleted."}
         </p>
         <Link href="/projects">
           <Button variant="outline" className="gap-2 rounded-xl">
             <ArrowLeft className="size-4" />
-            Retour aux projets
+            Return to Projects
           </Button>
         </Link>
       </div>
@@ -149,8 +181,6 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
       return "[&_[data-slot=progress-indicator]]:bg-amber-500"
     return "[&_[data-slot=progress-indicator]]:bg-red-500"
   }
-
-  const progressColor = getProgressColorClass(progressPercentage)
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 px-4 py-6 md:px-6 md:py-8 lg:py-10">
@@ -168,7 +198,6 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
         </Link>
 
         <div className="flex items-center gap-2">
-          {/* Bouton Membres */}
           <Button
             variant="outline"
             size="sm"
@@ -176,10 +205,9 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
             className="gap-2 rounded-xl border-border/50 bg-card/50 backdrop-blur-sm"
           >
             <Users className="size-3.5" />
-            Membres
+            Members
           </Button>
 
-          {/* Bouton Modifier */}
           <Button
             variant="outline"
             size="sm"
@@ -187,10 +215,9 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
             className="gap-2 rounded-xl border-border/50 bg-card/50 backdrop-blur-sm"
           >
             <Edit2 className="size-3.5" />
-            Modifier
+            Edit
           </Button>
 
-          {/* Bouton Supprimer */}
           <Button
             variant="outline"
             size="sm"
@@ -198,12 +225,11 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
             className="gap-2 rounded-xl border-red-500/20 bg-red-500/10 text-red-500 hover:bg-red-500/20 hover:text-red-500"
           >
             <Trash2 className="size-3.5" />
-            Supprimer
+            Delete
           </Button>
         </div>
       </div>
 
-      {/* 2. Hero Card du Projet */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -225,24 +251,18 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
             </div>
             <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
               {project.description ||
-                "Aucune description fournie pour ce projet."}
+                "No description provided for this project."}
             </p>
           </div>
         </div>
 
-        {/* Barre de progression & Métriques de bas de carte */}
         <div className="space-y-2 border-t border-border/30 pt-4">
           <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
             <span>
-              Progression du projet ({completedTasksCount}/{totalTasksCount}{" "}
-              tâches)
+              Progress ({completedTasksCount}/{totalTasksCount} tasks)
             </span>
             <span className="text-foreground">{progressPercentage}%</span>
           </div>
-          {/* <Progress
-            value={progressPercentage}
-            className="[&_[data-slot=progress-indicator]]:bg-violet-500 [&_[data-slot=progress-track]]:h-2"
-          /> */}
           <Progress
             value={progressPercentage}
             className={cn("h-2", getProgressColorClass(progressPercentage))}
@@ -255,11 +275,11 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
         <TabsList className="rounded-xl border border-border/50 bg-card/50 p-1 backdrop-blur-sm">
           <TabsTrigger value="tasks" className="gap-2 rounded-lg text-xs">
             <CheckSquare className="size-3.5" />
-            Tâches ({totalTasksCount})
+            Tasks ({totalTasksCount})
           </TabsTrigger>
           <TabsTrigger value="notes" className="gap-2 rounded-lg text-xs">
             <Calendar className="size-3.5" />
-            Notes & Spécifications
+            Notes & Specifications
           </TabsTrigger>
         </TabsList>
 

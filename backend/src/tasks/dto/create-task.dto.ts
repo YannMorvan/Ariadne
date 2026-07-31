@@ -13,18 +13,18 @@ import {
 
 export class CreateTaskDto {
   @ApiProperty({
-    example: 'Implémenter le Guard JWT',
-    description: 'Titre de la tâche (min 2 caractères)',
+    example: 'Implement authentication system',
+    description: 'Title of the task (min 2 characters)',
   })
   @IsString()
-  @IsNotEmpty({ message: 'Le titre de la tâche est requis' })
+  @IsNotEmpty({ message: 'The task title is required' })
   @MinLength(2, {
-    message: 'Le titre doit contenir au moins 2 caractères',
+    message: 'The title must contain at least 2 characters',
   })
   title!: string;
 
   @ApiPropertyOptional({
-    example: 'Sécuriser les endpoints /projects et /tasks',
+    example: 'Secure the /projects and /tasks endpoints',
   })
   @IsString()
   @IsOptional()
@@ -35,7 +35,7 @@ export class CreateTaskDto {
     default: Priority.MEDIUM,
   })
   @IsEnum(Priority, {
-    message: 'La priorité doit être LOW, MEDIUM, HIGH ou URGENT',
+    message: 'The priority must be LOW, MEDIUM, HIGH or URGENT',
   })
   @IsOptional()
   priority?: Priority;
@@ -44,13 +44,15 @@ export class CreateTaskDto {
     enum: TaskStatus,
     default: TaskStatus.TODO,
   })
-  @IsEnum(TaskStatus, { message: 'Le statut est invalide' })
+  @IsEnum(TaskStatus, {
+    message: 'The status must be TODO, IN_PROGRESS, or DONE',
+  })
   @IsOptional()
   status?: TaskStatus;
 
   @ApiProperty({ example: '8f7d9a1e-3b2c-4a5d-6e7f-8a9b0c1d2e3f' })
-  @IsUUID('4', { message: "L'ID du projet doit être un UUID valide" })
-  @IsNotEmpty({ message: "L'ID du projet est requis" })
+  @IsUUID('4', { message: 'The project ID must be a valid UUID' })
+  @IsNotEmpty({ message: 'The project ID is required' })
   projectId!: string;
 
   @ApiPropertyOptional({ example: '2026-08-15T18:00:00.000Z' })
@@ -58,13 +60,13 @@ export class CreateTaskDto {
   dueDate?: Date;
 
   @ApiPropertyOptional({ example: 4.5 })
-  @IsNumber({}, { message: 'Les heures estimées doivent être un nombre' })
+  @IsNumber({}, { message: 'The estimated hours must be a number' })
   @Min(0)
   @IsOptional()
   estimatedHours?: number;
 
   @ApiPropertyOptional({ example: 'user-uuid-1234' })
-  @IsUUID('4', { message: "L'ID de l'assigné doit être un UUID valide" })
+  @IsUUID('4', { message: 'The assignee ID must be a valid UUID' })
   @IsOptional()
   assigneeId?: string;
 }

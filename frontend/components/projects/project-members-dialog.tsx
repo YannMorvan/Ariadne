@@ -1,11 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { UserPlus, Shield, User, Trash2, Loader2 } from "lucide-react"
+import { UserPlus, Shield, Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
   Dialog,
   DialogContent,
@@ -37,7 +37,7 @@ export function ProjectMembersDialog({
       // await projectApi.addMember(projectId, email)
       setEmail("")
     } catch (error) {
-      console.error("Erreur lors de l'ajout du membre :", error)
+      console.error("An unexpected error occurred. Please try again.", error)
     } finally {
       setIsSubmitting(false)
     }
@@ -47,13 +47,12 @@ export function ProjectMembersDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="rounded-2xl border-border/50 bg-card/95 backdrop-blur-xl sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Membres du projet</DialogTitle>
+          <DialogTitle>Project Members</DialogTitle>
           <DialogDescription>
-            Gère l'accès et les membres invités à collaborer sur ce projet.
+            Manage access and invited members to collaborate on this project.
           </DialogDescription>
         </DialogHeader>
 
-        {/* Formulaire d'invitation */}
         <form
           onSubmit={handleAddMember}
           className="my-2 flex items-center gap-2"
@@ -75,26 +74,24 @@ export function ProjectMembersDialog({
             ) : (
               <UserPlus className="size-4" />
             )}
-            Inviter
+            Invite
           </Button>
         </form>
 
-        {/* Liste des membres */}
         <div className="mt-4 space-y-3">
           <p className="text-xs font-medium text-muted-foreground">
-            Membres actuels
+            Current Members
           </p>
 
           <div className="max-h-60 space-y-2 overflow-y-auto pr-1">
-            {/* Owner (Exemple) */}
             <div className="flex items-center justify-between rounded-xl border border-border/40 bg-card/40 p-2.5">
               <div className="flex items-center gap-3">
                 <Avatar className="size-8">
                   <AvatarFallback className="text-xs">YO</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="text-sm leading-none font-medium">Vous</p>
-                  <p className="text-xs text-muted-foreground">Propriétaire</p>
+                  <p className="text-sm leading-none font-medium">You</p>
+                  <p className="text-xs text-muted-foreground">Owner</p>
                 </div>
               </div>
               <Shield className="size-4 text-violet-500" />

@@ -91,11 +91,10 @@ export function CreateTaskDialog({
     } catch (error: unknown) {
       if (error instanceof Error) {
         setApiError(
-          error.message ||
-            "Une erreur est survenue lors de la création de la tâche."
+          error.message || "An unexpected error occurred. Please try again."
         )
       } else {
-        setApiError("Une erreur inattendue est survenue.")
+        setApiError("An unexpected error occurred. Please try again.")
       }
     } finally {
       setIsLoading(false)
@@ -107,16 +106,16 @@ export function CreateTaskDialog({
       <DialogTrigger>
         <Button className="gap-2 rounded-xl font-medium">
           <Plus className="size-4" />
-          Nouvelle tâche
+          New task
         </Button>
       </DialogTrigger>
 
       <DialogContent className="rounded-2xl border-border/50 bg-card/95 backdrop-blur-xl sm:max-w-md">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
-            <DialogTitle>Créer une tâche</DialogTitle>
+            <DialogTitle>Create a task</DialogTitle>
             <DialogDescription>
-              Ajoute une nouvelle tâche à exécuter pour ce projet.
+              Add a new task to execute for this project.
             </DialogDescription>
           </DialogHeader>
 
@@ -128,10 +127,10 @@ export function CreateTaskDialog({
 
           <FieldGroup className="my-4 space-y-4">
             <Field>
-              <Label htmlFor="title">Titre de la tâche</Label>
+              <Label htmlFor="title">Task Title</Label>
               <Input
                 id="title"
-                placeholder="ex: Sécuriser les endpoints JWT"
+                placeholder="ex: Implement authentication"
                 {...register("title")}
               />
               {errors.title && (
@@ -145,14 +144,14 @@ export function CreateTaskDialog({
               <Label htmlFor="description">Description</Label>
               <Input
                 id="description"
-                placeholder="Détails ou instructions sur la tâche..."
+                placeholder="Description of the task..."
                 {...register("description")}
               />
             </Field>
 
             <div className="grid grid-cols-2 gap-3">
               <Field>
-                <Label htmlFor="status">Statut</Label>
+                <Label htmlFor="status">Status</Label>
                 <Controller
                   name="status"
                   control={control}
@@ -162,11 +161,11 @@ export function CreateTaskDialog({
                       defaultValue={field.value}
                     >
                       <SelectTrigger id="status" className="w-full">
-                        <SelectValue placeholder="Statut" />
+                        <SelectValue placeholder="Status" />
                       </SelectTrigger>
                       <SelectContent className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm">
                         <SelectGroup>
-                          <SelectLabel>Statuts</SelectLabel>
+                          <SelectLabel>_statuses</SelectLabel>
                           {StatusItems.map((item) => (
                             <SelectItem key={item.value} value={item.value}>
                               {item.label}
@@ -180,7 +179,7 @@ export function CreateTaskDialog({
               </Field>
 
               <Field>
-                <Label htmlFor="priority">Priorité</Label>
+                <Label htmlFor="priority">Priority</Label>
                 <Controller
                   name="priority"
                   control={control}
@@ -190,11 +189,11 @@ export function CreateTaskDialog({
                       defaultValue={field.value}
                     >
                       <SelectTrigger id="priority" className="w-full">
-                        <SelectValue placeholder="Priorité" />
+                        <SelectValue placeholder="Priority" />
                       </SelectTrigger>
                       <SelectContent className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm">
                         <SelectGroup>
-                          <SelectLabel>Priorités</SelectLabel>
+                          <SelectLabel>Priorities</SelectLabel>
                           {PriorityItems.map((item) => (
                             <SelectItem key={item.value} value={item.value}>
                               {item.label}
@@ -210,12 +209,12 @@ export function CreateTaskDialog({
 
             <div className="grid grid-cols-2 gap-3">
               <Field>
-                <Label htmlFor="dueDate">Date d'échéance</Label>
+                <Label htmlFor="dueDate">Due Date</Label>
                 <Input id="dueDate" type="date" {...register("dueDate")} />
               </Field>
 
               <Field>
-                <Label htmlFor="estimatedHours">Temps estimé (h)</Label>
+                <Label htmlFor="estimatedHours">Estimated Time (h)</Label>
                 <Input
                   id="estimatedHours"
                   type="number"
@@ -235,12 +234,12 @@ export function CreateTaskDialog({
           <DialogFooter className="mt-6 gap-2 sm:gap-0">
             <DialogClose>
               <Button type="button" variant="ghost" disabled={isLoading}>
-                Annuler
+                Cancel
               </Button>
             </DialogClose>
             <Button type="submit" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
-              {isLoading ? "Création..." : "Créer la tâche"}
+              {isLoading ? "Creating..." : "Create Task"}
             </Button>
           </DialogFooter>
         </form>

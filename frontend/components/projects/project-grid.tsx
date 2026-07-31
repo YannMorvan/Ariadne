@@ -78,9 +78,9 @@ export function ProjectGrid({
         className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
       >
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Projets</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Projects</h1>
           <p className="text-sm text-muted-foreground">
-            Gère et suis l'avancement de tes projets en un seul endroit.
+            Manage and track the progress of your projects in one place.
           </p>
         </div>
 
@@ -109,7 +109,8 @@ export function ProjectGrid({
           <div className="relative max-w-sm flex-1">
             <Search className="absolute top-2.5 left-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Rechercher un projet..."
+              placeholder="Search projects..."
+              type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-9"
@@ -129,7 +130,7 @@ export function ProjectGrid({
             className="h-8 w-8 p-0"
           >
             <LayoutGrid className="h-4 w-4" />
-            <span className="sr-only">Vue grille</span>
+            <span className="sr-only">Grid view</span>
           </Button>
           <Button
             variant={viewMode === "list" ? "secondary" : "ghost"}
@@ -138,7 +139,7 @@ export function ProjectGrid({
             className="h-8 w-8 p-0"
           >
             <List className="h-4 w-4" />
-            <span className="sr-only">Vue liste</span>
+            <span className="sr-only">List view</span>
           </Button>
         </div>
       </motion.div>

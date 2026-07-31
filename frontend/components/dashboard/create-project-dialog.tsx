@@ -87,7 +87,7 @@ export function CreateProjectDialog() {
             className="!bg-primary text-primary-foreground hover:!bg-primary/90"
             variant="outline"
           >
-            + Nouveau projet
+            + New Project
           </Button>
         }
       />
@@ -95,7 +95,7 @@ export function CreateProjectDialog() {
       <DialogContent className="sm:max-w-sm">
         <form
           onSubmit={handleSubmit(onSubmit, (err) =>
-            console.log("Erreurs de validation Zod:", err)
+            console.log("Validation errors:", err)
           )}
         >
           <DialogHeader>

@@ -43,9 +43,11 @@ export function DeleteProjectDialog({
       onOpenChange(false)
     } catch (error: unknown) {
       if (error instanceof Error) {
-        setApiError(error.message || "Erreur lors de la suppression")
+        setApiError(
+          error.message || "An unexpected error occurred. Please try again."
+        )
       } else {
-        setApiError("Une erreur inattendue est survenue")
+        setApiError("An unexpected error occurred. Please try again.")
       }
     } finally {
       setIsLoading(false)
@@ -59,14 +61,13 @@ export function DeleteProjectDialog({
           <div className="mb-2 flex size-10 items-center justify-center rounded-xl bg-red-500/10 text-red-500">
             <AlertTriangle className="size-5" />
           </div>
-          <DialogTitle>Supprimer le projet ?</DialogTitle>
+          <DialogTitle>Delete project?</DialogTitle>
           <DialogDescription>
-            Êtes-vous sûr de vouloir supprimer{" "}
+            Are you sure you want to delete{" "}
             <span className="font-semibold text-foreground">
-              {projectName || "ce projet"}
+              {projectName || "this project"}
             </span>{" "}
-            ? Cette action est irréversible et supprimera toutes les données
-            associées.
+            ? This action is irreversible and will delete all associated data.
           </DialogDescription>
         </DialogHeader>
 
@@ -84,7 +85,7 @@ export function DeleteProjectDialog({
             disabled={isLoading}
             className="rounded-xl"
           >
-            Annuler
+            Cancel
           </Button>
           <Button
             type="button"
@@ -94,7 +95,7 @@ export function DeleteProjectDialog({
             className="rounded-xl"
           >
             {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
-            {isLoading ? "Suppression..." : "Supprimer le projet"}
+            {isLoading ? "Deleting..." : "Delete project"}
           </Button>
         </DialogFooter>
       </DialogContent>

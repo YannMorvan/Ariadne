@@ -78,10 +78,10 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
     } catch (error: unknown) {
       if (error instanceof Error) {
         setApiError(
-          error.message || "Une erreur est survenue lors de la création."
+          error.message || "An unexpected error occurred. Please try again."
         )
       } else {
-        setApiError("Une erreur inattendue est survenue.")
+        setApiError("An unexpected error occurred. Please try again.")
       }
     } finally {
       setIsLoading(false)
@@ -92,16 +92,16 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         render={
-          <Button className="rounded-xl font-medium">+ Nouveau projet</Button>
+          <Button className="rounded-xl font-medium">+ New Project</Button>
         }
       />
 
       <DialogContent className="rounded-2xl border-border/50 bg-card/95 backdrop-blur-xl sm:max-w-md">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
-            <DialogTitle>Créer un projet</DialogTitle>
+            <DialogTitle>Create Project</DialogTitle>
             <DialogDescription>
-              Renseigne les détails de ton nouveau projet.
+              Fill in the details for your new project.
             </DialogDescription>
           </DialogHeader>
 
@@ -113,7 +113,7 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
 
           <FieldGroup className="my-4 space-y-4">
             <Field>
-              <Label htmlFor="name">Nom du projet</Label>
+              <Label htmlFor="name">Project Name</Label>
               <Input
                 id="name"
                 placeholder="ex: Ariadne MVP"
@@ -130,13 +130,13 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
               <Label htmlFor="description">Description</Label>
               <Input
                 id="description"
-                placeholder="Brève description du projet..."
+                placeholder="Brief description of the project..."
                 {...register("description")}
               />
             </Field>
 
             <Field>
-              <Label htmlFor="priority">Priorité</Label>
+              <Label htmlFor="priority">Priority</Label>
               <Controller
                 name="priority"
                 control={control}
@@ -146,11 +146,11 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
                     defaultValue={field.value}
                   >
                     <SelectTrigger id="priority" className="w-full">
-                      <SelectValue placeholder="Sélectionner une priorité" />
+                      <SelectValue placeholder="Select a priority" />
                     </SelectTrigger>
                     <SelectContent className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm">
                       <SelectGroup>
-                        <SelectLabel>Priorités</SelectLabel>
+                        <SelectLabel>Priorities</SelectLabel>
                         {PriorityItems.map((item) => (
                           <SelectItem key={item.value} value={item.value}>
                             {item.label}
@@ -167,12 +167,12 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
           <DialogFooter className="mt-6 gap-2 sm:gap-0">
             <DialogClose>
               <Button type="button" variant="ghost" disabled={isLoading}>
-                Annuler
+                Cancel
               </Button>
             </DialogClose>
             <Button type="submit" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
-              {isLoading ? "Création..." : "Créer le projet"}
+              {isLoading ? "Creating..." : "Create Project"}
             </Button>
           </DialogFooter>
         </form>

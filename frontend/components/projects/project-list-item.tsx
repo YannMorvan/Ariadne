@@ -20,19 +20,19 @@ interface ProjectListItemProps {
 
 const priorityConfig: Record<string, { label: string; className: string }> = {
   LOW: {
-    label: "Basse",
+    label: "Low",
     className: "text-muted-foreground bg-muted/40 border-border/40",
   },
   MEDIUM: {
-    label: "Moyenne",
+    label: "Medium",
     className: "text-blue-500 bg-blue-500/10 border-blue-500/20",
   },
   HIGH: {
-    label: "Haute",
+    label: "High",
     className: "text-amber-500 bg-amber-500/10 border-amber-500/20",
   },
   URGENT: {
-    label: "Urgente",
+    label: "Urgent",
     className: "text-red-500 bg-red-500/10 border-red-500/20",
   },
 }
@@ -85,13 +85,13 @@ export function ProjectListItem({
             className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm"
           >
             <DropdownMenuItem onClick={() => onEdit?.(project)}>
-              Modifier
+              Edit
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => onDelete?.(project.id)}
               className="text-destructive focus:text-destructive"
             >
-              Supprimer
+              Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

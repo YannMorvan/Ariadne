@@ -8,7 +8,6 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
   DropdownMenu,
@@ -19,7 +18,6 @@ import {
 import { cn } from "@/lib/utils"
 import type { Project } from "@/types"
 import { useRouter } from "next/navigation"
-import { DeleteProjectDialog } from "./delete-project-dialog"
 
 interface ProjectCardProps {
   project: Project
@@ -29,19 +27,19 @@ interface ProjectCardProps {
 
 const priorityConfig: Record<string, { label: string; className: string }> = {
   LOW: {
-    label: "Basse",
+    label: "Low",
     className: "text-muted-foreground bg-muted/40 border-border/40",
   },
   MEDIUM: {
-    label: "Moyenne",
+    label: "Medium",
     className: "text-blue-500 bg-blue-500/10 border-blue-500/20",
   },
   HIGH: {
-    label: "Haute",
+    label: "High",
     className: "text-amber-500 bg-amber-500/10 border-amber-500/20",
   },
   URGENT: {
-    label: "Urgente",
+    label: "Urgent",
     className: "text-red-500 bg-red-500/10 border-red-500/20",
   },
 }
@@ -69,7 +67,6 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
             </Badge>
           </div>
 
-          {/* On stoppe la propagation du clic sur l'ensemble de la zone du menu */}
           <div onClick={(e) => e.stopPropagation()}>
             <DropdownMenu>
               <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-none">
@@ -95,7 +92,7 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
                   }}
                   className="text-destructive focus:text-destructive"
                 >
-                  Supprimer
+                  Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -104,17 +101,17 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         <CardDescription className="line-clamp-2 text-sm text-muted-foreground">
-          {project.description || "Aucune description fournie pour ce projet."}
+          {project.description || "No description provided for this project."}
         </CardDescription>
 
         <div className="flex items-center justify-between border-t border-border/30 pt-2 text-xs text-muted-foreground">
           <div className="flex items-center gap-1.5">
             <Calendar className="size-3.5" />
-            <span>Récemment mis à jour</span>
+            <span>Recently updated</span>
           </div>
           <div className="flex items-center gap-1.5 font-medium text-foreground">
             <CheckSquare className="size-3.5 text-muted-foreground" />
-            <span>0 tâches</span>
+            <span>0 tasks</span>
           </div>
         </div>
       </CardContent>

@@ -2,26 +2,26 @@ import { z } from "zod"
 
 export const createTaskSchema = z.object({
   title: z
-    .string({ message: "Le titre de la tâche est requis" })
-    .min(2, "Le titre doit contenir au moins 2 caractères"),
+    .string({ message: "The task title is required" })
+    .min(2, "The title must contain at least 2 characters"),
 
   description: z.string().optional(),
 
   priority: z
     .enum(["LOW", "MEDIUM", "HIGH", "URGENT"], {
-      message: "La priorité doit être LOW, MEDIUM, HIGH ou URGENT",
+      message: "The priority must be LOW, MEDIUM, HIGH or URGENT",
     })
     .default("MEDIUM"),
 
   status: z
     .enum(["TODO", "IN_PROGRESS", "DONE"], {
-      message: "Le statut doit être TODO, IN_PROGRESS ou DONE",
+      message: "The status must be TODO, IN_PROGRESS or DONE",
     })
     .default("TODO"),
 
   projectId: z
-    .string({ message: "L'ID du projet est requis" })
-    .uuid("L'ID du projet doit être un UUID valide"),
+    .string({ message: "The project ID is required" })
+    .uuid("The project ID must be a valid UUID"),
 
   dueDate: z
     .string()
@@ -29,13 +29,13 @@ export const createTaskSchema = z.object({
     .transform((val) => (val ? new Date(val) : undefined)),
 
   estimatedHours: z
-    .number({ message: "Les heures estimées doivent être un nombre" })
-    .min(0, "Les heures ne peuvent pas être négatives")
+    .number({ message: "The estimated hours must be a number" })
+    .min(0, "The hours cannot be negative")
     .optional(),
 
   assigneeId: z
     .string()
-    .uuid("L'ID de l'assigné doit être un UUID valide")
+    .uuid("The assignee ID must be a valid UUID")
     .optional()
     .or(z.literal("")),
 })

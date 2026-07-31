@@ -32,19 +32,19 @@ interface ProjectTasksTabProps {
 
 const priorityConfig: Record<Priority, { label: string; className: string }> = {
   LOW: {
-    label: "Basse",
+    label: "Low",
     className: "text-muted-foreground bg-muted/40 border-border/40",
   },
   MEDIUM: {
-    label: "Moyenne",
+    label: "Medium",
     className: "text-blue-500 bg-blue-500/10 border-blue-500/20",
   },
   HIGH: {
-    label: "Haute",
+    label: "High",
     className: "text-amber-500 bg-amber-500/10 border-amber-500/20",
   },
   URGENT: {
-    label: "Urgente",
+    label: "Urgent",
     className: "text-red-500 bg-red-500/10 border-red-500/20",
   },
 }
@@ -77,7 +77,7 @@ export function ProjectTasksTab({
       await taskApi.updateTask(task.id, { status: nextStatus })
       onTasksUpdated?.()
     } catch (error) {
-      console.error("Erreur lors de la mise à jour du statut :", error)
+      console.error("Error occurred while updating the task status :", error)
     } finally {
       setUpdatingStatusId(null)
     }
@@ -89,7 +89,7 @@ export function ProjectTasksTab({
       await taskApi.deleteTask(taskId)
       onTasksUpdated?.()
     } catch (error) {
-      console.error("Erreur lors de la suppression de la tâche :", error)
+      console.error("Error occurred while deleting the task :", error)
     } finally {
       setDeletingId(null)
     }
@@ -102,12 +102,12 @@ export function ProjectTasksTab({
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-base font-semibold tracking-tight">
-            Tâches du projet
+            Project Tasks
           </h3>
           <p className="text-xs text-muted-foreground">
             {hasTasks
-              ? `${tasks.length} tâche${tasks.length > 1 ? "s" : ""} au total`
-              : "Gère la liste des tâches associées à ce projet."}
+              ? `${tasks.length} task${tasks.length > 1 ? "s" : ""} in total`
+              : "Manage the list of tasks associated with this project."}
           </p>
         </div>
         <CreateTaskDialog projectId={projectId} onSuccess={onTasksUpdated} />
@@ -116,9 +116,10 @@ export function ProjectTasksTab({
       {!hasTasks ? (
         <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border/50 bg-card/20 p-8 text-center">
           <Circle className="mb-2 size-8 text-muted-foreground/50" />
-          <p className="text-sm font-medium">Aucune tâche pour ce projet</p>
+          <p className="text-sm font-medium">No tasks yet</p>
           <p className="mt-1 max-w-xs text-xs text-muted-foreground">
-            Crée ta première tâche pour commencer à suivre l'avancement.
+            Create a new task to get started and manage your project
+            effectively.
           </p>
         </div>
       ) : (
@@ -139,7 +140,7 @@ export function ProjectTasksTab({
                     type="button"
                     disabled={isUpdating}
                     onClick={() => void handleToggleStatus(task)}
-                    title={`Statut actuel : ${task.status}. Clic pour changer.`}
+                    title={`Actual status: ${task.status}. Click to change.`}
                     className="mt-0.5 flex shrink-0 items-center justify-center rounded-full border border-border/50 bg-card/60 p-1 transition-all hover:scale-105 hover:border-border/80 hover:bg-card/90 focus:outline-none disabled:opacity-50"
                   >
                     {isUpdating ? (
@@ -214,7 +215,7 @@ export function ProjectTasksTab({
                           className="text-destructive focus:text-destructive"
                         >
                           <Trash2 className="mr-2 size-4" />
-                          Supprimer
+                          Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

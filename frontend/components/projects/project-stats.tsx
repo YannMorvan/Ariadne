@@ -1,6 +1,5 @@
 "use client"
 
-import { FolderKanban, Flame, Clock, CheckCircle2 } from "lucide-react"
 import { StatCards } from "@/components/dashboard/stat-cards"
 import type { StatMetric, Project } from "@/types"
 
@@ -10,12 +9,10 @@ interface ProjectStatsProps {
 }
 
 export function ProjectStats({ metrics, projects }: ProjectStatsProps) {
-  // Si des métriques personnalisées sont passées, on les utilise directement
   if (metrics && metrics.length > 0) {
     return <StatCards metrics={metrics} />
   }
 
-  // Sinon, on calcule dynamiquement les statistiques à partir du tableau de projets
   const totalProjects = projects?.length || 0
   const urgentProjects =
     projects?.filter((p) => p.priority === "URGENT").length || 0

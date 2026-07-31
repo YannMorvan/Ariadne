@@ -25,7 +25,7 @@ export class TasksService {
 
     if (!project) {
       throw new NotFoundException(
-        "Projet introuvable ou vous n'avez pas accès à ce projet",
+        "Project not found or you don't have access to this project",
       );
     }
 
@@ -58,7 +58,7 @@ export class TasksService {
 
     if (!project) {
       throw new NotFoundException(
-        "Projet introuvable ou vous n'avez pas accès à ce projet",
+        "Project not found or you don't have access to this project",
       );
     }
 
@@ -96,7 +96,7 @@ export class TasksService {
     });
 
     if (!task) {
-      throw new NotFoundException('Tâche introuvable');
+      throw new NotFoundException('Task not found');
     }
 
     const isProjectOwner = task.project.ownerId === userId;
@@ -109,7 +109,7 @@ export class TasksService {
 
     if (!canUpdate) {
       throw new ForbiddenException(
-        "Vous n'avez pas la permission de mettre à jour cette tâche",
+        "You don't have permission to update this task",
       );
     }
 
@@ -134,7 +134,7 @@ export class TasksService {
     });
 
     if (!task) {
-      throw new NotFoundException('Tâche introuvable');
+      throw new NotFoundException('Task not found');
     }
 
     const isProjectOwner = task.project.ownerId === userId;
@@ -147,7 +147,7 @@ export class TasksService {
 
     if (!canDelete) {
       throw new ForbiddenException(
-        "Vous n'avez pas la permission de supprimer cette tâche",
+        "You don't have permission to delete this task",
       );
     }
 
