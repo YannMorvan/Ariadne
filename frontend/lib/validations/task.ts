@@ -23,10 +23,7 @@ export const createTaskSchema = z.object({
     .string({ message: "The project ID is required" })
     .uuid("The project ID must be a valid UUID"),
 
-  dueDate: z
-    .string()
-    .optional()
-    .transform((val) => (val ? new Date(val) : undefined)),
+  dueDate: z.string().optional(),
 
   estimatedHours: z
     .number({ message: "The estimated hours must be a number" })
