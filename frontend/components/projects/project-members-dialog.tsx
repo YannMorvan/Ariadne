@@ -34,7 +34,6 @@ export function ProjectMembersDialog({
 
     try {
       setIsSubmitting(true)
-      // Appel API pour inviter / ajouter un membre
       // await projectApi.addMember(projectId, email)
       setEmail("")
     } catch (error) {

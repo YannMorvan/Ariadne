@@ -74,7 +74,7 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
       await projectApi.createProject(data)
       reset()
       setOpen(false)
-      onSuccess?.() // 👈 Déclenche le refresh global
+      onSuccess?.()
     } catch (error: unknown) {
       if (error instanceof Error) {
         setApiError(
@@ -90,9 +90,11 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <Button className="rounded-xl font-medium">+ Nouveau projet</Button>
-      </DialogTrigger>
+      <DialogTrigger
+        render={
+          <Button className="rounded-xl font-medium">+ Nouveau projet</Button>
+        }
+      />
 
       <DialogContent className="rounded-2xl border-border/50 bg-card/95 backdrop-blur-xl sm:max-w-md">
         <form onSubmit={handleSubmit(onSubmit)}>

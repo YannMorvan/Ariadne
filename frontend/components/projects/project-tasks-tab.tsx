@@ -57,7 +57,6 @@ export function ProjectTasksTab({
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [updatingStatusId, setUpdatingStatusId] = useState<string | null>(null)
 
-  // 1. Rotation de statut : TODO ➔ IN_PROGRESS ➔ DONE ➔ TODO
   const getNextStatus = (current: TaskStatus): TaskStatus => {
     switch (current) {
       case "TODO":
@@ -71,13 +70,12 @@ export function ProjectTasksTab({
     }
   }
 
-  // 2. Handler de mise à jour du statut
   const handleToggleStatus = async (task: Task) => {
     try {
       setUpdatingStatusId(task.id)
       const nextStatus = getNextStatus(task.status)
       await taskApi.updateTask(task.id, { status: nextStatus })
-      onTasksUpdated?.() // Re-fetch du projet pour recalculer la progress bar
+      onTasksUpdated?.()
     } catch (error) {
       console.error("Erreur lors de la mise à jour du statut :", error)
     } finally {
@@ -85,7 +83,6 @@ export function ProjectTasksTab({
     }
   }
 
-  // 3. Handler de suppression de tâche
   const handleDeleteTask = async (taskId: string) => {
     try {
       setDeletingId(taskId)
