@@ -37,22 +37,22 @@ export function DashboardHeader({ username }: DashboardHeaderProps) {
     >
       <motion.div variants={itemVariants}>
         <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
-          Ravi de te revoir, {username} 👋
+          Happy to see you again, {username} 👋
         </h1>
         <p className="mt-1 max-w-xl text-muted-foreground">
-          Voici l&apos;état actuel de ta productivité et de tes projets.
+          Here&apos;s the current status of your productivity and projects.
         </p>
       </motion.div>
 
       <motion.div variants={itemVariants} className="flex shrink-0 gap-2">
         {/* <Button>
           <Plus data-icon="inline-start" />
-          Nouveau projet
+          New Project
         </Button> */}
         <CreateProjectDialog />
         <Button variant="outline">
           <Command data-icon="inline-start" />
-          Actions rapides
+          Quick Actions
           <kbd className="pointer-events-none ml-1 hidden rounded-md border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground sm:inline-block">
             ⌘K
           </kbd>

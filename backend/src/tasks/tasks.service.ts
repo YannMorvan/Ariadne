@@ -1,0 +1,158 @@
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
+import { TaskEntity } from './entities/task.entity';
+
+@Injectable()
+export class TasksService {
+  constructor(private prisma: PrismaService) {}
+
+  async createTask(
+    taskDto: CreateTaskDto,
+    userId: string,
+  ): Promise<TaskEntity> {
+    const project = await this.prisma.project.findFirst({
+      where: {
+        id: taskDto.projectId,
+        OR: [{ ownerId: userId }, { members: { some: { userId } } }],
+      },
+    });
+
+    if (!project) {
+      throw new NotFoundException(
+        "Project not found or you don't have access to this project",
+      );
+    }
+
+    const newTask = await this.prisma.task.create({
+      data: {
+        title: taskDto.title,
+        description: taskDto.description,
+        status: taskDto.status,
+        priority: taskDto.priority,
+        dueDate: taskDto.dueDate,
+        estimatedHours: taskDto.estimatedHours,
+        projectId: taskDto.projectId,
+        assigneeId: taskDto.assigneeId,
+      },
+    });
+
+    return new TaskEntity(newTask);
+  }
+
+  async getTasksByProjectId(
+    userId: string,
+    projectId: string,
+  ): Promise<TaskEntity[]> {
+    const project = await this.prisma.project.findFirst({
+      where: {
+        id: projectId,
+        OR: [{ ownerId: userId }, { members: { some: { userId } } }],
+      },
+    });
+
+    if (!project) {
+      throw new NotFoundException(
+        "Project not found or you don't have access to this project",
+      );
+    }
+
+    const tasks = await this.prisma.task.findMany({
+      where: { projectId },
+      include: {
+        assignee: {
+          select: {
+            id: true,
+            username: true,
+            avatarUrl: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return tasks.map((task) => new TaskEntity(task));
+  }
+
+  async updateTask(
+    userId: string,
+    taskId: string,
+    updateData: UpdateTaskDto,
+  ): Promise<TaskEntity> {
+    const task = await this.prisma.task.findUnique({
+      where: { id: taskId },
+      include: {
+        project: {
+          include: {
+            members: true,
+          },
+        },
+      },
+    });
+
+    if (!task) {
+      throw new NotFoundException('Task not found');
+    }
+
+    const isProjectOwner = task.project.ownerId === userId;
+    const isAssignee = task.assigneeId === userId;
+    const isProjectMember = task.project.members.some(
+      (member) => member.userId === userId,
+    );
+
+    const canUpdate = isProjectOwner || isAssignee || isProjectMember;
+
+    if (!canUpdate) {
+      throw new ForbiddenException(
+        "You don't have permission to update this task",
+      );
+    }
+
+    const updatedTask = await this.prisma.task.update({
+      where: { id: taskId },
+      data: updateData,
+    });
+
+    return new TaskEntity(updatedTask);
+  }
+
+  async deleteTask(userId: string, taskId: string): Promise<void> {
+    const task = await this.prisma.task.findUnique({
+      where: { id: taskId },
+      include: {
+        project: {
+          include: {
+            members: true,
+          },
+        },
+      },
+    });
+
+    if (!task) {
+      throw new NotFoundException('Task not found');
+    }
+
+    const isProjectOwner = task.project.ownerId === userId;
+    const isAssignee = task.assigneeId === userId;
+    const isProjectMember = task.project.members.some(
+      (member) => member.userId === userId,
+    );
+
+    const canDelete = isProjectOwner || isAssignee || isProjectMember;
+
+    if (!canDelete) {
+      throw new ForbiddenException(
+        "You don't have permission to delete this task",
+      );
+    }
+
+    await this.prisma.task.delete({
+      where: { id: taskId },
+    });
+  }
+}

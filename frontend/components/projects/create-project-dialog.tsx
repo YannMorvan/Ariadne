@@ -1,3 +1,10 @@
+"use client"
+
+import { useState } from "react"
+import { useForm, Controller } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Loader2 } from "lucide-react"
+
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -12,14 +19,6 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useForm, Controller } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useState } from "react"
-import {
-  CreateProjectInput,
-  createProjectSchema,
-} from "@/lib/validations/project"
-import { projectApi } from "@/api/project"
 import {
   Select,
   SelectContent,
@@ -30,7 +29,24 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-export function CreateProjectDialog() {
+import {
+  type CreateProjectInput,
+  createProjectSchema,
+} from "@/lib/validations/project"
+import { projectApi } from "@/api/project"
+
+interface CreateProjectDialogProps {
+  onSuccess?: () => void
+}
+
+const PriorityItems = [
+  { label: "Basse", value: "LOW" },
+  { label: "Moyenne", value: "MEDIUM" },
+  { label: "Haute", value: "HIGH" },
+  { label: "Urgente", value: "URGENT" },
+]
+
+export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
   const [open, setOpen] = useState(false)
   const [apiError, setApiError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -51,7 +67,6 @@ export function CreateProjectDialog() {
   })
 
   const onSubmit = async (data: CreateProjectInput) => {
-    console.log("Submitting data:", data)
     setIsLoading(true)
     setApiError(null)
 
@@ -59,45 +74,30 @@ export function CreateProjectDialog() {
       await projectApi.createProject(data)
       reset()
       setOpen(false)
+      onSuccess?.()
     } catch (error: unknown) {
       if (error instanceof Error) {
         setApiError(
-          error.message || "Unexpected error occurred. Please try again."
+          error.message || "An unexpected error occurred. Please try again."
         )
       } else {
-        console.error("Unexpected error:", error)
-        setApiError("Unexpected error occurred. Please try again.")
+        setApiError("An unexpected error occurred. Please try again.")
       }
     } finally {
       setIsLoading(false)
     }
   }
 
-  const PriorityItems = [
-    { label: "Low", value: "LOW" },
-    { label: "Medium", value: "MEDIUM" },
-    { label: "High", value: "HIGH" },
-  ]
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         render={
-          <Button
-            className="!bg-primary text-primary-foreground hover:!bg-primary/90"
-            variant="outline"
-          >
-            + New Project
-          </Button>
+          <Button className="rounded-xl font-medium">+ New Project</Button>
         }
       />
 
-      <DialogContent className="sm:max-w-sm">
-        <form
-          onSubmit={handleSubmit(onSubmit, (err) =>
-            console.log("Validation errors:", err)
-          )}
-        >
+      <DialogContent className="rounded-2xl border-border/50 bg-card/95 backdrop-blur-xl sm:max-w-md">
+        <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
             <DialogTitle>Create Project</DialogTitle>
             <DialogDescription>
@@ -106,15 +106,17 @@ export function CreateProjectDialog() {
           </DialogHeader>
 
           {apiError && (
-            <p className="my-2 text-sm text-destructive">{apiError}</p>
+            <div className="my-3 rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-xs text-red-500">
+              {apiError}
+            </div>
           )}
 
           <FieldGroup className="my-4 space-y-4">
             <Field>
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">Project Name</Label>
               <Input
                 id="name"
-                placeholder="Enter project name"
+                placeholder="ex: Ariadne MVP"
                 {...register("name")}
               />
               {errors.name && (
@@ -128,7 +130,7 @@ export function CreateProjectDialog() {
               <Label htmlFor="description">Description</Label>
               <Input
                 id="description"
-                placeholder="Enter project description"
+                placeholder="Brief description of the project..."
                 {...register("description")}
               />
             </Field>
@@ -144,9 +146,9 @@ export function CreateProjectDialog() {
                     defaultValue={field.value}
                   >
                     <SelectTrigger id="priority" className="w-full">
-                      <SelectValue placeholder="Select priority" />
+                      <SelectValue placeholder="Select a priority" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm">
                       <SelectGroup>
                         <SelectLabel>Priorities</SelectLabel>
                         {PriorityItems.map((item) => (
@@ -162,10 +164,15 @@ export function CreateProjectDialog() {
             </Field>
           </FieldGroup>
 
-          <DialogFooter className="mt-6">
-            <DialogClose render={<Button variant="outline">Cancel</Button>} />
+          <DialogFooter className="mt-6 gap-2 sm:gap-0">
+            <DialogClose>
+              <Button type="button" variant="ghost" disabled={isLoading}>
+                Cancel
+              </Button>
+            </DialogClose>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Saving..." : "Save changes"}
+              {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
+              {isLoading ? "Creating..." : "Create Project"}
             </Button>
           </DialogFooter>
         </form>

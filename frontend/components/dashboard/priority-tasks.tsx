@@ -36,8 +36,8 @@ export function PriorityTasks({ tasks: initialTasks }: TasksProps) {
   return (
     <Card className="h-full border-border/50 bg-card/50 backdrop-blur-sm transition-colors hover:bg-card/80">
       <CardHeader>
-        <CardTitle>Tâches prioritaires</CardTitle>
-        <CardDescription>Les 4 urgences du jour</CardDescription>
+        <CardTitle>Priority Tasks</CardTitle>
+        <CardDescription>The 4 urgencies of the day</CardDescription>
       </CardHeader>
       <CardContent>
         <ul className="space-y-2">
@@ -68,11 +68,11 @@ export function PriorityTasks({ tasks: initialTasks }: TasksProps) {
                     {task.title}
                   </p>
                   <p className="mt-0.5 text-xs text-muted-foreground">
-                    {task.project}
-                    {task.dueTime && (
+                    {task.projectId}
+                    {task.dueDate && (
                       <>
                         <span className="mx-1.5 text-border">·</span>
-                        {task.dueTime}
+                        {task.dueDate}
                       </>
                     )}
                   </p>

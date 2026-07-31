@@ -1,4 +1,4 @@
-import type { User } from "./user"
+import type { User, Task } from "./index"
 
 export type ProjectPriority = "LOW" | "MEDIUM" | "HIGH" | "URGENT"
 
@@ -13,4 +13,8 @@ export interface Project {
   members: User[]
   createdAt?: string
   updatedAt?: string
+}
+
+export interface ProjectWithTasks extends Project {
+  tasks: Task[]
 }

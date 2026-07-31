@@ -18,7 +18,9 @@ export async function apiClient<T>(
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}))
-    throw new Error(errorData.message || "Une erreur est survenue")
+    throw new Error(
+      errorData.message || "An unexpected error occurred. Please try again."
+    )
   }
 
   return response.json()
