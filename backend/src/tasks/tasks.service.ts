@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskEntity } from './entities/task.entity';
 
 @Injectable()
@@ -76,6 +77,48 @@ export class TasksService {
     });
 
     return tasks.map((task) => new TaskEntity(task));
+  }
+
+  async updateTask(
+    userId: string,
+    taskId: string,
+    updateData: UpdateTaskDto,
+  ): Promise<TaskEntity> {
+    const task = await this.prisma.task.findUnique({
+      where: { id: taskId },
+      include: {
+        project: {
+          include: {
+            members: true,
+          },
+        },
+      },
+    });
+
+    if (!task) {
+      throw new NotFoundException('Tâche introuvable');
+    }
+
+    const isProjectOwner = task.project.ownerId === userId;
+    const isAssignee = task.assigneeId === userId;
+    const isProjectMember = task.project.members.some(
+      (member) => member.userId === userId,
+    );
+
+    const canUpdate = isProjectOwner || isAssignee || isProjectMember;
+
+    if (!canUpdate) {
+      throw new ForbiddenException(
+        "Vous n'avez pas la permission de mettre à jour cette tâche",
+      );
+    }
+
+    const updatedTask = await this.prisma.task.update({
+      where: { id: taskId },
+      data: updateData,
+    });
+
+    return new TaskEntity(updatedTask);
   }
 
   async deleteTask(userId: string, taskId: string): Promise<void> {

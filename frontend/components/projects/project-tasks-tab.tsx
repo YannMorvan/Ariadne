@@ -7,10 +7,9 @@ import {
   Clock,
   Trash2,
   MoreHorizontal,
-  User as UserIcon,
+  Loader2,
 } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
@@ -22,7 +21,7 @@ import {
 import { CreateTaskDialog } from "../tasks/create-task-dialog"
 import { taskApi } from "@/api/task"
 import { cn } from "@/lib/utils"
-import type { Task, Priority } from "@/types/task"
+import type { Task, Priority, TaskStatus } from "@/types/task"
 
 interface ProjectTasksTabProps {
   projectName?: string
@@ -56,7 +55,37 @@ export function ProjectTasksTab({
   onTasksUpdated,
 }: ProjectTasksTabProps) {
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [updatingStatusId, setUpdatingStatusId] = useState<string | null>(null)
 
+  // 1. Rotation de statut : TODO ➔ IN_PROGRESS ➔ DONE ➔ TODO
+  const getNextStatus = (current: TaskStatus): TaskStatus => {
+    switch (current) {
+      case "TODO":
+        return "IN_PROGRESS"
+      case "IN_PROGRESS":
+        return "DONE"
+      case "DONE":
+        return "TODO"
+      default:
+        return "TODO"
+    }
+  }
+
+  // 2. Handler de mise à jour du statut
+  const handleToggleStatus = async (task: Task) => {
+    try {
+      setUpdatingStatusId(task.id)
+      const nextStatus = getNextStatus(task.status)
+      await taskApi.updateTask(task.id, { status: nextStatus })
+      onTasksUpdated?.() // Re-fetch du projet pour recalculer la progress bar
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour du statut :", error)
+    } finally {
+      setUpdatingStatusId(null)
+    }
+  }
+
+  // 3. Handler de suppression de tâche
   const handleDeleteTask = async (taskId: string) => {
     try {
       setDeletingId(taskId)
@@ -100,6 +129,7 @@ export function ProjectTasksTab({
           {tasks.map((task) => {
             const priority =
               priorityConfig[task.priority] || priorityConfig.MEDIUM
+            const isUpdating = updatingStatusId === task.id
 
             return (
               <div
@@ -107,18 +137,29 @@ export function ProjectTasksTab({
                 className="group relative flex items-center justify-between gap-3 rounded-xl border border-border/40 bg-card/40 p-4 transition-all hover:border-border/80 hover:bg-card/80"
               >
                 <div className="flex min-w-0 flex-1 items-start gap-3">
-                  <div className="mt-0.5 flex shrink-0 items-center justify-center rounded-full border border-border/40 bg-card/40 p-1 transition-colors group-hover:border-border/80 group-hover:bg-card/80">
-                    {task.status === "DONE" ? (
+                  {/* Bouton Rond Interactif de Statut */}
+                  <button
+                    type="button"
+                    disabled={isUpdating}
+                    onClick={() => void handleToggleStatus(task)}
+                    title={`Statut actuel : ${task.status}. Clic pour changer.`}
+                    className="mt-0.5 flex shrink-0 items-center justify-center rounded-full border border-border/50 bg-card/60 p-1 transition-all hover:scale-105 hover:border-border/80 hover:bg-card/90 focus:outline-none disabled:opacity-50"
+                  >
+                    {isUpdating ? (
+                      <Loader2 className="size-5 animate-spin text-muted-foreground" />
+                    ) : task.status === "DONE" ? (
                       <CheckCircle2 className="size-5 text-emerald-500" />
+                    ) : task.status === "IN_PROGRESS" ? (
+                      <Clock className="size-5 text-amber-500" />
                     ) : (
-                      <Circle className="size-5 text-muted-foreground/60" />
+                      <Circle className="size-5 text-muted-foreground/60 group-hover:text-foreground" />
                     )}
-                  </div>
+                  </button>
 
                   <div className="min-w-0 space-y-1">
                     <p
                       className={cn(
-                        "truncate text-sm leading-none font-medium tracking-tight",
+                        "truncate text-sm leading-none font-medium tracking-tight transition-colors",
                         task.status === "DONE" &&
                           "text-muted-foreground line-through"
                       )}

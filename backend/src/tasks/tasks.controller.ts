@@ -3,13 +3,13 @@ import {
   Post,
   Body,
   UseGuards,
-  Get,
   Delete,
   Param,
-  ConflictException,
+  Patch,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 
@@ -30,6 +30,15 @@ export class TasksController {
       userId,
     );
     return this.tasksService.createTask(createTaskDto, userId);
+  }
+
+  @Patch(':id')
+  async updateTask(
+    @CurrentUser('id') userId: string,
+    @Param('id') taskId: string,
+    @Body() updateTaskDto: UpdateTaskDto,
+  ) {
+    return this.tasksService.updateTask(userId, taskId, updateTaskDto);
   }
 
   @Delete(':id')

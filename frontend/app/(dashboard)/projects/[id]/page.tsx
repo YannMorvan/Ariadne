@@ -1,6 +1,6 @@
 "use client"
 
-import { use, useEffect, useState, useCallback } from "react"
+import { use, useEffect, useState, useCallback, useMemo } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import {
@@ -9,8 +9,7 @@ import {
   Trash2,
   Calendar,
   CheckSquare,
-  Plus,
-  Loader2,
+  Users,
 } from "lucide-react"
 import { motion } from "framer-motion"
 
@@ -19,6 +18,8 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DeleteProjectDialog } from "@/components/projects/delete-project-dialog"
+// import { EditProjectDialog } from "@/components/projects/edit-project-dialog"
+import { ProjectMembersDialog } from "@/components/projects/project-members-dialog"
 import { ProjectTasksTab } from "@/components/projects/project-tasks-tab"
 import { ProjectNotesTab } from "@/components/projects/project-notes-tab"
 import { projectApi } from "@/api/project"
@@ -59,6 +60,7 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
 
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
+  const [isMembersOpen, setIsMembersOpen] = useState(false)
 
   const fetchProject = useCallback(async () => {
     try {
@@ -83,6 +85,33 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
   useEffect(() => {
     void fetchProject()
   }, [fetchProject])
+
+  // 🎯 Calcul du progrès : Tâches faites / Tâches totales
+  const { progressPercentage, completedTasksCount, totalTasksCount } =
+    useMemo(() => {
+      const tasks = project?.tasks || []
+      const total = tasks.length
+
+      if (total === 0) {
+        return {
+          progressPercentage: 0,
+          completedTasksCount: 0,
+          totalTasksCount: 0,
+        }
+      }
+
+      const completed = tasks.filter(
+        (task) => task.status === "DONE" || (task.status as string) === "done"
+      ).length
+
+      const percentage = Math.round((completed / total) * 100)
+
+      return {
+        progressPercentage: percentage,
+        completedTasksCount: completed,
+        totalTasksCount: total,
+      }
+    }, [project?.tasks])
 
   if (isLoading) {
     return (
@@ -113,9 +142,19 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
 
   const priority = priorityConfig[project.priority] || priorityConfig.MEDIUM
 
+  function getProgressColorClass(percentage: number): string {
+    if (percentage >= 80)
+      return "[&_[data-slot=progress-indicator]]:bg-emerald-500"
+    if (percentage >= 50)
+      return "[&_[data-slot=progress-indicator]]:bg-amber-500"
+    return "[&_[data-slot=progress-indicator]]:bg-red-500"
+  }
+
+  const progressColor = getProgressColorClass(progressPercentage)
+
   return (
     <div className="mx-auto max-w-7xl space-y-6 px-4 py-6 md:px-6 md:py-8 lg:py-10">
-      {/* 1. Fil d'Ariane & Bouton retour */}
+      {/* 1. Fil d'Ariane & Actions */}
       <div className="flex items-center justify-between">
         <Link href="/projects">
           <Button
@@ -129,6 +168,18 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
         </Link>
 
         <div className="flex items-center gap-2">
+          {/* Bouton Membres */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setIsMembersOpen(true)}
+            className="gap-2 rounded-xl border-border/50 bg-card/50 backdrop-blur-sm"
+          >
+            <Users className="size-3.5" />
+            Membres
+          </Button>
+
+          {/* Bouton Modifier */}
           <Button
             variant="outline"
             size="sm"
@@ -138,6 +189,8 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
             <Edit2 className="size-3.5" />
             Modifier
           </Button>
+
+          {/* Bouton Supprimer */}
           <Button
             variant="outline"
             size="sm"
@@ -180,12 +233,19 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
         {/* Barre de progression & Métriques de bas de carte */}
         <div className="space-y-2 border-t border-border/30 pt-4">
           <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
-            <span>Progression du projet</span>
-            <span className="text-foreground">{project.progress || 0}%</span>
+            <span>
+              Progression du projet ({completedTasksCount}/{totalTasksCount}{" "}
+              tâches)
+            </span>
+            <span className="text-foreground">{progressPercentage}%</span>
           </div>
-          <Progress
-            value={project.progress || 0}
+          {/* <Progress
+            value={progressPercentage}
             className="[&_[data-slot=progress-indicator]]:bg-violet-500 [&_[data-slot=progress-track]]:h-2"
+          /> */}
+          <Progress
+            value={progressPercentage}
+            className={cn("h-2", getProgressColorClass(progressPercentage))}
           />
         </div>
       </motion.div>
@@ -195,7 +255,7 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
         <TabsList className="rounded-xl border border-border/50 bg-card/50 p-1 backdrop-blur-sm">
           <TabsTrigger value="tasks" className="gap-2 rounded-lg text-xs">
             <CheckSquare className="size-3.5" />
-            Tâches
+            Tâches ({totalTasksCount})
           </TabsTrigger>
           <TabsTrigger value="notes" className="gap-2 rounded-lg text-xs">
             <Calendar className="size-3.5" />
@@ -215,6 +275,13 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
           <ProjectNotesTab projectId={project.id} />
         </TabsContent>
       </Tabs>
+
+      {/* Modales */}
+      <ProjectMembersDialog
+        projectId={project.id}
+        open={isMembersOpen}
+        onOpenChange={setIsMembersOpen}
+      />
 
       <DeleteProjectDialog
         projectId={project.id}

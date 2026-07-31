@@ -16,6 +16,13 @@ export const taskApi = {
     })
   },
 
+  updateTask: async (taskId: string, payload: Partial<Task>): Promise<Task> => {
+    return apiClient<Task>(`/tasks/${taskId}`, {
+      method: "PATCH",
+      body: JSON.stringify(payload),
+    })
+  },
+
   deleteTask: async (id: string): Promise<void> => {
     return apiClient<void>(`/tasks/${id}`, {
       method: "DELETE",
