@@ -64,54 +64,67 @@ export function CreateTaskDialog({
     control,
     reset,
     formState: { errors },
-  } = useForm<CreateTaskInput>({
+  } = useForm({
     resolver: zodResolver(createTaskSchema),
     defaultValues: {
       title: "",
       description: "",
-      priority: "MEDIUM",
-      status: "TODO",
+      priority: "MEDIUM" as const,
+      status: "TODO" as const,
       projectId: projectId,
-      estimatedHours: undefined,
+      dueDate: "",
     },
   })
 
-  const onSubmit = async (data: CreateTaskInput) => {
-    setIsLoading(true)
-    setApiError(null)
-
-    try {
-      await taskApi.createTask({
-        ...data,
-        projectId,
-      })
-      reset()
-      setOpen(false)
-      onSuccess?.()
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setApiError(
-          error.message || "An unexpected error occurred. Please try again."
-        )
-      } else {
-        setApiError("An unexpected error occurred. Please try again.")
-      }
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <Button className="gap-2 rounded-xl font-medium">
-          <Plus className="size-4" />
-          New task
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger
+        render={
+          <Button className="gap-2 rounded-xl font-medium">
+            <Plus className="size-4" />
+            New task
+          </Button>
+        }
+      />
 
       <DialogContent className="rounded-2xl border-border/50 bg-card/95 backdrop-blur-xl sm:max-w-md">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={handleSubmit(async (data) => {
+            setIsLoading(true)
+            setApiError(null)
+
+            try {
+              const payload = {
+                ...data,
+                projectId,
+                dueDate: data.dueDate
+                  ? new Date(data.dueDate).toISOString()
+                  : undefined,
+                assigneeId: data.assigneeId || undefined,
+                estimatedHours:
+                  data.estimatedHours && isNaN(Number(data.estimatedHours))
+                    ? undefined
+                    : data.estimatedHours,
+              }
+
+              await taskApi.createTask(payload)
+              reset()
+              setOpen(false)
+              onSuccess?.()
+            } catch (error: unknown) {
+              if (error instanceof Error) {
+                setApiError(
+                  error.message ||
+                    "An unexpected error occurred. Please try again."
+                )
+              } else {
+                setApiError("An unexpected error occurred. Please try again.")
+              }
+            } finally {
+              setIsLoading(false)
+            }
+          })}
+        >
           <DialogHeader>
             <DialogTitle>Create a task</DialogTitle>
             <DialogDescription>
@@ -157,15 +170,15 @@ export function CreateTaskDialog({
                   control={control}
                   render={({ field }) => (
                     <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      onValueChange={(val) => field.onChange(val ?? "TODO")}
+                      value={field.value}
                     >
                       <SelectTrigger id="status" className="w-full">
                         <SelectValue placeholder="Status" />
                       </SelectTrigger>
                       <SelectContent className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm">
                         <SelectGroup>
-                          <SelectLabel>_statuses</SelectLabel>
+                          <SelectLabel>Statuses</SelectLabel>
                           {StatusItems.map((item) => (
                             <SelectItem key={item.value} value={item.value}>
                               {item.label}
@@ -185,8 +198,8 @@ export function CreateTaskDialog({
                   control={control}
                   render={({ field }) => (
                     <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      onValueChange={(val) => field.onChange(val ?? "MEDIUM")}
+                      value={field.value}
                     >
                       <SelectTrigger id="priority" className="w-full">
                         <SelectValue placeholder="Priority" />
@@ -232,11 +245,13 @@ export function CreateTaskDialog({
           </FieldGroup>
 
           <DialogFooter className="mt-6 gap-2 sm:gap-0">
-            <DialogClose>
-              <Button type="button" variant="ghost" disabled={isLoading}>
-                Cancel
-              </Button>
-            </DialogClose>
+            <DialogClose
+              render={
+                <Button type="button" variant="ghost" disabled={isLoading}>
+                  Cancel
+                </Button>
+              }
+            />
             <Button type="submit" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
               {isLoading ? "Creating..." : "Create Task"}
