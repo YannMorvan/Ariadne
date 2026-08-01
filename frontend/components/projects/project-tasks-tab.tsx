@@ -135,7 +135,6 @@ export function ProjectTasksTab({
                 className="group relative flex items-center justify-between gap-3 rounded-xl border border-border/40 bg-card/40 p-4 transition-all hover:border-border/80 hover:bg-card/80"
               >
                 <div className="flex min-w-0 flex-1 items-start gap-3">
-                  {/* Bouton Rond Interactif de Statut */}
                   <button
                     type="button"
                     disabled={isUpdating}

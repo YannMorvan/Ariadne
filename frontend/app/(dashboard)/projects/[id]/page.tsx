@@ -184,7 +184,6 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 px-4 py-6 md:px-6 md:py-8 lg:py-10">
-      {/* 1. Fil d'Ariane & Actions */}
       <div className="flex items-center justify-between">
         <Link href="/projects">
           <Button
@@ -270,7 +269,6 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
         </div>
       </motion.div>
 
-      {/* 3. Contenu par Onglets (Tâches / Notes) */}
       <Tabs defaultValue="tasks" className="space-y-6">
         <TabsList className="rounded-xl border border-border/50 bg-card/50 p-1 backdrop-blur-sm">
           <TabsTrigger value="tasks" className="gap-2 rounded-lg text-xs">
@@ -296,7 +294,6 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
         </TabsContent>
       </Tabs>
 
-      {/* Modales */}
       <ProjectMembersDialog
         projectId={project.id}
         open={isMembersOpen}

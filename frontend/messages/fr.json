@@ -1,0 +1,69 @@
+{
+  "common": {
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "saved": "Enregistré !",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "loading": "Chargement..."
+  },
+  "navigation": {
+    "productivity": "Productivité",
+    "navigation": "Navigation",
+    "dashboard": "Dashboard",
+    "projects": "Projets",
+    "tasks": "Tâches",
+    "achievements": "Succès",
+    "account": "Compte",
+    "settings": "Paramètres"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "description": "Gère ton compte, tes préférences d'interface et ta sécurité.",
+    "profile": {
+      "tab": "Profil",
+      "title": "Informations personnelles",
+      "description": "Ces informations seront visibles par les membres de tes projets.",
+      "changePhoto": "Changer la photo",
+      "deletePhoto": "Supprimer la photo",
+      "photoLimits": "JPG, PNG ou GIF. 2 Mo maximum.",
+      "username": "Nom d'utilisateur",
+      "email": "Adresse e-mail",
+      "role": "Bio / Rôle"
+    },
+    "security": {
+      "tab": "Sécurité",
+      "title": "Changer le mot de passe",
+      "description": "Assure-toi d'utiliser un mot de passe fort d'au moins 8 caractères.",
+      "currentPassword": "Mot de passe actuel",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "dangerZoneTitle": "Zone dangereuse",
+      "dangerZoneDescription": "La suppression de ton compte est irréversible. Toutes tes données seront effacées.",
+      "deleteAccount": "Supprimer le compte"
+    },
+    "appearance": {
+      "tab": "Apparence",
+      "title": "Thème de l'interface",
+      "description": "Personnalise le rendu visuel de ton espace de travail.",
+      "darkMode": "Sombre",
+      "lightMode": "Clair",
+      "systemMode": "Système",
+      "active": "Actif",
+      "language": "Langue de l'application"
+    },
+    "notifications": {
+      "tab": "Notifications",
+      "title": "Préférences de notifications",
+      "description": "Choisis quand et comment tu souhaites être alerté.",
+      "assignedTaskTitle": "Nouvelles tâches assignées",
+      "assignedTaskDesc": "Recevoir une notification quand un membre t'assigne une tâche.",
+      "dueRemindersTitle": "Rappels d'échéances",
+      "dueRemindersDesc": "Alerte 24h avant la date limite d'une tâche non terminée.",
+      "projectUpdates": "Mises à jour des projets",
+      "projectUpdatesDescription": "Résumé hebdomadaire par email de la progression des projets.",
+      "enabled": "Activé",
+      "disabled": "Désactivé"
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "common": {
+    "save": "Save",
+    "saving": "Saving...",
+    "saved": "Saved!",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "loading": "Loading..."
+  },
+  "navigation": {
+    "productivity": "Productivity",
+    "navigation": "Navigation",
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "tasks": "Tasks",
+    "achievements": "Achievements",
+    "account": "Account",
+    "settings": "Settings"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your account, interface preferences, and security.",
+    "profile": {
+      "tab": "Profile",
+      "title": "Personal Information",
+      "description": "This information will be visible to members of your projects.",
+      "changePhoto": "Change photo",
+      "deletePhoto": "Delete photo",
+      "photoLimits": "JPG, PNG or GIF. 2 MB maximum.",
+      "username": "Username",
+      "email": "Email address",
+      "role": "Bio / Role"
+    },
+    "security": {
+      "tab": "Security",
+      "title": "Change Password",
+      "description": "Make sure to use a strong password of at least 8 characters.",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "dangerZoneTitle": "Danger Zone",
+      "dangerZoneDescription": "Account deletion is permanent. All your data will be permanently erased.",
+      "deleteAccount": "Delete account"
+    },
+    "appearance": {
+      "tab": "Appearance",
+      "title": "Interface Theme",
+      "description": "Customize the visual layout of your workspace.",
+      "darkMode": "Dark",
+      "lightMode": "Light",
+      "systemMode": "System",
+      "active": "Active",
+      "language": "Application language"
+    },
+    "notifications": {
+      "tab": "Notifications",
+      "title": "Notification Preferences",
+      "description": "Choose when and how you want to be notified.",
+      "assignedTaskTitle": "New assigned tasks",
+      "assignedTaskDesc": "Receive a notification when a team member assigns you a task.",
+      "dueRemindersTitle": "Due date reminders",
+      "dueRemindersDesc": "Alert 24 hours before the deadline of an unfinished task.",
+      "projectUpdates": "Project updates",
+      "projectUpdatesDescription": "Weekly email summary of project progress.",
+      "enabled": "Enabled",
+      "disabled": "Disabled"
+    }
+  }
+}

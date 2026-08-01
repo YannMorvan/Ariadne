@@ -28,17 +28,7 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar"
 import { useUser } from "@/context/user-context"
-
-const mainNav = [
-  { title: "Dashboard", href: "/", icon: LayoutDashboard },
-  { title: "Projets", href: "/projects", icon: FolderKanban },
-  { title: "Tâches", href: "/tasks", icon: CheckSquare },
-  { title: "Succès", href: "/achievements", icon: Trophy },
-] as const
-
-const secondaryNav = [
-  { title: "Paramètres", href: "/settings", icon: Settings },
-] as const
+import { useTranslations } from "next-intl"
 
 function getInitials(name: string) {
   return name.slice(0, 2).toUpperCase()
@@ -47,6 +37,18 @@ function getInitials(name: string) {
 export function AppSidebar() {
   const pathname = usePathname()
   const { user } = useUser()
+  const t = useTranslations("navigation")
+
+  const mainNav = [
+    { title: t("dashboard"), href: "/", icon: LayoutDashboard },
+    { title: t("projects"), href: "/projects", icon: FolderKanban },
+    { title: t("tasks"), href: "/tasks", icon: CheckSquare },
+    { title: t("achievements"), href: "/achievements", icon: Trophy },
+  ]
+
+  const secondaryNav = [
+    { title: t("settings"), href: "/settings", icon: Settings },
+  ]
 
   function isActive(href: string) {
     if (href === "/") return pathname === "/"
@@ -65,7 +67,7 @@ export function AppSidebar() {
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">Ariadne</span>
                 <span className="truncate text-xs text-muted-foreground">
-                  Productivité
+                  {t("productivity")}
                 </span>
               </div>
             </SidebarMenuButton>
@@ -75,7 +77,7 @@ export function AppSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel>{t("navigation")}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {mainNav.map((item) => (
@@ -97,7 +99,7 @@ export function AppSidebar() {
         <SidebarSeparator />
 
         <SidebarGroup>
-          <SidebarGroupLabel>Compte</SidebarGroupLabel>
+          <SidebarGroupLabel>{t("account")}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {secondaryNav.map((item) => (
@@ -134,15 +136,6 @@ export function AppSidebar() {
                   Niveau 8
                 </span>
               </div>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              render={<Link href="/login" />}
-              tooltip="Déconnexion"
-            >
-              <LogOut />
-              <span>Déconnexion</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
