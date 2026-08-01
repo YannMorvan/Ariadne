@@ -26,6 +26,7 @@ import { projectApi } from "@/api/project"
 import { taskApi } from "@/api/task"
 import { cn } from "@/lib/utils"
 import type { ProjectWithTasks } from "@/types"
+import { useTranslations } from "next-intl"
 
 interface ProjectPageProps {
   params: Promise<{ id: string }>
@@ -61,6 +62,8 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [isMembersOpen, setIsMembersOpen] = useState(false)
+
+  const tCommon = useTranslations("common")
 
   const fetchProject = useCallback(async () => {
     try {
@@ -214,7 +217,7 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
             className="gap-2 rounded-xl border-border/50 bg-card/50 backdrop-blur-sm"
           >
             <Edit2 className="size-3.5" />
-            Edit
+            {tCommon("edit")}
           </Button>
 
           <Button
@@ -224,7 +227,7 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
             className="gap-2 rounded-xl border-red-500/20 bg-red-500/10 text-red-500 hover:bg-red-500/20 hover:text-red-500"
           >
             <Trash2 className="size-3.5" />
-            Delete
+            {tCommon("delete")}
           </Button>
         </div>
       </div>

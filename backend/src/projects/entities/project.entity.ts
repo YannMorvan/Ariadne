@@ -29,6 +29,9 @@ export class ProjectEntity implements PrismaProject {
   @ApiProperty()
   updatedAt!: Date;
 
+  @ApiProperty()
+  isArchived!: boolean;
+
   constructor(partial: Partial<ProjectEntity>) {
     Object.assign(this, partial);
   }

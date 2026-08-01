@@ -41,6 +41,11 @@ export class ProjectsController {
     return this.projectsService.getProjectsByUserId(userId);
   }
 
+  @Get('stats')
+  async getStats(@CurrentUser('id') userId: string) {
+    return this.projectsService.getStatsByUserId(userId);
+  }
+
   @Get(':id')
   async findOne(
     @CurrentUser('id') userId: string,

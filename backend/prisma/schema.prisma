@@ -67,6 +67,8 @@ model Project {
   members     ProjectMember[]
   tasks       Task[]
 
+  isArchived  Boolean  @default(false)
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

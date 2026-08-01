@@ -15,6 +15,7 @@ import { DeleteProjectDialog } from "@/components/projects/delete-project-dialog
 import { EmptyProjectsState } from "@/components/projects/empty-projects-state"
 
 import type { Project, StatMetric } from "@/types"
+import { useTranslations } from "next-intl"
 
 interface ProjectGridProps {
   projects: Project[]
@@ -45,6 +46,9 @@ export function ProjectGrid({
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
 
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null)
+
+  const tProjects = useTranslations("projects")
+  const tCommon = useTranslations("common")
 
   const filteredProjects = useMemo(() => {
     return initialProjects.filter((project) => {
@@ -78,9 +82,11 @@ export function ProjectGrid({
         className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
       >
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Projects</h1>
+          <h1 className="text-2xl font-bold tracking-tight">
+            {tProjects("title")}
+          </h1>
           <p className="text-sm text-muted-foreground">
-            Manage and track the progress of your projects in one place.
+            {tProjects("description")}
           </p>
         </div>
 
@@ -109,7 +115,7 @@ export function ProjectGrid({
           <div className="relative max-w-sm flex-1">
             <Search className="absolute top-2.5 left-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search projects..."
+              placeholder={tProjects("searchPlaceholder")}
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -130,7 +136,7 @@ export function ProjectGrid({
             className="h-8 w-8 p-0"
           >
             <LayoutGrid className="h-4 w-4" />
-            <span className="sr-only">Grid view</span>
+            <span className="sr-only">{tCommon("gridView")}</span>
           </Button>
           <Button
             variant={viewMode === "list" ? "secondary" : "ghost"}
@@ -139,7 +145,7 @@ export function ProjectGrid({
             className="h-8 w-8 p-0"
           >
             <List className="h-4 w-4" />
-            <span className="sr-only">List view</span>
+            <span className="sr-only">{tCommon("listView")}</span>
           </Button>
         </div>
       </motion.div>

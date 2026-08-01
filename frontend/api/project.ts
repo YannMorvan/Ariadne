@@ -22,6 +22,12 @@ export const projectApi = {
     })
   },
 
+  getStats: async (): Promise<any> => {
+    return apiClient<any>("/projects/stats", {
+      method: "GET",
+    })
+  },
+
   deleteProject: async (id: string): Promise<void> => {
     return apiClient<void>(`/projects/${id}`, {
       method: "DELETE",

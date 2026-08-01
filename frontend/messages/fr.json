@@ -5,6 +5,12 @@
     "saved": "Enregistré !",
     "cancel": "Annuler",
     "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "creating": "Création...",
+    "description": "Description",
+    "gridView": "Vue en grille",
+    "listView": "Vue en liste",
     "loading": "Chargement..."
   },
   "navigation": {
@@ -64,6 +70,47 @@
       "projectUpdatesDescription": "Résumé hebdomadaire par email de la progression des projets.",
       "enabled": "Activé",
       "disabled": "Désactivé"
+    }
+  },
+  "projects": {
+    "title": "Projets",
+    "description": "Gère tes projets et collabore avec ton équipe.",
+    "searchPlaceholder": "Rechercher un projet...",
+    "noResults": "Aucun projet trouvé.",
+    "noProjects": "Aucun projet trouvé. Crée ton premier projet !",
+    "createProject": "+ Nouveau projet",
+    "totalProjects": "Total de projets",
+    "urgentAndBlocked": "Urgences & Bloqueurs",
+    "completionRate": "Taux de complétion,",
+    "globalProgress": "Progression globale",
+    "create": {
+      "title": "Créer un projet",
+      "details": "Remplis les détails de ton nouveau projet.",
+      "name": "Nom du projet",
+      "description": "Description du projet",
+      "descriptionPlaceholder": "Brève description du projet...",
+      "priority": "Priorité",
+      "priorityPlaceholder": "Sélectionne une priorité"
+    },
+    "metrics": {
+      "totalProjects": {
+        "label": "Total Projets",
+        "value": "{count} {count, plural, =0 {Projet} =1 {Projet} other {Projets}}",
+        "subValue": "{active} actifs, {archived} archivés"
+      },
+      "urgentIssues": {
+        "label": "Urgences & Bloqueurs",
+        "value": "{count} {count, plural, =0 {Urgent} =1 {Urgent} other {Urgents}}",
+        "subValue": "À traiter en priorité"
+      },
+      "completionRate": {
+        "label": "Taux de complétion",
+        "subValue": "Moyenne des projets"
+      },
+      "globalProgress": {
+        "label": "Progression Globale",
+        "subValue": "{current} / {max} étapes validées"
+      }
     }
   }
 }
