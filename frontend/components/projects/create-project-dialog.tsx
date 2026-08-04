@@ -34,6 +34,7 @@ import {
   createProjectSchema,
 } from "@/lib/validations/project"
 import { projectApi } from "@/api/project"
+import { useTranslations } from "next-intl"
 
 interface CreateProjectDialogProps {
   onSuccess?: () => void
@@ -50,6 +51,8 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
   const [open, setOpen] = useState(false)
   const [apiError, setApiError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const tCommon = useTranslations("common")
+  const tProjects = useTranslations("projects")
 
   const {
     register,
@@ -92,17 +95,17 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         render={
-          <Button className="rounded-xl font-medium">+ New Project</Button>
+          <Button className="rounded-xl font-medium">
+            {tProjects("createProject")}
+          </Button>
         }
       />
 
       <DialogContent className="rounded-2xl border-border/50 bg-card/95 backdrop-blur-xl sm:max-w-md">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
-            <DialogTitle>Create Project</DialogTitle>
-            <DialogDescription>
-              Fill in the details for your new project.
-            </DialogDescription>
+            <DialogTitle>{tProjects("create.title")}</DialogTitle>
+            <DialogDescription>{tProjects("create.details")}</DialogDescription>
           </DialogHeader>
 
           {apiError && (
@@ -111,9 +114,9 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
             </div>
           )}
 
-          <FieldGroup className="my-4 space-y-4">
+          <FieldGroup className="my-4 space-y-2">
             <Field>
-              <Label htmlFor="name">Project Name</Label>
+              <Label htmlFor="name">{tProjects("create.name")}</Label>
               <Input
                 id="name"
                 placeholder="ex: Ariadne MVP"
@@ -127,16 +130,18 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
             </Field>
 
             <Field>
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">
+                {tProjects("create.description")}
+              </Label>
               <Input
                 id="description"
-                placeholder="Brief description of the project..."
+                placeholder={tProjects("create.descriptionPlaceholder")}
                 {...register("description")}
               />
             </Field>
 
             <Field>
-              <Label htmlFor="priority">Priority</Label>
+              <Label htmlFor="priority">{tProjects("create.priority")}</Label>
               <Controller
                 name="priority"
                 control={control}
@@ -146,11 +151,15 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
                     defaultValue={field.value}
                   >
                     <SelectTrigger id="priority" className="w-full">
-                      <SelectValue placeholder="Select a priority" />
+                      <SelectValue
+                        placeholder={tProjects("create.priorityPlaceholder")}
+                      />
                     </SelectTrigger>
                     <SelectContent className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm">
                       <SelectGroup>
-                        <SelectLabel>Priorities</SelectLabel>
+                        <SelectLabel>
+                          {tProjects("create.priority")}
+                        </SelectLabel>
                         {PriorityItems.map((item) => (
                           <SelectItem key={item.value} value={item.value}>
                             {item.label}
@@ -167,12 +176,12 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
           <DialogFooter className="mt-6 gap-2 sm:gap-0">
             <DialogClose>
               <Button type="button" variant="ghost" disabled={isLoading}>
-                Cancel
+                {tCommon("cancel")}
               </Button>
             </DialogClose>
             <Button type="submit" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
-              {isLoading ? "Creating..." : "Create Project"}
+              {isLoading ? tCommon("creating") : tCommon("create")}
             </Button>
           </DialogFooter>
         </form>

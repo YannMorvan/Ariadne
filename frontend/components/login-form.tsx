@@ -131,7 +131,6 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
                   {isLoading ? "Connecting..." : "Sign in"}
                 </Button>
 
-                {/* À réactiver lorsque Google OAuth sera implémenté */}
                 {/*
                 <Button
                   variant="outline"

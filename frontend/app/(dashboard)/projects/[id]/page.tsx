@@ -26,6 +26,7 @@ import { projectApi } from "@/api/project"
 import { taskApi } from "@/api/task"
 import { cn } from "@/lib/utils"
 import type { ProjectWithTasks } from "@/types"
+import { useTranslations } from "next-intl"
 
 interface ProjectPageProps {
   params: Promise<{ id: string }>
@@ -61,6 +62,8 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [isMembersOpen, setIsMembersOpen] = useState(false)
+
+  const tCommon = useTranslations("common")
 
   const fetchProject = useCallback(async () => {
     try {
@@ -184,7 +187,6 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 px-4 py-6 md:px-6 md:py-8 lg:py-10">
-      {/* 1. Fil d'Ariane & Actions */}
       <div className="flex items-center justify-between">
         <Link href="/projects">
           <Button
@@ -215,7 +217,7 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
             className="gap-2 rounded-xl border-border/50 bg-card/50 backdrop-blur-sm"
           >
             <Edit2 className="size-3.5" />
-            Edit
+            {tCommon("edit")}
           </Button>
 
           <Button
@@ -225,7 +227,7 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
             className="gap-2 rounded-xl border-red-500/20 bg-red-500/10 text-red-500 hover:bg-red-500/20 hover:text-red-500"
           >
             <Trash2 className="size-3.5" />
-            Delete
+            {tCommon("delete")}
           </Button>
         </div>
       </div>
@@ -270,7 +272,6 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
         </div>
       </motion.div>
 
-      {/* 3. Contenu par Onglets (Tâches / Notes) */}
       <Tabs defaultValue="tasks" className="space-y-6">
         <TabsList className="rounded-xl border border-border/50 bg-card/50 p-1 backdrop-blur-sm">
           <TabsTrigger value="tasks" className="gap-2 rounded-lg text-xs">
@@ -296,7 +297,6 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
         </TabsContent>
       </Tabs>
 
-      {/* Modales */}
       <ProjectMembersDialog
         projectId={project.id}
         open={isMembersOpen}

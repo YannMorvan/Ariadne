@@ -4,17 +4,25 @@ import { useEffect, useState, useCallback } from "react"
 import { projectApi } from "@/api/project"
 import { ProjectGrid } from "@/components/projects/project-grid"
 import type { Project } from "@/types"
-import { projectStatMetrics } from "@/lib/mock/projects-data"
+import type { ProjectStatsDto } from "@/types/stats"
+import { useProjectsMetrics } from "@/lib/metrics/projects-metrics"
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [stats, setStats] = useState<ProjectStatsDto | null>(null)
+
+  const metrics = useProjectsMetrics(stats ?? undefined)
 
   const fetchProjects = useCallback(async () => {
     try {
       setIsLoading(true)
-      const data = await projectApi.getProjects()
+      const [data, statsData] = await Promise.all([
+        projectApi.getProjects(),
+        projectApi.getStats(),
+      ])
       setProjects(data)
+      setStats(statsData as ProjectStatsDto)
     } catch (error: unknown) {
       console.error("Error fetching projects:", error)
     } finally {
@@ -28,9 +36,13 @@ export default function ProjectsPage() {
     async function loadInitialData() {
       try {
         setIsLoading(true)
-        const data = await projectApi.getProjects()
+        const [data, statsData] = await Promise.all([
+          projectApi.getProjects(),
+          projectApi.getStats(),
+        ])
         if (!isCancelled) {
           setProjects(data)
+          setStats(statsData)
         }
       } catch (error: unknown) {
         if (!isCancelled) {
@@ -72,7 +84,7 @@ export default function ProjectsPage() {
     <div className="mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8 lg:py-10">
       <ProjectGrid
         projects={projects}
-        metrics={projectStatMetrics}
+        metrics={metrics}
         onProjectsUpdated={fetchProjects}
       />
     </div>

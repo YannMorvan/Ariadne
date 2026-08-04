@@ -18,6 +18,7 @@ import {
 import { cn } from "@/lib/utils"
 import type { Project } from "@/types"
 import { useRouter } from "next/navigation"
+import { useTranslations, useFormatter } from "next-intl"
 
 interface ProjectCardProps {
   project: Project
@@ -47,6 +48,16 @@ const priorityConfig: Record<string, { label: string; className: string }> = {
 export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
   const priority = priorityConfig[project.priority] || priorityConfig.MEDIUM
   const router = useRouter()
+
+  const tCommon = useTranslations("common")
+  const tProjects = useTranslations("projects")
+  const format = useFormatter()
+
+  const updatedDate = project.updatedAt
+    ? new Date(project.updatedAt)
+    : new Date()
+
+  const relativeUpdate = format.relativeTime(updatedDate, new Date())
 
   return (
     <Card
@@ -83,7 +94,7 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
                     onEdit?.(project)
                   }}
                 >
-                  Modifier
+                  {tCommon("edit")}
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={(e) => {
@@ -92,7 +103,7 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
                   }}
                   className="text-destructive focus:text-destructive"
                 >
-                  Delete
+                  {tCommon("delete")}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -107,11 +118,15 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
         <div className="flex items-center justify-between border-t border-border/30 pt-2 text-xs text-muted-foreground">
           <div className="flex items-center gap-1.5">
             <Calendar className="size-3.5" />
-            <span>Recently updated</span>
+            <span>{relativeUpdate}</span>
           </div>
           <div className="flex items-center gap-1.5 font-medium text-foreground">
             <CheckSquare className="size-3.5 text-muted-foreground" />
-            <span>0 tasks</span>
+            <span>
+              {tProjects("tasksCount", {
+                count: project.tasksCount || 0,
+              })}
+            </span>
           </div>
         </div>
       </CardContent>

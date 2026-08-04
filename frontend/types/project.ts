@@ -11,8 +11,10 @@ export interface Project {
   color?: string
   ownerId?: string
   members: User[]
-  createdAt?: string
-  updatedAt?: string
+  createdAt: string
+  updatedAt: string
+  isArchived?: boolean
+  tasksCount?: number
 }
 
 export interface ProjectWithTasks extends Project {

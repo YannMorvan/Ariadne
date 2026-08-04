@@ -1,0 +1,143 @@
+{
+  "common": {
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "saved": "Enregistré !",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "creating": "Création...",
+    "description": "Description",
+    "gridView": "Vue en grille",
+    "listView": "Vue en liste",
+    "loading": "Chargement..."
+  },
+  "priorities": {
+    "low": "Faible",
+    "medium": "Moyenne",
+    "high": "Haute",
+    "urgent": "Urgent"
+  },
+  "navigation": {
+    "productivity": "Productivité",
+    "navigation": "Navigation",
+    "dashboard": "Dashboard",
+    "projects": "Projets",
+    "tasks": "Tâches",
+    "achievements": "Succès",
+    "account": "Compte",
+    "settings": "Paramètres"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "description": "Gère ton compte, tes préférences d'interface et ta sécurité.",
+    "profile": {
+      "tab": "Profil",
+      "title": "Informations personnelles",
+      "description": "Ces informations seront visibles par les membres de tes projets.",
+      "changePhoto": "Changer la photo",
+      "deletePhoto": "Supprimer la photo",
+      "photoLimits": "JPG, PNG ou GIF. 2 Mo maximum.",
+      "username": "Nom d'utilisateur",
+      "email": "Adresse e-mail",
+      "role": "Bio / Rôle"
+    },
+    "security": {
+      "tab": "Sécurité",
+      "title": "Changer le mot de passe",
+      "description": "Assure-toi d'utiliser un mot de passe fort d'au moins 8 caractères.",
+      "currentPassword": "Mot de passe actuel",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "dangerZoneTitle": "Zone dangereuse",
+      "dangerZoneDescription": "La suppression de ton compte est irréversible. Toutes tes données seront effacées.",
+      "deleteAccount": "Supprimer le compte"
+    },
+    "appearance": {
+      "tab": "Apparence",
+      "title": "Thème de l'interface",
+      "description": "Personnalise le rendu visuel de ton espace de travail.",
+      "darkMode": "Sombre",
+      "lightMode": "Clair",
+      "systemMode": "Système",
+      "active": "Actif",
+      "language": "Langue de l'application"
+    },
+    "notifications": {
+      "tab": "Notifications",
+      "title": "Préférences de notifications",
+      "description": "Choisis quand et comment tu souhaites être alerté.",
+      "assignedTaskTitle": "Nouvelles tâches assignées",
+      "assignedTaskDesc": "Recevoir une notification quand un membre t'assigne une tâche.",
+      "dueRemindersTitle": "Rappels d'échéances",
+      "dueRemindersDesc": "Alerte 24h avant la date limite d'une tâche non terminée.",
+      "projectUpdates": "Mises à jour des projets",
+      "projectUpdatesDescription": "Résumé hebdomadaire par email de la progression des projets.",
+      "enabled": "Activé",
+      "disabled": "Désactivé"
+    }
+  },
+  "dashboard": {
+    "title": "Ravi de te revoir, {username} 👋",
+    "description": "Vous trouverez ici l'état actuel de votre productivité et de vos projets.",
+    "quickActions": "Actions rapides",
+    "recentProjects": "Projets récents",
+    "lastActiveProjects": "Tes 3 projets les plus récemment actifs",
+    "priorityTasks": "Tâches prioritaires",
+    "urgenciesOfDay": "Les 4 urgences de la journée",
+    "recentActivity": "Activité récente",
+    "lastActionsAndAchievements": "Tes dernières actions et succès",
+    "activityChart": {
+      "title": "Activité hebdomadaire",
+      "description": "Heures et tâches complétées par jour",
+      "tasks": "Tâches",
+      "hours": "Heures"
+    }
+  },
+  "projects": {
+    "title": "Projets",
+    "description": "Gère tes projets et collabore avec ton équipe.",
+    "searchPlaceholder": "Rechercher un projet...",
+    "noResults": "Aucun projet trouvé.",
+    "noProjects": "Aucun projet trouvé. Crée ton premier projet !",
+    "createProject": "+ Nouveau projet",
+    "totalProjects": "Total de projets",
+    "urgentAndBlocked": "Urgences & Bloqueurs",
+    "completionRate": "Taux de complétion,",
+    "globalProgress": "Progression globale",
+    "archived": "Archivés",
+    "tasksCount": "{count} {count, plural, =0 {Tâche} =1 {Tâche} other {Tâches}}",
+    "create": {
+      "title": "Créer un projet",
+      "details": "Remplis les détails de ton nouveau projet.",
+      "name": "Nom du projet",
+      "namePlaceholder": "Nom du projet...",
+      "description": "Description du projet",
+      "descriptionPlaceholder": "Brève description du projet...",
+      "priorities": "Priorités",
+      "priority": "Priorité",
+      "priorityPlaceholder": "Sélectionne une priorité"
+    },
+    "metrics": {
+      "totalProjects": {
+        "label": "Total Projets",
+        "value": "{count} {count, plural, =0 {Projet} =1 {Projet} other {Projets}}",
+        "subValue": "{active} actifs, {archived} archivés"
+      },
+      "urgentIssues": {
+        "label": "Urgences & Bloqueurs",
+        "value": "{count} {count, plural, =0 {Urgent} =1 {Urgent} other {Urgents}}",
+        "subValue": "À traiter en priorité"
+      },
+      "completionRate": {
+        "label": "Taux de complétion",
+        "subValue": "Moyenne des projets"
+      },
+      "globalProgress": {
+        "label": "Progression Globale",
+        "subValue": "{current} / {max} étapes validées"
+      }
+    }
+  }
+}

@@ -13,7 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { cn } from "@/lib/utils"
-import type { StatIconName, StatMetric } from "@/types/dashboard"
+import type { StatIconName, StatMetric } from "@/types"
 
 interface StatCardsProps {
   metrics: StatMetric[]
@@ -35,13 +35,15 @@ function TrendBadge({ trend }: { trend: NonNullable<StatMetric["trend"]> }) {
       variant="outline"
       className={cn(
         "mt-2 font-normal",
-        isPositive && "border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-        isNegative && "border-red-500/20 bg-red-500/10 text-red-600 dark:text-red-400",
+        isPositive &&
+          "border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+        isNegative &&
+          "border-red-500/20 bg-red-500/10 text-red-600 dark:text-red-400",
         !isPositive && !isNegative && "text-muted-foreground"
       )}
     >
-      {isPositive && <TrendingUp data-icon="inline-start" />}
-      {isNegative && <TrendingDown data-icon="inline-start" />}
+      {isPositive && <TrendingUp className="mr-1 size-3.5" />}
+      {isNegative && <TrendingDown className="mr-1 size-3.5" />}
       {trend.value}
     </Badge>
   )
@@ -50,15 +52,22 @@ function TrendBadge({ trend }: { trend: NonNullable<StatMetric["trend"]> }) {
 export function StatCards({ metrics }: StatCardsProps) {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {metrics.map((metric) => {
+      {metrics.map((metric, index) => {
         const Icon = iconMap[metric.iconName]
-        const progressPercent = metric.progress
-          ? Math.round((metric.progress.current / metric.progress.max) * 100)
-          : null
+
+        const progressPercent =
+          metric.progress && metric.progress.max > 0
+            ? Math.min(
+                100,
+                Math.round(
+                  (metric.progress.current / metric.progress.max) * 100
+                )
+              )
+            : null
 
         return (
           <div
-            key={metric.id}
+            key={`${metric.id}-${index}`}
             className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card/50 p-5 backdrop-blur-sm transition-colors hover:border-border hover:bg-card/80"
           >
             <div className="flex items-start justify-between gap-3">
@@ -80,7 +89,7 @@ export function StatCards({ metrics }: StatCardsProps) {
                   metric.iconClassName
                 )}
               >
-                <Icon className="size-5" />
+                {Icon ? <Icon className="size-5" /> : null}
               </div>
             </div>
 

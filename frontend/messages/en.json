@@ -1,0 +1,143 @@
+{
+  "common": {
+    "save": "Save",
+    "saving": "Saving...",
+    "saved": "Saved!",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "creating": "Creating...",
+    "description": "Description",
+    "gridView": "Grid view",
+    "listView": "List view",
+    "loading": "Loading..."
+  },
+  "priorities": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "urgent": "Urgent"
+  },
+  "navigation": {
+    "productivity": "Productivity",
+    "navigation": "Navigation",
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "tasks": "Tasks",
+    "achievements": "Achievements",
+    "account": "Account",
+    "settings": "Settings"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your account, interface preferences, and security.",
+    "profile": {
+      "tab": "Profile",
+      "title": "Personal Information",
+      "description": "This information will be visible to members of your projects.",
+      "changePhoto": "Change photo",
+      "deletePhoto": "Delete photo",
+      "photoLimits": "JPG, PNG or GIF. 2 MB maximum.",
+      "username": "Username",
+      "email": "Email address",
+      "role": "Bio / Role"
+    },
+    "security": {
+      "tab": "Security",
+      "title": "Change Password",
+      "description": "Make sure to use a strong password of at least 8 characters.",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "dangerZoneTitle": "Danger Zone",
+      "dangerZoneDescription": "Account deletion is permanent. All your data will be permanently erased.",
+      "deleteAccount": "Delete account"
+    },
+    "appearance": {
+      "tab": "Appearance",
+      "title": "Interface Theme",
+      "description": "Customize the visual layout of your workspace.",
+      "darkMode": "Dark",
+      "lightMode": "Light",
+      "systemMode": "System",
+      "active": "Active",
+      "language": "Application language"
+    },
+    "notifications": {
+      "tab": "Notifications",
+      "title": "Notification Preferences",
+      "description": "Choose when and how you want to be notified.",
+      "assignedTaskTitle": "New assigned tasks",
+      "assignedTaskDesc": "Receive a notification when a team member assigns you a task.",
+      "dueRemindersTitle": "Due date reminders",
+      "dueRemindersDesc": "Alert 24 hours before the deadline of an unfinished task.",
+      "projectUpdates": "Project updates",
+      "projectUpdatesDescription": "Weekly email summary of project progress.",
+      "enabled": "Enabled",
+      "disabled": "Disabled"
+    }
+  },
+  "dashboard": {
+    "title": "Happy to see you again, {username} 👋",
+    "description": "Here's the current status of your productivity and projects.",
+    "quickActions": "Quick Actions",
+    "recentProjects": "Recent Projects",
+    "lastActiveProjects": "Your 3 most recently active projects",
+    "priorityTasks": "Priority Tasks",
+    "urgenciesOfDay": "The 4 urgencies of the day",
+    "recentActivity": "Recent Activity",
+    "lastActionsAndAchievements": "Your latest actions and achievements",
+    "activityChart": {
+      "title": "Weekly Activity",
+      "description": "Hours and tasks completed per day",
+      "tasks": "Tasks",
+      "hours": "Hours"
+    }
+  },
+  "projects": {
+    "title": "Projects",
+    "description": "Manage and track the progress of your projects in one place.",
+    "searchPlaceholder": "Search projects...",
+    "noResults": "No projects found.",
+    "noProjects": "No projects found. Create your first project!",
+    "createProject": "+ New Project",
+    "totalProjects": "Total Projects",
+    "urgentAndBlocked": "Urgent & Blocked",
+    "completionRate": "Completion Rate",
+    "globalProgress": "Global Progress",
+    "archived": "Archived",
+    "tasksCount": "{count} {count, plural, =0 {Tasks} =1 {Task} other {Tasks}}",
+    "create": {
+      "title": "Create a Project",
+      "details": "Fill in the details for your new project.",
+      "name": "Project Name",
+      "namePlaceholder": "Project name...",
+      "description": "Project Description",
+      "descriptionPlaceholder": "Brief description of the project...",
+      "priorities": "Priorities",
+      "priority": "Priority",
+      "priorityPlaceholder": "Select a priority"
+    },
+    "metrics": {
+      "totalProjects": {
+        "label": "Total Projects",
+        "value": "{count} {count, plural, =0 {Project} =1 {Project} other {Projects}}",
+        "subValue": "{active} active, {archived} archived"
+      },
+      "urgentIssues": {
+        "label": "Urgent & Blockers",
+        "value": "{count} {count, plural, =0 {Urgent} =1 {Urgent} other {Urgent}}",
+        "subValue": "High priority attention"
+      },
+      "completionRate": {
+        "label": "Completion Rate",
+        "subValue": "Projects average"
+      },
+      "globalProgress": {
+        "label": "Global Progress",
+        "subValue": "{current} / {max} steps completed"
+      }
+    }
+  }
+}

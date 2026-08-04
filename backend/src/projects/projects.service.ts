@@ -2,6 +2,7 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { ProjectEntity } from './entities/project.entity';
+import { ProjectStatsDto } from './dto/project-stats.dto';
 
 @Injectable()
 export class ProjectsService {
@@ -39,7 +40,23 @@ export class ProjectsService {
       where: { ownerId: userId },
     });
 
-    return projects.map((project) => new ProjectEntity(project));
+    const tasksCounts = await this.prisma.task.groupBy({
+      by: ['projectId'],
+      _count: { id: true },
+      where: { project: { ownerId: userId } },
+    });
+
+    const tasksCountMap = new Map(
+      tasksCounts.map((taskCount) => [
+        taskCount.projectId,
+        taskCount._count.id,
+      ]),
+    );
+
+    return projects.map((project) => {
+      const tasksCount = tasksCountMap.get(project.id) || 0;
+      return new ProjectEntity({ ...project, tasksCount });
+    });
   }
 
   async getProjectById(projectId: string): Promise<ProjectEntity> {
@@ -51,6 +68,62 @@ export class ProjectsService {
       throw new ConflictException('Project not found');
     }
     return new ProjectEntity(project);
+  }
+
+  async getStatsByUserId(userId: string): Promise<ProjectStatsDto> {
+    const [
+      totalProjects,
+      archivedProjects,
+      urgentTasksCount,
+      totalTasksCount,
+      completedTasksCount,
+    ] = await Promise.all([
+      this.prisma.project.count({
+        where: { ownerId: userId },
+      }),
+
+      this.prisma.project.count({
+        where: { ownerId: userId, isArchived: true },
+      }),
+
+      this.prisma.task.count({
+        where: {
+          project: { ownerId: userId },
+          priority: 'URGENT',
+          status: { not: 'DONE' },
+        },
+      }),
+
+      this.prisma.task.count({
+        where: { project: { ownerId: userId } },
+      }),
+
+      this.prisma.task.count({
+        where: {
+          project: { ownerId: userId },
+          status: 'DONE',
+        },
+      }),
+    ]);
+
+    const activeProjects = totalProjects - archivedProjects;
+
+    const completionRate =
+      totalTasksCount > 0
+        ? Math.round((completedTasksCount / totalTasksCount) * 100)
+        : 0;
+
+    return {
+      totalProjects,
+      activeProjects,
+      archivedProjects,
+      urgentTasks: urgentTasksCount,
+      completionRate,
+      roadmapProgress: {
+        current: completedTasksCount,
+        max: totalTasksCount > 0 ? totalTasksCount : 1,
+      },
+    };
   }
 
   async deleteProject(userId: string, projectId: string): Promise<void> {

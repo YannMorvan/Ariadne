@@ -29,6 +29,12 @@ export class ProjectEntity implements PrismaProject {
   @ApiProperty()
   updatedAt!: Date;
 
+  @ApiProperty()
+  isArchived!: boolean;
+
+  @ApiProperty({ example: 5, nullable: true })
+  tasksCount?: number | null;
+
   constructor(partial: Partial<ProjectEntity>) {
     Object.assign(this, partial);
   }
