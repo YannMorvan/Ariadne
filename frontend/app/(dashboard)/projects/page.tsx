@@ -22,7 +22,7 @@ export default function ProjectsPage() {
         projectApi.getStats(),
       ])
       setProjects(data)
-      setStats(statsData)
+      setStats(statsData as ProjectStatsDto)
     } catch (error: unknown) {
       console.error("Error fetching projects:", error)
     } finally {

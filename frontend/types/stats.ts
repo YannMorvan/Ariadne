@@ -22,10 +22,6 @@ export interface StatMetric {
   progress?: StatProgress
 }
 
-// ----------------------------------------------------
-// 2. DTOs API (Ce que te renvoie le Backend NestJS)
-// ----------------------------------------------------
-
 export interface ProjectStatsDto {
   totalProjects: number
   activeProjects: number
