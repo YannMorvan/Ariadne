@@ -1,8 +1,4 @@
-import type {
-  ActivityDataPoint,
-  ActivityItem,
-  StatMetric,
-} from "@/types/dashboard"
+import type { ActivityDataPoint, ActivityItem, StatMetric } from "@/types"
 import type { Project } from "@/types/project"
 import type { Task } from "@/types/task"
 
@@ -58,6 +54,8 @@ export const recentProjects: Project[] = [
     name: "Ariadne MVP",
     priority: "HIGH",
     progress: 72,
+    createdAt: "2024-01-01T00:00:00Z",
+    updatedAt: "2024-01-01T00:00:00Z",
     members: [
       {
         id: "m1",
@@ -90,6 +88,8 @@ export const recentProjects: Project[] = [
     name: "API NestJS Auth",
     priority: "HIGH",
     progress: 45,
+    createdAt: "2024-01-01T00:00:00Z",
+    updatedAt: "2024-01-01T00:00:00Z",
     members: [
       {
         id: "m4",
@@ -114,6 +114,8 @@ export const recentProjects: Project[] = [
     name: "Design System",
     priority: "MEDIUM",
     progress: 88,
+    createdAt: "2024-01-01T00:00:00Z",
+    updatedAt: "2024-01-01T00:00:00Z",
     members: [
       {
         id: "m6",
