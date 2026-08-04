@@ -11,7 +11,6 @@ export interface StatProgress {
   max: number
 }
 
-// Le type unique consommé par ton composant <StatCards />
 export interface StatMetric {
   id: string
   label: string

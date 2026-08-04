@@ -6,7 +6,6 @@ import {
   CheckSquare,
   FolderKanban,
   LayoutDashboard,
-  LogOut,
   Settings,
   Sparkles,
   Trophy,

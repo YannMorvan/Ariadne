@@ -1,6 +1,7 @@
 import { apiClient } from "@/lib/api-client"
 import type { Project } from "@/types/project"
 import type { CreateProjectInput } from "@/lib/validations/project"
+import { StatMetric } from "@/types/stats"
 
 export const projectApi = {
   createProject: async (payload: CreateProjectInput): Promise<Project> => {
@@ -22,8 +23,8 @@ export const projectApi = {
     })
   },
 
-  getStats: async (): Promise<any> => {
-    return apiClient<any>("/projects/stats", {
+  getStats: async (): Promise<StatMetric[]> => {
+    return apiClient<StatMetric[]>("/projects/stats", {
       method: "GET",
     })
   },

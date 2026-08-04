@@ -34,13 +34,14 @@ function ChartTooltip({
   active,
   payload,
   label,
+  tDashboard,
 }: {
   active?: boolean
   payload?: TooltipPayloadItem[]
   label?: string
+  tDashboard: (key: string) => string
 }) {
   if (!active || !payload?.length) return null
-  const tDashboard = useTranslations("dashboard")
 
   const hours = payload.find((p) => p.dataKey === "hours")?.value ?? 0
   const tasks = payload.find((p) => p.dataKey === "tasks")?.value ?? 0
@@ -125,7 +126,7 @@ export function ActivityChart({ data }: ActivityChartProps) {
                 width={40}
               />
               <Tooltip
-                content={<ChartTooltip />}
+                content={<ChartTooltip {...{ tDashboard }} />}
                 cursor={{ strokeOpacity: 0.2 }}
               />
               <Area
