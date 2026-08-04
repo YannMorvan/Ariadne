@@ -6,6 +6,9 @@ import {
   Delete,
   Param,
   Patch,
+  Get,
+  ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -24,6 +27,14 @@ export class TasksController {
     @CurrentUser('id') userId: string,
   ) {
     return this.tasksService.createTask(createTaskDto, userId);
+  }
+
+  @Get('priority')
+  async getPriorityTasks(
+    @CurrentUser('id') userId: string,
+    @Query('limit', new ParseIntPipe({ optional: true })) limit?: number,
+  ) {
+    return this.tasksService.getPriorityTasks(userId, limit);
   }
 
   @Patch(':id')

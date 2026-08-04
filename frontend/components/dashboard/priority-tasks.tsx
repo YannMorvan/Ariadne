@@ -70,11 +70,11 @@ export function PriorityTasks({ tasks: initialTasks }: TasksProps) {
                     {task.title}
                   </p>
                   <p className="mt-0.5 text-xs text-muted-foreground">
-                    {task.projectId}
+                    {task.project.name}
                     {task.dueDate && (
                       <>
                         <span className="mx-1.5 text-border">·</span>
-                        {task.dueDate}
+                        {new Date(task.dueDate).toLocaleDateString()}
                       </>
                     )}
                   </p>

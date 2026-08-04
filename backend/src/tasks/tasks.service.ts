@@ -45,6 +45,47 @@ export class TasksService {
     return new TaskEntity(newTask);
   }
 
+  async getPriorityTasks(
+    userId: string,
+    limit?: number,
+  ): Promise<TaskEntity[]> {
+    const tasks = await this.prisma.task.findMany({
+      where: {
+        OR: [
+          { assigneeId: userId },
+          { project: { ownerId: userId } },
+          { project: { members: { some: { userId } } } },
+        ],
+        status: {
+          notIn: ['DONE'],
+        },
+      },
+      include: {
+        assignee: {
+          select: {
+            id: true,
+            username: true,
+            avatarUrl: true,
+          },
+        },
+        project: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+      orderBy: [
+        { priority: 'desc' }, // URGENT -> HIGH -> MEDIUM -> LOW
+        { dueDate: 'asc' },
+        { createdAt: 'desc' },
+      ],
+      take: limit,
+    });
+
+    return tasks.map((task) => new TaskEntity(task));
+  }
+
   async getTasksByProjectId(
     userId: string,
     projectId: string,

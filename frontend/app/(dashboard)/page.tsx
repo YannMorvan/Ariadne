@@ -1,6 +1,7 @@
 "use client"
 
 import { projectApi } from "@/api/project"
+import { taskApi } from "@/api/task"
 import { DashboardGrid } from "@/components/dashboard/dashboard-grid"
 import { DashboardHeader } from "@/components/dashboard/dashboard-header"
 import { useUser } from "@/context/user-context"
@@ -11,13 +12,14 @@ import {
   statMetrics,
   weeklyActivity,
 } from "@/lib/mock/dashboard-data"
-import { Project } from "@/types"
+import { Project, Task } from "@/types"
 import { useEffect, useState } from "react"
 
 export default function DashboardPage() {
   const { user } = useUser()
   const [projectsData, setProjectsData] = useState<Project[]>([])
   const [recentProjectsData, setRecentProjectsData] = useState<Project[]>([])
+  const [priorityTasksData, setPriorityTasksData] = useState<Task[]>([])
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -31,7 +33,17 @@ export default function DashboardPage() {
       }
     }
 
+    const fetchPriorityTasks = async () => {
+      try {
+        const tasks = await taskApi.getPriorityTasks(4)
+        setPriorityTasksData(tasks)
+      } catch (error) {
+        console.error("Error fetching priority tasks:", error)
+      }
+    }
+
     fetchProjects()
+    fetchPriorityTasks()
   }, [])
 
   return (
@@ -43,7 +55,7 @@ export default function DashboardPage() {
           weeklyActivity={weeklyActivity}
           projects={recentProjectsData}
           activities={recentActivities}
-          tasks={priorityTasks}
+          tasks={priorityTasksData}
         />
       </div>
     </div>
