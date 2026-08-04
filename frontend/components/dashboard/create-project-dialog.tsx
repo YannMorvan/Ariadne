@@ -54,7 +54,6 @@ export function CreateProjectDialog() {
   })
 
   const onSubmit = async (data: CreateProjectInput) => {
-    console.log("Submitting data:", data)
     setIsLoading(true)
     setApiError(null)
 

@@ -17,12 +17,15 @@ import { useEffect, useState } from "react"
 export default function DashboardPage() {
   const { user } = useUser()
   const [projectsData, setProjectsData] = useState<Project[]>([])
+  const [recentProjectsData, setRecentProjectsData] = useState<Project[]>([])
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const projects = await projectApi.getProjects()
+        const recentProjects = await projectApi.getRecentProjects()
         setProjectsData(projects)
+        setRecentProjectsData(recentProjects)
       } catch (error) {
         console.error("Error fetching projects:", error)
       }
@@ -38,7 +41,7 @@ export default function DashboardPage() {
         <DashboardGrid
           metrics={statMetrics}
           weeklyActivity={weeklyActivity}
-          projects={recentProjects}
+          projects={recentProjectsData}
           activities={recentActivities}
           tasks={priorityTasks}
         />

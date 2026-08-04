@@ -47,6 +47,14 @@ function getInitials(name?: string): string {
 export function RecentProjects({ projects }: RecentProjectsProps) {
   const tDashboard = useTranslations("dashboard")
 
+  function getProgressColorClass(percentage: number): string {
+    if (percentage >= 80)
+      return "[&_[data-slot=progress-indicator]]:bg-emerald-500"
+    if (percentage >= 50)
+      return "[&_[data-slot=progress-indicator]]:bg-amber-500"
+    return "[&_[data-slot=progress-indicator]]:bg-red-500"
+  }
+
   return (
     <Card className="h-full border-border/50 bg-card/50 backdrop-blur-sm transition-colors hover:bg-card/80">
       <CardHeader>
@@ -70,16 +78,34 @@ export function RecentProjects({ projects }: RecentProjectsProps) {
                 </Badge>
               </div>
               <span className="shrink-0 text-sm font-medium text-muted-foreground tabular-nums">
-                {project.progress}%
+                {project.completedTasksCount && project.tasksCount
+                  ? Math.round(
+                      (project.completedTasksCount / project.tasksCount) * 100
+                    )
+                  : 0}
+                %
               </span>
             </div>
-
             <Progress
-              value={project.progress}
-              className="mt-3 gap-0 [&_[data-slot=progress-track]]:h-1.5"
+              value={
+                project.completedTasksCount && project.tasksCount
+                  ? Math.round(
+                      (project.completedTasksCount / project.tasksCount) * 100
+                    )
+                  : 0
+              }
+              className={cn(
+                "mt-3 h-2 gap-0 [&_[data-slot=progress-track]]:h-1.5",
+                getProgressColorClass(
+                  project.completedTasksCount && project.tasksCount
+                    ? Math.round(
+                        (project.completedTasksCount / project.tasksCount) * 100
+                      )
+                    : 0
+                )
+              )}
             />
-
-            <AvatarGroup className="mt-3">
+            {/* <AvatarGroup className="mt-3">
               {project.members.slice(0, 3).map((member) => (
                 <Avatar key={member.id} size="sm">
                   {member.avatarUrl && (
@@ -95,7 +121,7 @@ export function RecentProjects({ projects }: RecentProjectsProps) {
                   +{project.members.length - 3}
                 </AvatarGroupCount>
               )}
-            </AvatarGroup>
+            </AvatarGroup> */}
           </div>
         ))}
       </CardContent>

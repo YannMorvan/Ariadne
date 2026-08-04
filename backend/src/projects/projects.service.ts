@@ -53,9 +53,23 @@ export class ProjectsService {
       ]),
     );
 
+    const completedTasksCounts = await this.prisma.task.groupBy({
+      by: ['projectId'],
+      _count: { id: true },
+      where: { project: { ownerId: userId }, status: 'DONE' },
+    });
+
+    const completedTasksCountMap = new Map(
+      completedTasksCounts.map((taskCount) => [
+        taskCount.projectId,
+        taskCount._count.id,
+      ]),
+    );
+
     return projects.map((project) => {
       const tasksCount = tasksCountMap.get(project.id) || 0;
-      return new ProjectEntity({ ...project, tasksCount });
+      const completedTasksCount = completedTasksCountMap.get(project.id) || 0;
+      return new ProjectEntity({ ...project, tasksCount, completedTasksCount });
     });
   }
 

@@ -23,12 +23,6 @@ export class TasksController {
     @Body() createTaskDto: CreateTaskDto,
     @CurrentUser('id') userId: string,
   ) {
-    console.log(
-      'Received create task request:',
-      createTaskDto,
-      'for user:',
-      userId,
-    );
     return this.tasksService.createTask(createTaskDto, userId);
   }
 

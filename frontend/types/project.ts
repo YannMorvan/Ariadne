@@ -15,6 +15,7 @@ export interface Project {
   updatedAt: string
   isArchived?: boolean
   tasksCount?: number
+  completedTasksCount?: number
 }
 
 export interface ProjectWithTasks extends Project {

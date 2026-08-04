@@ -88,7 +88,7 @@
     "description": "Here's the current status of your productivity and projects.",
     "quickActions": "Quick Actions",
     "recentProjects": "Recent Projects",
-    "lastActiveProjects": "Your 3 most recently active projects",
+    "lastActiveProjects": "Your most recently active projects",
     "priorityTasks": "Priority Tasks",
     "urgenciesOfDay": "The 4 urgencies of the day",
     "recentActivity": "Recent Activity",
