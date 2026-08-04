@@ -19,6 +19,11 @@
     "high": "High",
     "urgent": "Urgent"
   },
+  "notFound": {
+    "title": "Page not found",
+    "description": "Unable to locate the page you are looking for. Ariadne's thread stops here.",
+    "goBack": "Go back to the dashboard"
+  },
   "navigation": {
     "productivity": "Productivity",
     "navigation": "Navigation",

@@ -26,13 +26,13 @@ export default async function RootLayout({
       lang={locale}
       suppressHydrationWarning
       className={cn(
-        "antialiased",
+        "h-full antialiased",
         fontMono.variable,
         "font-sans",
         inter.variable
       )}
     >
-      <body>
+      <body className="flex min-h-screen flex-col bg-background text-foreground">
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider>{children}</ThemeProvider>
         </NextIntlClientProvider>

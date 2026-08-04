@@ -19,6 +19,11 @@
     "high": "Haute",
     "urgent": "Urgent"
   },
+  "notFound": {
+    "title": "Page introuvable",
+    "description": "Impossible de localiser la page que vous recherchez. Le fil d'Ariane s'arrête ici.",
+    "goBack": "Retour au tableau de bord"
+  },
   "navigation": {
     "productivity": "Productivité",
     "navigation": "Navigation",
