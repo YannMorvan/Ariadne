@@ -29,11 +29,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useTranslations } from "next-intl"
 
 export function CreateProjectDialog() {
   const [open, setOpen] = useState(false)
   const [apiError, setApiError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const tProjects = useTranslations("projects")
+  const tCommon = useTranslations("common")
 
   const {
     register,
@@ -87,7 +90,7 @@ export function CreateProjectDialog() {
             className="!bg-primary text-primary-foreground hover:!bg-primary/90"
             variant="outline"
           >
-            + New Project
+            {tProjects("createProject")}
           </Button>
         }
       />
@@ -99,10 +102,8 @@ export function CreateProjectDialog() {
           )}
         >
           <DialogHeader>
-            <DialogTitle>Create Project</DialogTitle>
-            <DialogDescription>
-              Fill in the details for your new project.
-            </DialogDescription>
+            <DialogTitle>{tProjects("create.title")}</DialogTitle>
+            <DialogDescription>{tProjects("create.details")}</DialogDescription>
           </DialogHeader>
 
           {apiError && (
@@ -111,10 +112,10 @@ export function CreateProjectDialog() {
 
           <FieldGroup className="my-4 space-y-4">
             <Field>
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">{tProjects("create.name")}</Label>
               <Input
                 id="name"
-                placeholder="Enter project name"
+                placeholder={tProjects("create.namePlaceholder")}
                 {...register("name")}
               />
               {errors.name && (
@@ -125,16 +126,18 @@ export function CreateProjectDialog() {
             </Field>
 
             <Field>
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">
+                {tProjects("create.description")}
+              </Label>
               <Input
                 id="description"
-                placeholder="Enter project description"
+                placeholder={tProjects("create.descriptionPlaceholder")}
                 {...register("description")}
               />
             </Field>
 
             <Field>
-              <Label htmlFor="priority">Priority</Label>
+              <Label htmlFor="priority">{tProjects("create.priority")}</Label>
               <Controller
                 name="priority"
                 control={control}
@@ -144,11 +147,15 @@ export function CreateProjectDialog() {
                     defaultValue={field.value}
                   >
                     <SelectTrigger id="priority" className="w-full">
-                      <SelectValue placeholder="Select priority" />
+                      <SelectValue
+                        placeholder={tProjects("create.priorityPlaceholder")}
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectLabel>Priorities</SelectLabel>
+                        <SelectLabel>
+                          {tProjects("create.priorities")}
+                        </SelectLabel>
                         {PriorityItems.map((item) => (
                           <SelectItem key={item.value} value={item.value}>
                             {item.label}
@@ -163,9 +170,11 @@ export function CreateProjectDialog() {
           </FieldGroup>
 
           <DialogFooter className="mt-6">
-            <DialogClose render={<Button variant="outline">Cancel</Button>} />
+            <DialogClose
+              render={<Button variant="outline">{tCommon("cancel")}</Button>}
+            />
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Saving..." : "Save changes"}
+              {isLoading ? "Saving..." : tCommon("create")}
             </Button>
           </DialogFooter>
         </form>

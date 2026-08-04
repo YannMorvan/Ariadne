@@ -1,9 +1,4 @@
-import {
-  CheckCircle2,
-  FolderKanban,
-  MessageSquare,
-  Trophy,
-} from "lucide-react"
+import { CheckCircle2, FolderKanban, MessageSquare, Trophy } from "lucide-react"
 
 import {
   Card,
@@ -15,6 +10,7 @@ import {
 import { formatRelativeTime } from "@/lib/format-relative-time"
 import { cn } from "@/lib/utils"
 import type { ActivityItem, ActivityType } from "@/types/dashboard"
+import { useTranslations } from "next-intl"
 
 interface RecentActivityProps {
   activities: ActivityItem[]
@@ -31,11 +27,15 @@ const activityConfig: Record<
 }
 
 export function RecentActivity({ activities }: RecentActivityProps) {
+  const tDashboard = useTranslations("dashboard")
+
   return (
     <Card className="h-full border-border/50 bg-card/50 backdrop-blur-sm transition-colors hover:bg-card/80">
       <CardHeader>
-        <CardTitle>Fil d&apos;activité</CardTitle>
-        <CardDescription>Tes dernières actions et succès</CardDescription>
+        <CardTitle>{tDashboard("recentActivity")}</CardTitle>
+        <CardDescription>
+          {tDashboard("lastActionsAndAchievements")}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <ul className="space-y-1">
@@ -48,7 +48,8 @@ export function RecentActivity({ activities }: RecentActivityProps) {
                 <div
                   className={cn(
                     "flex gap-3 rounded-xl px-2 py-3 transition-colors hover:bg-muted/40",
-                    index !== activities.length - 1 && "border-b border-border/30"
+                    index !== activities.length - 1 &&
+                      "border-b border-border/30"
                   )}
                 >
                   <div

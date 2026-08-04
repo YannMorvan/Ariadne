@@ -13,6 +13,12 @@
     "listView": "Vue en liste",
     "loading": "Chargement..."
   },
+  "priorities": {
+    "low": "Faible",
+    "medium": "Moyenne",
+    "high": "Haute",
+    "urgent": "Urgent"
+  },
   "navigation": {
     "productivity": "Productivité",
     "navigation": "Navigation",
@@ -72,6 +78,23 @@
       "disabled": "Désactivé"
     }
   },
+  "dashboard": {
+    "title": "Ravi de te revoir, {username} 👋",
+    "description": "Vous trouverez ici l'état actuel de votre productivité et de vos projets.",
+    "quickActions": "Actions rapides",
+    "recentProjects": "Projets récents",
+    "lastActiveProjects": "Tes 3 projets les plus récemment actifs",
+    "priorityTasks": "Tâches prioritaires",
+    "urgenciesOfDay": "Les 4 urgences de la journée",
+    "recentActivity": "Activité récente",
+    "lastActionsAndAchievements": "Tes dernières actions et succès",
+    "activityChart": {
+      "title": "Activité hebdomadaire",
+      "description": "Heures et tâches complétées par jour",
+      "tasks": "Tâches",
+      "hours": "Heures"
+    }
+  },
   "projects": {
     "title": "Projets",
     "description": "Gère tes projets et collabore avec ton équipe.",
@@ -89,8 +112,10 @@
       "title": "Créer un projet",
       "details": "Remplis les détails de ton nouveau projet.",
       "name": "Nom du projet",
+      "namePlaceholder": "Nom du projet...",
       "description": "Description du projet",
       "descriptionPlaceholder": "Brève description du projet...",
+      "priorities": "Priorités",
       "priority": "Priorité",
       "priorityPlaceholder": "Sélectionne une priorité"
     },

@@ -5,6 +5,7 @@ import { Command } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { CreateProjectDialog } from "./create-project-dialog"
+import { useTranslations } from "next-intl"
 
 interface DashboardHeaderProps {
   username: string
@@ -28,6 +29,8 @@ const itemVariants = {
 }
 
 export function DashboardHeader({ username }: DashboardHeaderProps) {
+  const tDashboard = useTranslations("dashboard")
+
   return (
     <motion.div
       variants={containerVariants}
@@ -37,10 +40,10 @@ export function DashboardHeader({ username }: DashboardHeaderProps) {
     >
       <motion.div variants={itemVariants}>
         <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
-          Happy to see you again, {username} 👋
+          {tDashboard("title", { username })}
         </h1>
         <p className="mt-1 max-w-xl text-muted-foreground">
-          Here&apos;s the current status of your productivity and projects.
+          {tDashboard("description")}
         </p>
       </motion.div>
 
@@ -52,7 +55,7 @@ export function DashboardHeader({ username }: DashboardHeaderProps) {
         <CreateProjectDialog />
         <Button variant="outline">
           <Command data-icon="inline-start" />
-          Quick Actions
+          {tDashboard("quickActions")}
           <kbd className="pointer-events-none ml-1 hidden rounded-md border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground sm:inline-block">
             ⌘K
           </kbd>

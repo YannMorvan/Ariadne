@@ -13,6 +13,12 @@
     "listView": "List view",
     "loading": "Loading..."
   },
+  "priorities": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "urgent": "Urgent"
+  },
   "navigation": {
     "productivity": "Productivity",
     "navigation": "Navigation",
@@ -72,6 +78,23 @@
       "disabled": "Disabled"
     }
   },
+  "dashboard": {
+    "title": "Happy to see you again, {username} 👋",
+    "description": "Here's the current status of your productivity and projects.",
+    "quickActions": "Quick Actions",
+    "recentProjects": "Recent Projects",
+    "lastActiveProjects": "Your 3 most recently active projects",
+    "priorityTasks": "Priority Tasks",
+    "urgenciesOfDay": "The 4 urgencies of the day",
+    "recentActivity": "Recent Activity",
+    "lastActionsAndAchievements": "Your latest actions and achievements",
+    "activityChart": {
+      "title": "Weekly Activity",
+      "description": "Hours and tasks completed per day",
+      "tasks": "Tasks",
+      "hours": "Hours"
+    }
+  },
   "projects": {
     "title": "Projects",
     "description": "Manage and track the progress of your projects in one place.",
@@ -89,8 +112,10 @@
       "title": "Create a Project",
       "details": "Fill in the details for your new project.",
       "name": "Project Name",
+      "namePlaceholder": "Project name...",
       "description": "Project Description",
       "descriptionPlaceholder": "Brief description of the project...",
+      "priorities": "Priorities",
       "priority": "Priority",
       "priorityPlaceholder": "Select a priority"
     },

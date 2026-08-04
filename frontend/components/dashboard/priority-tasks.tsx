@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import type { Task } from "@/types/task"
+import { useTranslations } from "next-intl"
 
 interface TasksProps {
   tasks: Task[]
@@ -20,6 +21,7 @@ interface TasksProps {
 
 export function PriorityTasks({ tasks: initialTasks }: TasksProps) {
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set())
+  const tDashboard = useTranslations("dashboard")
 
   function toggleTask(id: string) {
     setCompletedIds((prev) => {
@@ -36,8 +38,8 @@ export function PriorityTasks({ tasks: initialTasks }: TasksProps) {
   return (
     <Card className="h-full border-border/50 bg-card/50 backdrop-blur-sm transition-colors hover:bg-card/80">
       <CardHeader>
-        <CardTitle>Priority Tasks</CardTitle>
-        <CardDescription>The 4 urgencies of the day</CardDescription>
+        <CardTitle>{tDashboard("priorityTasks")}</CardTitle>
+        <CardDescription>{tDashboard("urgenciesOfDay")}</CardDescription>
       </CardHeader>
       <CardContent>
         <ul className="space-y-2">

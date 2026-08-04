@@ -16,6 +16,7 @@ import {
 import { Progress } from "@/components/ui/progress"
 import { cn } from "@/lib/utils"
 import type { Project, ProjectPriority } from "@/types"
+import { useTranslations } from "next-intl"
 
 interface RecentProjectsProps {
   projects: Project[]
@@ -44,11 +45,13 @@ function getInitials(name?: string): string {
 }
 
 export function RecentProjects({ projects }: RecentProjectsProps) {
+  const tDashboard = useTranslations("dashboard")
+
   return (
     <Card className="h-full border-border/50 bg-card/50 backdrop-blur-sm transition-colors hover:bg-card/80">
       <CardHeader>
-        <CardTitle>Projets récents</CardTitle>
-        <CardDescription>Tes 3 derniers projets actifs</CardDescription>
+        <CardTitle>{tDashboard("recentProjects")}</CardTitle>
+        <CardDescription>{tDashboard("lastActiveProjects")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {projects.map((project) => (
