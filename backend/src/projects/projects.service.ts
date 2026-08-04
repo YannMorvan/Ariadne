@@ -40,7 +40,23 @@ export class ProjectsService {
       where: { ownerId: userId },
     });
 
-    return projects.map((project) => new ProjectEntity(project));
+    const tasksCounts = await this.prisma.task.groupBy({
+      by: ['projectId'],
+      _count: { id: true },
+      where: { project: { ownerId: userId } },
+    });
+
+    const tasksCountMap = new Map(
+      tasksCounts.map((taskCount) => [
+        taskCount.projectId,
+        taskCount._count.id,
+      ]),
+    );
+
+    return projects.map((project) => {
+      const tasksCount = tasksCountMap.get(project.id) || 0;
+      return new ProjectEntity({ ...project, tasksCount });
+    });
   }
 
   async getProjectById(projectId: string): Promise<ProjectEntity> {
