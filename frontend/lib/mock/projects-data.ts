@@ -1,4 +1,4 @@
-import type { StatMetric } from "@/types/dashboard"
+import type { StatMetric } from "@/types"
 
 export const projectStatMetrics: StatMetric[] = [
   {

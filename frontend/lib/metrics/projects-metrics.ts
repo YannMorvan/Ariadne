@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl"
-import type { ProjectStatsDto, StatMetric } from "@/types/stats"
+import type { ProjectStatsDto, StatMetric } from "@/types"
 
 export function useProjectsMetrics(stats?: ProjectStatsDto): StatMetric[] {
   const t = useTranslations("projects.metrics")

@@ -13,7 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { cn } from "@/lib/utils"
-import type { StatIconName, StatMetric } from "@/types/stats"
+import type { StatIconName, StatMetric } from "@/types"
 
 interface StatCardsProps {
   metrics: StatMetric[]
