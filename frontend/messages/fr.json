@@ -94,6 +94,8 @@
     "recentActivity": "Activité récente",
     "noProjects": "Aucun projet trouvé.",
     "noProjectsDescription": "Vous n'avez pas encore de projet en cours. Créez-en un pour commencer à suivre l'avancement.",
+    "noPriorityTasks": "Aucune tâche prioritaire trouvée.",
+    "noPriorityTasksDescription": "Vous n'avez pas encore de tâches prioritaires assignées.",
     "lastActionsAndAchievements": "Tes dernières actions et succès",
     "activityChart": {
       "title": "Activité hebdomadaire",
