@@ -90,8 +90,9 @@
     "recentProjects": "Recent Projects",
     "lastActiveProjects": "Your most recently active projects",
     "priorityTasks": "Priority Tasks",
-    "urgenciesOfDay": "The 4 urgencies of the day",
+    "urgenciesOfDay": "The urgencies of the day",
     "recentActivity": "Recent Activity",
+    "noProjects": "No projects found. Create your first project!",
     "lastActionsAndAchievements": "Your latest actions and achievements",
     "activityChart": {
       "title": "Weekly Activity",

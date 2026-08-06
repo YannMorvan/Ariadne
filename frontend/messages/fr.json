@@ -90,8 +90,9 @@
     "recentProjects": "Projets récents",
     "lastActiveProjects": "Vos projets les plus récemment actifs",
     "priorityTasks": "Tâches prioritaires",
-    "urgenciesOfDay": "Les 4 urgences de la journée",
+    "urgenciesOfDay": "Les urgences de la journée",
     "recentActivity": "Activité récente",
+    "noProjects": "Aucun projet trouvé.",
     "lastActionsAndAchievements": "Tes dernières actions et succès",
     "activityChart": {
       "title": "Activité hebdomadaire",
