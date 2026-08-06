@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import { Command } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { CreateProjectDialog } from "./create-project-dialog"
+import { CreateProjectDialog } from "../projects/create-project-dialog"
 import { useTranslations } from "next-intl"
 
 interface DashboardHeaderProps {
@@ -48,10 +48,6 @@ export function DashboardHeader({ username }: DashboardHeaderProps) {
       </motion.div>
 
       <motion.div variants={itemVariants} className="flex shrink-0 gap-2">
-        {/* <Button>
-          <Plus data-icon="inline-start" />
-          New Project
-        </Button> */}
         <CreateProjectDialog />
         <Button variant="outline">
           <Command data-icon="inline-start" />

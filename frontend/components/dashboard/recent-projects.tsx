@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { FolderPlus } from "lucide-react"
+import { FolderKanban, FolderPlus } from "lucide-react"
 import {
   Avatar,
   AvatarFallback,
@@ -52,6 +52,7 @@ function getInitials(name?: string): string {
 
 export function RecentProjects({ projects }: RecentProjectsProps) {
   const tDashboard = useTranslations("dashboard")
+  const tProjects = useTranslations("projects")
 
   function getProgressColorClass(percentage: number): string {
     if (percentage >= 80)
@@ -70,17 +71,16 @@ export function RecentProjects({ projects }: RecentProjectsProps) {
 
       {projects.length === 0 ? (
         <CardContent className="flex flex-1 flex-col items-center justify-center p-6 text-center">
-          <div className="relative mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 shadow-inner">
-            <FolderPlus className="h-6 w-6 text-primary" />
+          <div className="mb-4 flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <FolderKanban className="size-6" />
           </div>
-
-          <h4 className="text-base font-semibold text-foreground">
-            {tDashboard("noProjects")}
-          </h4>
-
-          <p className="mt-1 max-w-[240px] text-xs text-muted-foreground">
-            {tDashboard("noProjectsDescription")}
+          <h3 className="text-base font-semibold tracking-tight">
+            {tProjects("noResults")}
+          </h3>
+          <p className="mt-1 mb-6 max-w-sm text-sm text-muted-foreground">
+            {tProjects("noProjectsDescription")}
           </p>
+          {<CreateProjectDialog />}
         </CardContent>
       ) : (
         <CardContent className="space-y-4">
