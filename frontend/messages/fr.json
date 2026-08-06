@@ -98,6 +98,28 @@
       "description": "Heures et tâches complétées par jour",
       "tasks": "Tâches",
       "hours": "Heures"
+    },
+    "metrics": {
+      "streak": {
+        "label": "Série en cours",
+        "value": "{days} {days, plural, =0 {Jours} =1 {Jour} other {Jours}}",
+        "trend": "+{count} cette semaine"
+      },
+      "projects": {
+        "label": "Projets actifs",
+        "value": "{count} {count, plural, =0 {Projets} =1 {Projet} other {Projets}}",
+        "subValue": "{count} {count, plural, =0 {en attente} =1 {en attente} other {en attente}}"
+      },
+      "tasks": {
+        "label": "Tâches complétées",
+        "value": "{rate}%",
+        "trend": "+{rate}% vs semaine passée"
+      },
+      "level": {
+        "label": "Niveau & XP",
+        "value": "Niveau {level}",
+        "subValue": "{current} / {max} XP"
+      }
     }
   },
   "projects": {

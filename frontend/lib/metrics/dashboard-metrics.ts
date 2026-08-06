@@ -33,7 +33,10 @@ export function useDashboardMetrics(stats?: DashboardStatsDto): StatMetric[] {
       id: "level",
       label: t("level.label"),
       value: t("level.value", { level: stats.level }),
-      subValue: `${stats.currentXp.toLocaleString()} / ${stats.nextLevelXp.toLocaleString()} XP`,
+      subValue: t("level.subValue", {
+        current: stats.currentXp.toLocaleString(),
+        max: stats.nextLevelXp.toLocaleString(),
+      }),
       iconName: "trophy",
       iconClassName: "text-violet-500 bg-violet-500/10",
       progress: {
