@@ -70,18 +70,16 @@ export function RecentProjects({ projects }: RecentProjectsProps) {
 
       {projects.length === 0 ? (
         <CardContent className="flex flex-1 flex-col items-center justify-center p-6 text-center">
-          {/* Conteneur d'icône avec effet de brillance / halo moderne */}
           <div className="relative mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 shadow-inner">
             <FolderPlus className="h-6 w-6 text-primary" />
           </div>
 
           <h4 className="text-base font-semibold text-foreground">
-            {tDashboard("noProjects") || "Aucun projet actif"}
+            {tDashboard("noProjects")}
           </h4>
 
           <p className="mt-1 max-w-[240px] text-xs text-muted-foreground">
-            Vous n'avez pas encore de projet en cours. Créez-en un pour
-            commencer à suivre l'avancement.
+            {tDashboard("noProjectsDescription")}
           </p>
         </CardContent>
       ) : (

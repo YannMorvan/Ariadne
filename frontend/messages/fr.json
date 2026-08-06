@@ -93,6 +93,7 @@
     "urgenciesOfDay": "Les urgences de la journée",
     "recentActivity": "Activité récente",
     "noProjects": "Aucun projet trouvé.",
+    "noProjectsDescription": "Vous n'avez pas encore de projet en cours. Créez-en un pour commencer à suivre l'avancement.",
     "lastActionsAndAchievements": "Tes dernières actions et succès",
     "activityChart": {
       "title": "Activité hebdomadaire",
