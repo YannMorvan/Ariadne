@@ -13,6 +13,15 @@
     "listView": "Vue en liste",
     "loading": "Chargement..."
   },
+  "daysShort": {
+    "0": "Dim",
+    "1": "Lun",
+    "2": "Mar",
+    "3": "Mer",
+    "4": "Jeu",
+    "5": "Ven",
+    "6": "Sam"
+  },
   "priorities": {
     "low": "Faible",
     "medium": "Moyenne",

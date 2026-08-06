@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { ActivityDataPointDto } from './dto/activity-data-point.dto';
 
 @Injectable()
 export class DashboardService {
@@ -38,5 +39,40 @@ export class DashboardService {
       currentXp: user?.xp ?? 0,
       nextLevelXp: 100,
     };
+  }
+
+  async getWeeklyActivity(userId: string): Promise<ActivityDataPointDto[]> {
+    const daysMap = new Map<string, ActivityDataPointDto>();
+
+    for (let i = 0; i < 7; i++) {
+      const d = new Date();
+      d.setDate(d.getDate() - (6 - i));
+      const dateKey = d.toISOString().split('T')[0];
+
+      daysMap.set(dateKey, { date: dateKey, tasks: 0 });
+    }
+
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+    sevenDaysAgo.setHours(0, 0, 0, 0);
+
+    const completedTasks = await this.prisma.task.findMany({
+      where: {
+        OR: [{ assigneeId: userId }, { project: { ownerId: userId } }],
+        status: 'DONE',
+        updatedAt: { gte: sevenDaysAgo },
+      },
+      select: { updatedAt: true },
+    });
+
+    completedTasks.forEach((task) => {
+      const taskDateKey = task.updatedAt.toISOString().split('T')[0];
+      const dayData = daysMap.get(taskDateKey);
+      if (dayData) {
+        dayData.tasks += 1;
+      }
+    });
+
+    return Array.from(daysMap.values());
   }
 }

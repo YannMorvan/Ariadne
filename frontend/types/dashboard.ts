@@ -1,6 +1,6 @@
 export interface ActivityDataPoint {
-  day: string
-  hours: number
+  day?: string
+  date?: string
   tasks: number
 }
 

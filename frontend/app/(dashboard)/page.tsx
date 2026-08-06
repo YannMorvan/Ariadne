@@ -7,8 +7,8 @@ import { DashboardGrid } from "@/components/dashboard/dashboard-grid"
 import { DashboardHeader } from "@/components/dashboard/dashboard-header"
 import { useUser } from "@/context/user-context"
 import { useDashboardMetrics } from "@/lib/metrics/dashboard-metrics"
-import { recentActivities, weeklyActivity } from "@/lib/mock/dashboard-data"
-import { Project, Task, StatMetric, DashboardStatsDto } from "@/types"
+import { recentActivities } from "@/lib/mock/dashboard-data"
+import { Project, Task, DashboardStatsDto, ActivityDataPoint } from "@/types"
 import { useEffect, useState } from "react"
 
 export default function DashboardPage() {
@@ -19,22 +19,20 @@ export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStatsDto | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  // Re-calcule les metrics dès que `stats` est mis à jour
   const metrics = useDashboardMetrics(stats ?? undefined) ?? []
-
-  console.log(stats)
-  console.log(metrics)
+  const [weeklyActivity, setWeeklyActivity] = useState<ActivityDataPoint[]>([])
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       setIsLoading(true)
       try {
-        const [projects, recentProjects, tasks, statsData] =
+        const [projects, recentProjects, tasks, statsData, weeklyActivityData] =
           await Promise.allSettled([
             projectApi.getProjects(),
             projectApi.getRecentProjects(),
             taskApi.getPriorityTasks(4),
             dashboardApi.getStats(),
+            dashboardApi.getWeeklyActivity(),
           ])
 
         if (projects.status === "fulfilled") setProjectsData(projects.value)
@@ -42,8 +40,10 @@ export default function DashboardPage() {
           setRecentProjectsData(recentProjects.value)
         if (tasks.status === "fulfilled") setPriorityTasksData(tasks.value)
         if (statsData.status === "fulfilled") {
-          console.log("StatsData: ", statsData.value)
           setStats(statsData.value as DashboardStatsDto)
+        }
+        if (weeklyActivityData.status === "fulfilled") {
+          setWeeklyActivity(weeklyActivityData.value)
         }
       } catch (error) {
         console.error("Error fetching dashboard data:", error)
