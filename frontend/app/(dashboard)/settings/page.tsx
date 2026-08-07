@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
+import { useTheme } from "next-themes"
 import {
   User,
   Shield,
@@ -26,13 +27,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import { useTranslations } from "next-intl"
 import { useUser } from "@/context/user-context"
+import { cn } from "@/lib/utils"
 
 export default function SettingsPage() {
   const [isSaving, setIsSaving] = useState(false)
   const [isSaved, setIsSaved] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  const { theme, setTheme } = useTheme()
   const tCommon = useTranslations("common")
   const tSettings = useTranslations("settings")
   const { user } = useUser()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleSave = async () => {
     setIsSaving(true)
@@ -127,7 +136,7 @@ export default function SettingsPage() {
               <Avatar className="size-20 border-2 border-border/60 shadow-inner">
                 <AvatarImage src="" alt="Avatar" />
                 <AvatarFallback className="bg-gradient-to-br from-violet-500/20 to-blue-500/20 text-lg font-bold">
-                  YM
+                  {user?.username?.charAt(0).toUpperCase() || "U"}
                 </AvatarFallback>
               </Avatar>
               <div className="space-y-2">
@@ -299,53 +308,116 @@ export default function SettingsPage() {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <div className="group relative flex cursor-pointer flex-col gap-3 rounded-xl border-2 border-primary bg-card/80 p-4 transition-all">
-                <div className="flex items-center justify-between">
+              {/* Sombre (Dark) */}
+              <button
+                type="button"
+                onClick={() => setTheme("dark")}
+                className={cn(
+                  "group relative flex cursor-pointer flex-col gap-3 rounded-xl border p-4 text-left transition-all focus:outline-none",
+                  mounted && theme === "dark"
+                    ? "border-2 border-primary bg-card/80 shadow-sm"
+                    : "border-border/40 bg-card/20 opacity-60 hover:border-border/80 hover:opacity-100"
+                )}
+              >
+                <div className="flex w-full items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Moon className="size-4 text-primary" />
+                    <Moon
+                      className={cn(
+                        "size-4",
+                        mounted && theme === "dark"
+                          ? "text-primary"
+                          : "text-muted-foreground"
+                      )}
+                    />
                     <span className="text-sm font-medium">
                       {tSettings("appearance.darkMode")}
                     </span>
                   </div>
-                  <Badge variant="outline" className="text-[10px]">
-                    {tSettings("appearance.active")}
-                  </Badge>
+                  {mounted && theme === "dark" && (
+                    <Badge variant="outline" className="text-[10px]">
+                      {tSettings("appearance.active")}
+                    </Badge>
+                  )}
                 </div>
                 <div className="h-20 w-full space-y-2 rounded-lg border border-border/40 bg-zinc-950 p-2">
                   <div className="h-2 w-1/2 rounded bg-zinc-800" />
                   <div className="h-8 w-full rounded border border-zinc-800 bg-zinc-900" />
                 </div>
-              </div>
+              </button>
 
-              <div className="group relative flex cursor-pointer flex-col gap-3 rounded-xl border border-border/40 bg-card/20 p-4 opacity-60 transition-all hover:opacity-100">
-                <div className="flex items-center justify-between">
+              {/* Clair (Light) */}
+              <button
+                type="button"
+                onClick={() => setTheme("light")}
+                className={cn(
+                  "group relative flex cursor-pointer flex-col gap-3 rounded-xl border p-4 text-left transition-all focus:outline-none",
+                  mounted && theme === "light"
+                    ? "border-2 border-primary bg-card/80 shadow-sm"
+                    : "border-border/40 bg-card/20 opacity-60 hover:border-border/80 hover:opacity-100"
+                )}
+              >
+                <div className="flex w-full items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Sun className="size-4 text-muted-foreground" />
+                    <Sun
+                      className={cn(
+                        "size-4",
+                        mounted && theme === "light"
+                          ? "text-primary"
+                          : "text-muted-foreground"
+                      )}
+                    />
                     <span className="text-sm font-medium">
                       {tSettings("appearance.lightMode")}
                     </span>
                   </div>
+                  {mounted && theme === "light" && (
+                    <Badge variant="outline" className="text-[10px]">
+                      {tSettings("appearance.active")}
+                    </Badge>
+                  )}
                 </div>
                 <div className="h-20 w-full space-y-2 rounded-lg border border-zinc-200 bg-zinc-100 p-2">
                   <div className="h-2 w-1/2 rounded bg-zinc-300" />
                   <div className="h-8 w-full rounded border border-zinc-200 bg-white" />
                 </div>
-              </div>
+              </button>
 
-              <div className="group relative flex cursor-pointer flex-col gap-3 rounded-xl border border-border/40 bg-card/20 p-4 opacity-60 transition-all hover:opacity-100">
-                <div className="flex items-center justify-between">
+              {/* Système (System) */}
+              <button
+                type="button"
+                onClick={() => setTheme("system")}
+                className={cn(
+                  "group relative flex cursor-pointer flex-col gap-3 rounded-xl border p-4 text-left transition-all focus:outline-none",
+                  mounted && theme === "system"
+                    ? "border-2 border-primary bg-card/80 shadow-sm"
+                    : "border-border/40 bg-card/20 opacity-60 hover:border-border/80 hover:opacity-100"
+                )}
+              >
+                <div className="flex w-full items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Laptop className="size-4 text-muted-foreground" />
+                    <Laptop
+                      className={cn(
+                        "size-4",
+                        mounted && theme === "system"
+                          ? "text-primary"
+                          : "text-muted-foreground"
+                      )}
+                    />
                     <span className="text-sm font-medium">
                       {tSettings("appearance.systemMode")}
                     </span>
                   </div>
+                  {mounted && theme === "system" && (
+                    <Badge variant="outline" className="text-[10px]">
+                      {tSettings("appearance.active")}
+                    </Badge>
+                  )}
                 </div>
                 <div className="h-20 w-full space-y-2 rounded-lg border border-border/40 bg-gradient-to-r from-zinc-950 to-zinc-100 p-2">
                   <div className="h-2 w-1/2 rounded bg-zinc-500" />
                   <div className="h-8 w-full rounded bg-zinc-800/80" />
                 </div>
-              </div>
+              </button>
             </div>
 
             <div className="space-y-2 border-t border-border/30 pt-4">
