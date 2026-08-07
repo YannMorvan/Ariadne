@@ -12,7 +12,7 @@ export function useDashboardMetrics(stats?: DashboardStatsDto): StatMetric[] {
       label: t("streak.label"),
       value: t("streak.value", { days: stats.streak }),
       iconName: "flame",
-      iconClassName: "text-orange-500 bg-orange-500/10",
+      iconClassName: "text-red-500 bg-red-500/10",
     },
     {
       id: "projects",
@@ -26,6 +26,7 @@ export function useDashboardMetrics(stats?: DashboardStatsDto): StatMetric[] {
       id: "tasks",
       label: t("tasks.label"),
       value: `${stats.completedTasksPercentage}%`,
+      trend: { value: "+12% vs semaine passée", direction: "up" },
       iconName: "check-circle",
       iconClassName: "text-emerald-500 bg-emerald-500/10",
     },
