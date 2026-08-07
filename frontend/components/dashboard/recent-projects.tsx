@@ -1,16 +1,14 @@
 "use client"
 
-import Link from "next/link"
-import { FolderKanban, FolderPlus } from "lucide-react"
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarGroup,
-  AvatarGroupCount,
-  AvatarImage,
-} from "@/components/ui/avatar"
+import { FolderKanban } from "lucide-react"
+// import {
+//   Avatar,
+//   AvatarFallback,
+//   AvatarGroup,
+//   AvatarGroupCount,
+//   AvatarImage,
+// } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,

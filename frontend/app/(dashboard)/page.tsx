@@ -22,9 +22,7 @@ export default function DashboardPage() {
 
   const metrics = useDashboardMetrics(stats ?? undefined) ?? []
 
-  const fetchDashboardData = useCallback(async (isInitial = false) => {
-    if (isInitial) setIsLoading(true)
-
+  const fetchDashboardData = useCallback(async () => {
     try {
       const [projects, recentProjects, tasks, statsData, weeklyActivityData] =
         await Promise.allSettled([
@@ -48,12 +46,22 @@ export default function DashboardPage() {
     } catch (error) {
       console.error("Error fetching dashboard data:", error)
     } finally {
-      if (isInitial) setIsLoading(false)
+      setIsLoading(false)
     }
   }, [])
 
   useEffect(() => {
-    void fetchDashboardData(true)
+    let isSubscribed = true
+
+    const loadData = async () => {
+      await fetchDashboardData()
+    }
+
+    void loadData()
+
+    return () => {
+      isSubscribed = false
+    }
   }, [fetchDashboardData])
 
   if (isLoading) {
@@ -76,7 +84,7 @@ export default function DashboardPage() {
           projects={recentProjectsData}
           activities={recentActivities}
           tasks={priorityTasksData}
-          onTasksUpdated={() => void fetchDashboardData(false)}
+          onTasksUpdated={fetchDashboardData}
         />
       </div>
     </div>
