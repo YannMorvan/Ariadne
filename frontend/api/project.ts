@@ -17,6 +17,12 @@ export const projectApi = {
     })
   },
 
+  getRecentProjects: async (): Promise<Project[]> => {
+    return apiClient<Project[]>("/projects/recent", {
+      method: "GET",
+    })
+  },
+
   getProjectById: async (id: string): Promise<Project> => {
     return apiClient<Project>(`/projects/${id}`, {
       method: "GET",

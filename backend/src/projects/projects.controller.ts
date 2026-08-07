@@ -27,18 +27,20 @@ export class ProjectsController {
     @Body() createProjectDto: CreateProjectDto,
     @CurrentUser('id') userId: string,
   ) {
-    console.log(
-      'Received create project request:',
-      createProjectDto,
-      'for user:',
-      userId,
-    );
     return this.projectsService.createProject(createProjectDto, userId);
   }
 
   @Get()
   async findAll(@CurrentUser('id') userId: string) {
     return this.projectsService.getProjectsByUserId(userId);
+  }
+
+  @Get('recent')
+  async findRecent(@CurrentUser('id') userId: string) {
+    const projects = await this.projectsService.getProjectsByUserId(userId);
+    return projects
+      .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
+      .slice(0, 3);
   }
 
   @Get('stats')

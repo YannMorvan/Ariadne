@@ -14,6 +14,10 @@ export interface Task {
   status: TaskStatus
   priority: Priority
   dueDate?: string | null
+  project: {
+    id: string
+    name: string
+  }
 
   estimatedHours?: number | null
   loggedHours?: number | null

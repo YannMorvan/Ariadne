@@ -18,16 +18,10 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import type { ActivityDataPoint } from "@/types/dashboard"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 
 interface ActivityChartProps {
   data: ActivityDataPoint[]
-}
-
-interface TooltipPayloadItem {
-  value?: number
-  dataKey?: string
-  color?: string
 }
 
 function ChartTooltip({
@@ -37,31 +31,22 @@ function ChartTooltip({
   tDashboard,
 }: {
   active?: boolean
-  payload?: TooltipPayloadItem[]
+  payload?: Array<{ value?: number; dataKey?: string }>
   label?: string
   tDashboard: (key: string) => string
 }) {
   if (!active || !payload?.length) return null
 
-  const hours = payload.find((p) => p.dataKey === "hours")?.value ?? 0
   const tasks = payload.find((p) => p.dataKey === "tasks")?.value ?? 0
 
   return (
     <div className="rounded-xl border border-border/50 bg-popover/95 px-3 py-2 shadow-lg backdrop-blur-sm">
       <p className="mb-1 text-xs font-medium text-muted-foreground">{label}</p>
-      <div className="space-y-0.5 text-sm">
-        <p>
-          <span className="text-muted-foreground">
-            {tDashboard("activityChart.hours")} :{" "}
-          </span>
-          <span className="font-medium tabular-nums">{hours}h</span>
-        </p>
-        <p>
-          <span className="text-muted-foreground">
-            {tDashboard("activityChart.tasks")} :{" "}
-          </span>
-          <span className="font-medium tabular-nums">{tasks}</span>
-        </p>
+      <div className="text-sm font-medium">
+        <span className="text-muted-foreground">
+          {tDashboard("activityChart.tasks")} :{" "}
+        </span>
+        <span className="text-foreground tabular-nums">{tasks}</span>
       </div>
     </div>
   )
@@ -69,6 +54,27 @@ function ChartTooltip({
 
 export function ActivityChart({ data }: ActivityChartProps) {
   const tDashboard = useTranslations("dashboard")
+  const locale = useLocale()
+
+  const formattedData = (data || []).map((item) => {
+    let dayLabel = item.day || ""
+
+    if (item.date) {
+      const dateObj = new Date(item.date)
+      if (!isNaN(dateObj.getTime())) {
+        dayLabel = new Intl.DateTimeFormat(locale, { weekday: "short" })
+          .format(dateObj)
+          .replace(".", "")
+      }
+    }
+
+    return {
+      ...item,
+      dayLabel: dayLabel
+        ? dayLabel.charAt(0).toUpperCase() + dayLabel.slice(1)
+        : "",
+    }
+  })
 
   return (
     <Card className="h-full border-border/50 bg-card/50 backdrop-blur-sm transition-colors hover:bg-card/80">
@@ -82,8 +88,8 @@ export function ActivityChart({ data }: ActivityChartProps) {
         <div className="h-[280px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
-              data={data}
-              margin={{ top: 8, right: 8, left: -16, bottom: 0 }}
+              data={formattedData}
+              margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
             >
               <defs>
                 <linearGradient
@@ -95,12 +101,12 @@ export function ActivityChart({ data }: ActivityChartProps) {
                 >
                   <stop
                     offset="0%"
-                    stopColor="var(--color-foreground)"
-                    stopOpacity={0.15}
+                    stopColor="var(--color-primary)"
+                    stopOpacity={0.2}
                   />
                   <stop
                     offset="100%"
-                    stopColor="var(--color-foreground)"
+                    stopColor="var(--color-primary)"
                     stopOpacity={0}
                   />
                 </linearGradient>
@@ -112,7 +118,7 @@ export function ActivityChart({ data }: ActivityChartProps) {
                 strokeOpacity={0.5}
               />
               <XAxis
-                dataKey="day"
+                dataKey="dayLabel"
                 axisLine={false}
                 tickLine={false}
                 tick={{ fill: "var(--color-muted-foreground)", fontSize: 12 }}
@@ -122,17 +128,17 @@ export function ActivityChart({ data }: ActivityChartProps) {
                 axisLine={false}
                 tickLine={false}
                 tick={{ fill: "var(--color-muted-foreground)", fontSize: 12 }}
-                tickFormatter={(v) => `${v}h`}
-                width={40}
+                allowDecimals={false}
+                width={45}
               />
               <Tooltip
-                content={<ChartTooltip {...{ tDashboard }} />}
+                content={<ChartTooltip tDashboard={tDashboard} />}
                 cursor={{ strokeOpacity: 0.2 }}
               />
               <Area
                 type="monotone"
-                dataKey="hours"
-                stroke="var(--color-foreground)"
+                dataKey="tasks"
+                stroke="var(--color-primary)"
                 strokeWidth={2}
                 fill="url(#activityGradient)"
                 dot={false}

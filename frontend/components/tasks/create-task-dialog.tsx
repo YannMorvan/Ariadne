@@ -29,7 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-import { type CreateTaskInput, createTaskSchema } from "@/lib/validations/task"
+import { createTaskSchema } from "@/lib/validations/task"
 import { taskApi } from "@/api/task"
 
 interface CreateTaskDialogProps {

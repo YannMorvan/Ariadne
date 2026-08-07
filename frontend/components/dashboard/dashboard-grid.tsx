@@ -21,6 +21,7 @@ interface DashboardGridProps {
   projects: Project[]
   activities: ActivityItem[]
   tasks: Task[]
+  onTasksUpdated?: () => void
 }
 
 const sectionVariants = {
@@ -42,6 +43,7 @@ export function DashboardGrid({
   projects,
   activities,
   tasks,
+  onTasksUpdated,
 }: DashboardGridProps) {
   return (
     <div className="space-y-6">
@@ -75,7 +77,7 @@ export function DashboardGrid({
         className="grid grid-cols-1 gap-4 md:grid-cols-2"
       >
         <RecentActivity activities={activities} />
-        <PriorityTasks tasks={tasks} />
+        <PriorityTasks tasks={tasks} onTasksUpdated={onTasksUpdated} />
       </motion.div>
     </div>
   )

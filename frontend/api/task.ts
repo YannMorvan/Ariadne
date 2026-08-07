@@ -16,6 +16,13 @@ export const taskApi = {
     })
   },
 
+  getPriorityTasks: async (limit?: number): Promise<Task[]> => {
+    const queryParams = limit ? `?limit=${limit}` : ""
+    return apiClient<Task[]>(`/tasks/priority${queryParams}`, {
+      method: "GET",
+    })
+  },
+
   updateTask: async (taskId: string, payload: Partial<Task>): Promise<Task> => {
     return apiClient<Task>(`/tasks/${taskId}`, {
       method: "PATCH",

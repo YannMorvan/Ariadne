@@ -13,11 +13,25 @@
     "listView": "List view",
     "loading": "Loading..."
   },
+  "daysShort": {
+    "0": "Sun",
+    "1": "Mon",
+    "2": "Tue",
+    "3": "Wed",
+    "4": "Thu",
+    "5": "Fri",
+    "6": "Sat"
+  },
   "priorities": {
     "low": "Low",
     "medium": "Medium",
     "high": "High",
     "urgent": "Urgent"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "Unable to locate the page you are looking for. Ariadne's thread stops here.",
+    "goBack": "Go back to the dashboard"
   },
   "navigation": {
     "productivity": "Productivity",
@@ -83,16 +97,40 @@
     "description": "Here's the current status of your productivity and projects.",
     "quickActions": "Quick Actions",
     "recentProjects": "Recent Projects",
-    "lastActiveProjects": "Your 3 most recently active projects",
+    "lastActiveProjects": "Your most recently active projects",
     "priorityTasks": "Priority Tasks",
-    "urgenciesOfDay": "The 4 urgencies of the day",
+    "urgenciesOfDay": "The urgencies of the day",
     "recentActivity": "Recent Activity",
+    "noPriorityTasks": "No priority tasks found.",
+    "noPriorityTasksDescription": "You don't have any priority tasks assigned yet",
     "lastActionsAndAchievements": "Your latest actions and achievements",
     "activityChart": {
       "title": "Weekly Activity",
       "description": "Hours and tasks completed per day",
       "tasks": "Tasks",
       "hours": "Hours"
+    },
+    "metrics": {
+      "streak": {
+        "label": "Current Streak",
+        "value": "{days} {days, plural, =0 {Days} =1 {Day} other {Days}}",
+        "trend": "+{count} this week"
+      },
+      "projects": {
+        "label": "Active Projects",
+        "value": "{count} {count, plural, =0 {Projects} =1 {Project} other {Projects}}",
+        "subValue": "{count} pending"
+      },
+      "tasks": {
+        "label": "Completed Tasks",
+        "value": "{rate}%",
+        "trend": "+{rate}% vs last week"
+      },
+      "level": {
+        "label": "Level & XP",
+        "value": "Level {level}",
+        "subValue": "{current} / {max} XP"
+      }
     }
   },
   "projects": {
@@ -100,7 +138,8 @@
     "description": "Manage and track the progress of your projects in one place.",
     "searchPlaceholder": "Search projects...",
     "noResults": "No projects found.",
-    "noProjects": "No projects found. Create your first project!",
+    "noProjects": "No projects at the moment.",
+    "noProjectsDescription": "Start by creating your first project to track your tasks and progress.",
     "createProject": "+ New Project",
     "totalProjects": "Total Projects",
     "urgentAndBlocked": "Urgent & Blocked",

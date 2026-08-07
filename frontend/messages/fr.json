@@ -13,11 +13,25 @@
     "listView": "Vue en liste",
     "loading": "Chargement..."
   },
+  "daysShort": {
+    "0": "Dim",
+    "1": "Lun",
+    "2": "Mar",
+    "3": "Mer",
+    "4": "Jeu",
+    "5": "Ven",
+    "6": "Sam"
+  },
   "priorities": {
     "low": "Faible",
     "medium": "Moyenne",
     "high": "Haute",
     "urgent": "Urgent"
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "description": "Impossible de localiser la page que vous recherchez. Le fil d'Ariane s'arrête ici.",
+    "goBack": "Retour au tableau de bord"
   },
   "navigation": {
     "productivity": "Productivité",
@@ -83,16 +97,40 @@
     "description": "Vous trouverez ici l'état actuel de votre productivité et de vos projets.",
     "quickActions": "Actions rapides",
     "recentProjects": "Projets récents",
-    "lastActiveProjects": "Tes 3 projets les plus récemment actifs",
+    "lastActiveProjects": "Vos projets les plus récemment actifs",
     "priorityTasks": "Tâches prioritaires",
-    "urgenciesOfDay": "Les 4 urgences de la journée",
+    "urgenciesOfDay": "Les urgences de la journée",
     "recentActivity": "Activité récente",
+    "noPriorityTasks": "Aucune tâche prioritaire trouvée.",
+    "noPriorityTasksDescription": "Vous n'avez pas encore de tâches prioritaires assignées.",
     "lastActionsAndAchievements": "Tes dernières actions et succès",
     "activityChart": {
       "title": "Activité hebdomadaire",
       "description": "Heures et tâches complétées par jour",
       "tasks": "Tâches",
       "hours": "Heures"
+    },
+    "metrics": {
+      "streak": {
+        "label": "Série en cours",
+        "value": "{days} {days, plural, =0 {Jours} =1 {Jour} other {Jours}}",
+        "trend": "+{count} cette semaine"
+      },
+      "projects": {
+        "label": "Projets actifs",
+        "value": "{count} {count, plural, =0 {Projets} =1 {Projet} other {Projets}}",
+        "subValue": "{count} {count, plural, =0 {en attente} =1 {en attente} other {en attente}}"
+      },
+      "tasks": {
+        "label": "Tâches complétées",
+        "value": "{rate}%",
+        "trend": "+{rate}% vs semaine passée"
+      },
+      "level": {
+        "label": "Niveau & XP",
+        "value": "Niveau {level}",
+        "subValue": "{current} / {max} XP"
+      }
     }
   },
   "projects": {
@@ -100,11 +138,12 @@
     "description": "Gère tes projets et collabore avec ton équipe.",
     "searchPlaceholder": "Rechercher un projet...",
     "noResults": "Aucun projet trouvé.",
-    "noProjects": "Aucun projet trouvé. Crée ton premier projet !",
+    "noProjects": "Aucun projet pour le moment.",
+    "noProjectsDescription": "Commence par créer ton premier projet pour suivre tes tâches et ton avancement.",
     "createProject": "+ Nouveau projet",
     "totalProjects": "Total de projets",
     "urgentAndBlocked": "Urgences & Bloqueurs",
-    "completionRate": "Taux de complétion,",
+    "completionRate": "Taux de complétion",
     "globalProgress": "Progression globale",
     "archived": "Archivés",
     "tasksCount": "{count} {count, plural, =0 {Tâche} =1 {Tâche} other {Tâches}}",

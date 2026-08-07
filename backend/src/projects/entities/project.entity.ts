@@ -35,6 +35,9 @@ export class ProjectEntity implements PrismaProject {
   @ApiProperty({ example: 5, nullable: true })
   tasksCount?: number | null;
 
+  @ApiProperty({ example: 10, nullable: true })
+  completedTasksCount?: number | null;
+
   constructor(partial: Partial<ProjectEntity>) {
     Object.assign(this, partial);
   }
