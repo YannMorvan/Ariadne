@@ -9,7 +9,7 @@ import { useUser } from "@/context/user-context"
 import { useDashboardMetrics } from "@/lib/metrics/dashboard-metrics"
 import { recentActivities } from "@/lib/mock/dashboard-data"
 import { Project, Task, DashboardStatsDto, ActivityDataPoint } from "@/types"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 export default function DashboardPage() {
   const { user } = useUser()
@@ -17,43 +17,44 @@ export default function DashboardPage() {
   const [recentProjectsData, setRecentProjectsData] = useState<Project[]>([])
   const [priorityTasksData, setPriorityTasksData] = useState<Task[]>([])
   const [stats, setStats] = useState<DashboardStatsDto | null>(null)
+  const [weeklyActivity, setWeeklyActivity] = useState<ActivityDataPoint[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   const metrics = useDashboardMetrics(stats ?? undefined) ?? []
-  const [weeklyActivity, setWeeklyActivity] = useState<ActivityDataPoint[]>([])
+
+  const fetchDashboardData = useCallback(async (isInitial = false) => {
+    if (isInitial) setIsLoading(true)
+
+    try {
+      const [projects, recentProjects, tasks, statsData, weeklyActivityData] =
+        await Promise.allSettled([
+          projectApi.getProjects(),
+          projectApi.getRecentProjects(),
+          taskApi.getPriorityTasks(4),
+          dashboardApi.getStats(),
+          dashboardApi.getWeeklyActivity(),
+        ])
+
+      if (projects.status === "fulfilled") setProjectsData(projects.value)
+      if (recentProjects.status === "fulfilled")
+        setRecentProjectsData(recentProjects.value)
+      if (tasks.status === "fulfilled") setPriorityTasksData(tasks.value)
+      if (statsData.status === "fulfilled") {
+        setStats(statsData.value as DashboardStatsDto)
+      }
+      if (weeklyActivityData.status === "fulfilled") {
+        setWeeklyActivity(weeklyActivityData.value)
+      }
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error)
+    } finally {
+      if (isInitial) setIsLoading(false)
+    }
+  }, [])
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
-      setIsLoading(true)
-      try {
-        const [projects, recentProjects, tasks, statsData, weeklyActivityData] =
-          await Promise.allSettled([
-            projectApi.getProjects(),
-            projectApi.getRecentProjects(),
-            taskApi.getPriorityTasks(4),
-            dashboardApi.getStats(),
-            dashboardApi.getWeeklyActivity(),
-          ])
-
-        if (projects.status === "fulfilled") setProjectsData(projects.value)
-        if (recentProjects.status === "fulfilled")
-          setRecentProjectsData(recentProjects.value)
-        if (tasks.status === "fulfilled") setPriorityTasksData(tasks.value)
-        if (statsData.status === "fulfilled") {
-          setStats(statsData.value as DashboardStatsDto)
-        }
-        if (weeklyActivityData.status === "fulfilled") {
-          setWeeklyActivity(weeklyActivityData.value)
-        }
-      } catch (error) {
-        console.error("Error fetching dashboard data:", error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    void fetchDashboardData()
-  }, [])
+    void fetchDashboardData(true)
+  }, [fetchDashboardData])
 
   if (isLoading) {
     return (
@@ -75,6 +76,7 @@ export default function DashboardPage() {
           projects={recentProjectsData}
           activities={recentActivities}
           tasks={priorityTasksData}
+          onTasksUpdated={() => void fetchDashboardData(false)}
         />
       </div>
     </div>
