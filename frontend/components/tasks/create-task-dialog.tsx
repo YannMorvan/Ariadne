@@ -138,7 +138,7 @@ export function CreateTaskDialog({
             </div>
           )}
 
-          <FieldGroup className="my-4 space-y-4">
+          <FieldGroup className="my-4 gap-2 space-y-4">
             <Field>
               <Label htmlFor="title">Task Title</Label>
               <Input

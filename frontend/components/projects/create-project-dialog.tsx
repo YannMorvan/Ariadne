@@ -173,12 +173,15 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
             </Field>
           </FieldGroup>
 
-          <DialogFooter className="mt-6 gap-2 sm:gap-0">
-            <DialogClose>
-              <Button type="button" variant="ghost" disabled={isLoading}>
-                {tCommon("cancel")}
-              </Button>
-            </DialogClose>
+          <DialogFooter className="mt-6 gap-2">
+            <Button
+              type="button"
+              variant="ghost"
+              disabled={isLoading}
+              onClick={() => setOpen(false)}
+            >
+              {tCommon("cancel")}
+            </Button>
             <Button type="submit" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
               {isLoading ? tCommon("creating") : tCommon("create")}
