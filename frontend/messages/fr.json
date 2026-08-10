@@ -201,6 +201,7 @@
       "priority": "Priorité",
       "priorityPlaceholder": "Sélectionne une priorité",
       "dueDate": "Date d'échéance",
+      "dueDatePlaceholder": "Choisis une date",
       "status": "Statut",
       "statusPlaceholder": "Sélectionne un statut",
       "estimatedTime": "Temps estimé",
