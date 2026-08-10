@@ -17,29 +17,11 @@ import { cn } from "@/lib/utils"
 import type { Task, Priority, TaskStatus } from "@/types/task"
 import { useTranslations } from "next-intl"
 import { taskApi } from "@/api/task"
+import { useEnumOptions } from "@/hooks/use-enums"
 
 interface PriorityTasksProps {
   tasks: Task[]
   onTasksUpdated?: () => Promise<void> | void
-}
-
-const priorityConfig: Record<Priority, { label: string; className: string }> = {
-  LOW: {
-    label: "Low",
-    className: "text-muted-foreground bg-muted/40 border-border/40",
-  },
-  MEDIUM: {
-    label: "Medium",
-    className: "text-blue-500 bg-blue-500/10 border-blue-500/20",
-  },
-  HIGH: {
-    label: "High",
-    className: "text-amber-500 bg-amber-500/10 border-amber-500/20",
-  },
-  URGENT: {
-    label: "Urgent",
-    className: "text-red-500 bg-red-500/10 border-red-500/20",
-  },
 }
 
 export function PriorityTasks({
@@ -51,6 +33,7 @@ export function PriorityTasks({
   const [optimisticStatuses, setOptimisticStatuses] = useState<
     Record<string, TaskStatus>
   >({})
+  const { getPriorityInfo, getStatusLabel } = useEnumOptions()
 
   const getNextStatus = (current: TaskStatus): TaskStatus => {
     switch (current) {
@@ -116,8 +99,7 @@ export function PriorityTasks({
               const currentStatus = optimisticStatuses[task.id] ?? task.status
               const isDone = currentStatus === "DONE"
               const isUpdating = updatingStatusId === task.id
-              const priority =
-                priorityConfig[task.priority] || priorityConfig.MEDIUM
+              const priority = getPriorityInfo(task.priority as Priority)
 
               return (
                 <motion.div

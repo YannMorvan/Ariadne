@@ -26,28 +26,10 @@ import { taskApi } from "@/api/task"
 import { cn } from "@/lib/utils"
 import type { ProjectWithTasks } from "@/types"
 import { useTranslations } from "next-intl"
+import { useEnumOptions } from "@/hooks/use-enums"
 
 interface ProjectPageProps {
   params: Promise<{ id: string }>
-}
-
-const priorityConfig: Record<string, { label: string; className: string }> = {
-  LOW: {
-    label: "Basse",
-    className: "text-muted-foreground bg-muted/40 border-border/40",
-  },
-  MEDIUM: {
-    label: "Moyenne",
-    className: "text-blue-500 bg-blue-500/10 border-blue-500/20",
-  },
-  HIGH: {
-    label: "Haute",
-    className: "text-amber-500 bg-amber-500/10 border-amber-500/20",
-  },
-  URGENT: {
-    label: "Urgente",
-    className: "text-red-500 bg-red-500/10 border-red-500/20",
-  },
 }
 
 export default function SingleProjectPage({ params }: ProjectPageProps) {
@@ -61,6 +43,9 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [isMembersOpen, setIsMembersOpen] = useState(false)
+
+  const { getPriorityInfo } = useEnumOptions()
+  const priority = getPriorityInfo(project?.priority || "MEDIUM", "project")
 
   const tCommon = useTranslations("common")
 
@@ -173,8 +158,6 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
       </div>
     )
   }
-
-  const priority = priorityConfig[project.priority] || priorityConfig.MEDIUM
 
   function getProgressColorClass(percentage: number): string {
     if (percentage >= 80)

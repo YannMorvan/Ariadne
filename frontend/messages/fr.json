@@ -13,6 +13,9 @@
     "listView": "Vue en liste",
     "seeMore": "Voir plus",
     "seeLess": "Voir moins",
+    "priority": "Priorité",
+    "status": "Statut",
+    "clickToChange": "Cliquez pour changer",
     "loading": "Chargement..."
   },
   "daysShort": {
@@ -24,11 +27,18 @@
     "5": "Ven",
     "6": "Sam"
   },
-  "priorities": {
-    "low": "Faible",
-    "medium": "Moyenne",
-    "high": "Haute",
-    "urgent": "Urgent"
+  "enums": {
+    "priority": {
+      "LOW": "Bas",
+      "MEDIUM": "Moyen",
+      "HIGH": "Haut",
+      "URGENT": "Urgent"
+    },
+    "status": {
+      "TODO": "À faire",
+      "IN_PROGRESS": "En cours",
+      "DONE": "Terminé"
+    }
   },
   "notFound": {
     "title": "Page introuvable",
@@ -201,6 +211,7 @@
       "priority": "Priorité",
       "priorityPlaceholder": "Sélectionne une priorité",
       "dueDate": "Date d'échéance",
+      "dueDatePlaceholder": "Choisis une date",
       "status": "Statut",
       "statusPlaceholder": "Sélectionne un statut",
       "estimatedTime": "Temps estimé",

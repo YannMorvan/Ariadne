@@ -18,27 +18,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
-import type { Task, Priority } from "@/types/task"
+import type { Task } from "@/types/task"
 import { useTranslations } from "next-intl"
-
-const priorityConfig: Record<Priority, { label: string; className: string }> = {
-  LOW: {
-    label: "Low",
-    className: "text-muted-foreground bg-muted/40 border-border/40",
-  },
-  MEDIUM: {
-    label: "Medium",
-    className: "text-blue-500 bg-blue-500/10 border-blue-500/20",
-  },
-  HIGH: {
-    label: "High",
-    className: "text-amber-500 bg-amber-500/10 border-amber-500/20",
-  },
-  URGENT: {
-    label: "Urgent",
-    className: "text-red-500 bg-red-500/10 border-red-500/20",
-  },
-}
+import { useEnumOptions } from "@/hooks/use-enums"
 
 interface TaskItemProps {
   task: Task
@@ -59,8 +41,8 @@ export const TaskItem = ({
   const [isExpanded, setIsExpanded] = useState(false)
   const [isOverflowing, setIsOverflowing] = useState(false)
   const descriptionRef = useRef<HTMLParagraphElement>(null)
-
-  const priority = priorityConfig[task.priority] || priorityConfig.MEDIUM
+  const { getPriorityInfo, getStatusLabel } = useEnumOptions()
+  const priority = getPriorityInfo(task.priority)
 
   useLayoutEffect(() => {
     const checkOverflow = () => {
@@ -88,7 +70,7 @@ export const TaskItem = ({
           type="button"
           disabled={isUpdating}
           onClick={() => void onToggleStatus(task)}
-          title={`Status: ${task.status}. Click to change.`}
+          title={`${tCommon("status")}: ${getStatusLabel(task.status)}. ${tCommon("clickToChange")}`}
           className="mt-0.5 flex shrink-0 items-center justify-center rounded-full border border-border/50 bg-card/60 p-1 transition-all hover:scale-105 hover:border-border/80 hover:bg-card/90 focus:outline-none disabled:opacity-50"
         >
           {isUpdating ? (

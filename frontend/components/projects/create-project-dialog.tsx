@@ -35,17 +35,11 @@ import {
 } from "@/lib/validations/project"
 import { projectApi } from "@/api/project"
 import { useTranslations } from "next-intl"
+import { useEnumOptions } from "@/hooks/use-enums"
 
 interface CreateProjectDialogProps {
   onSuccess?: () => void
 }
-
-const PriorityItems = [
-  { label: "Basse", value: "LOW" },
-  { label: "Moyenne", value: "MEDIUM" },
-  { label: "Haute", value: "HIGH" },
-  { label: "Urgente", value: "URGENT" },
-]
 
 export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
   const [open, setOpen] = useState(false)
@@ -53,7 +47,7 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
   const [isLoading, setIsLoading] = useState(false)
   const tCommon = useTranslations("common")
   const tProjects = useTranslations("projects")
-
+  const { priorityItems, getPriorityInfo } = useEnumOptions()
   const {
     register,
     handleSubmit,
@@ -153,14 +147,18 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
                     <SelectTrigger id="priority" className="w-full">
                       <SelectValue
                         placeholder={tProjects("create.priorityPlaceholder")}
-                      />
+                      >
+                        {field.value
+                          ? getPriorityInfo(field.value).label
+                          : undefined}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm">
                       <SelectGroup>
                         <SelectLabel>
                           {tProjects("create.priority")}
                         </SelectLabel>
-                        {PriorityItems.map((item) => (
+                        {priorityItems.map((item) => (
                           <SelectItem key={item.value} value={item.value}>
                             {item.label}
                           </SelectItem>
