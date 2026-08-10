@@ -60,7 +60,7 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
     control,
     reset,
     formState: { errors },
-  } = useForm<CreateProjectInput>({
+  } = useForm({
     resolver: zodResolver(createProjectSchema),
     defaultValues: {
       name: "",
