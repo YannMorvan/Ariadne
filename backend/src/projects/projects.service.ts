@@ -26,7 +26,7 @@ export class ProjectsService {
     const newProject = await this.prisma.project.create({
       data: {
         name: projectDto.name,
-        description: projectDto.description,
+        description: projectDto.description?.trim() || null,
         priority: projectDto.priority,
         ownerId: userId,
       },

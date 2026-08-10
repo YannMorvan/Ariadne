@@ -31,6 +31,8 @@ import {
 
 import { createTaskSchema } from "@/lib/validations/task"
 import { taskApi } from "@/api/task"
+import { useTranslations } from "next-intl"
+import { Textarea } from "../ui/textarea"
 
 interface CreateTaskDialogProps {
   projectId: string
@@ -54,6 +56,8 @@ export function CreateTaskDialog({
   projectId,
   onSuccess,
 }: CreateTaskDialogProps) {
+  const tCommon = useTranslations("common")
+  const tTasks = useTranslations("tasks")
   const [open, setOpen] = useState(false)
   const [apiError, setApiError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -81,8 +85,7 @@ export function CreateTaskDialog({
       <DialogTrigger
         render={
           <Button className="gap-2 rounded-xl font-medium">
-            <Plus className="size-4" />
-            New task
+            {tTasks("createTasks")}
           </Button>
         }
       />
@@ -126,10 +129,8 @@ export function CreateTaskDialog({
           })}
         >
           <DialogHeader>
-            <DialogTitle>Create a task</DialogTitle>
-            <DialogDescription>
-              Add a new task to execute for this project.
-            </DialogDescription>
+            <DialogTitle>{tTasks("create.title")}</DialogTitle>
+            <DialogDescription>{tTasks("create.details")}</DialogDescription>
           </DialogHeader>
 
           {apiError && (
@@ -138,12 +139,12 @@ export function CreateTaskDialog({
             </div>
           )}
 
-          <FieldGroup className="my-4 space-y-4">
+          <FieldGroup className="my-4 gap-2 space-y-4">
             <Field>
-              <Label htmlFor="title">Task Title</Label>
+              <Label htmlFor="title">{tTasks("create.name")}</Label>
               <Input
                 id="title"
-                placeholder="ex: Implement authentication"
+                placeholder={tTasks("create.namePlaceholder")}
                 {...register("title")}
               />
               {errors.title && (
@@ -154,17 +155,19 @@ export function CreateTaskDialog({
             </Field>
 
             <Field>
-              <Label htmlFor="description">Description</Label>
-              <Input
+              <Label htmlFor="description">
+                {tTasks("create.description")}
+              </Label>
+              <Textarea
                 id="description"
-                placeholder="Description of the task..."
+                placeholder={tTasks("create.descriptionPlaceholder")}
                 {...register("description")}
               />
             </Field>
 
             <div className="grid grid-cols-2 gap-3">
               <Field>
-                <Label htmlFor="status">Status</Label>
+                <Label htmlFor="status">{tTasks("create.status")}</Label>
                 <Controller
                   name="status"
                   control={control}
@@ -174,7 +177,9 @@ export function CreateTaskDialog({
                       value={field.value}
                     >
                       <SelectTrigger id="status" className="w-full">
-                        <SelectValue placeholder="Status" />
+                        <SelectValue
+                          placeholder={tTasks("create.statusPlaceholder")}
+                        />
                       </SelectTrigger>
                       <SelectContent className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm">
                         <SelectGroup>
@@ -192,7 +197,7 @@ export function CreateTaskDialog({
               </Field>
 
               <Field>
-                <Label htmlFor="priority">Priority</Label>
+                <Label htmlFor="priority">{tTasks("create.priority")}</Label>
                 <Controller
                   name="priority"
                   control={control}
@@ -202,7 +207,9 @@ export function CreateTaskDialog({
                       value={field.value}
                     >
                       <SelectTrigger id="priority" className="w-full">
-                        <SelectValue placeholder="Priority" />
+                        <SelectValue
+                          placeholder={tTasks("create.priorityPlaceholder")}
+                        />
                       </SelectTrigger>
                       <SelectContent className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm">
                         <SelectGroup>
@@ -222,17 +229,19 @@ export function CreateTaskDialog({
 
             <div className="grid grid-cols-2 gap-3">
               <Field>
-                <Label htmlFor="dueDate">Due Date</Label>
+                <Label htmlFor="dueDate">{tTasks("create.dueDate")}</Label>
                 <Input id="dueDate" type="date" {...register("dueDate")} />
               </Field>
 
               <Field>
-                <Label htmlFor="estimatedHours">Estimated Time (h)</Label>
+                <Label htmlFor="estimatedHours">
+                  {tTasks("create.estimatedTime")}
+                </Label>
                 <Input
                   id="estimatedHours"
                   type="number"
                   step="0.5"
-                  placeholder="ex: 2.5"
+                  placeholder={tTasks("create.estimatedTimePlaceholder")}
                   {...register("estimatedHours", { valueAsNumber: true })}
                 />
                 {errors.estimatedHours && (
@@ -248,13 +257,13 @@ export function CreateTaskDialog({
             <DialogClose
               render={
                 <Button type="button" variant="ghost" disabled={isLoading}>
-                  Cancel
+                  {tCommon("cancel")}
                 </Button>
               }
             />
             <Button type="submit" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
-              {isLoading ? "Creating..." : "Create Task"}
+              {isLoading ? tCommon("creating") : tCommon("create")}
             </Button>
           </DialogFooter>
         </form>
