@@ -46,24 +46,12 @@ import {
 
 import { createTaskSchema } from "@/lib/validations/task"
 import { taskApi } from "@/api/task"
+import { useEnumOptions } from "@/hooks/use-enums"
 
 interface CreateTaskDialogProps {
   projectId: string
   onSuccess?: () => void
 }
-
-const PriorityItems = [
-  { label: "Basse", value: "LOW" },
-  { label: "Moyenne", value: "MEDIUM" },
-  { label: "Haute", value: "HIGH" },
-  { label: "Urgente", value: "URGENT" },
-]
-
-const StatusItems = [
-  { label: "À faire", value: "TODO" },
-  { label: "En cours", value: "IN_PROGRESS" },
-  { label: "Terminé", value: "DONE" },
-]
 
 export function CreateTaskDialog({
   projectId,
@@ -75,7 +63,8 @@ export function CreateTaskDialog({
   const [popoverOpen, setPopoverOpen] = useState(false)
   const [apiError, setApiError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-
+  const { priorityItems, statusItems, getStatusLabel, getPriorityInfo } =
+    useEnumOptions()
   const {
     register,
     handleSubmit,
@@ -193,12 +182,16 @@ export function CreateTaskDialog({
                       <SelectTrigger id="status" className="w-full">
                         <SelectValue
                           placeholder={tTasks("create.statusPlaceholder")}
-                        />
+                        >
+                          {field.value
+                            ? getStatusLabel(field.value)
+                            : undefined}
+                        </SelectValue>
                       </SelectTrigger>
                       <SelectContent className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm">
                         <SelectGroup>
                           <SelectLabel>{tTasks("create.status")}</SelectLabel>
-                          {StatusItems.map((item) => (
+                          {statusItems.map((item) => (
                             <SelectItem key={item.value} value={item.value}>
                               {item.label}
                             </SelectItem>
@@ -223,14 +216,18 @@ export function CreateTaskDialog({
                       <SelectTrigger id="priority" className="w-full">
                         <SelectValue
                           placeholder={tTasks("create.priorityPlaceholder")}
-                        />
+                        >
+                          {field.value
+                            ? getPriorityInfo(field.value).label
+                            : undefined}
+                        </SelectValue>
                       </SelectTrigger>
                       <SelectContent className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm">
                         <SelectGroup>
                           <SelectLabel>
                             {tTasks("create.priorities")}
                           </SelectLabel>
-                          {PriorityItems.map((item) => (
+                          {priorityItems.map((item) => (
                             <SelectItem key={item.value} value={item.value}>
                               {item.label}
                             </SelectItem>

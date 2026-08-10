@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils"
 import type { Project } from "@/types"
 import { useRouter } from "next/navigation"
 import { useTranslations, useFormatter } from "next-intl"
+import { useEnumOptions } from "@/hooks/use-enums"
 
 interface ProjectCardProps {
   project: Project
@@ -26,27 +27,9 @@ interface ProjectCardProps {
   onDelete?: (id: string) => void
 }
 
-const priorityConfig: Record<string, { label: string; className: string }> = {
-  LOW: {
-    label: "Low",
-    className: "text-muted-foreground bg-muted/40 border-border/40",
-  },
-  MEDIUM: {
-    label: "Medium",
-    className: "text-blue-500 bg-blue-500/10 border-blue-500/20",
-  },
-  HIGH: {
-    label: "High",
-    className: "text-amber-500 bg-amber-500/10 border-amber-500/20",
-  },
-  URGENT: {
-    label: "Urgent",
-    className: "text-red-500 bg-red-500/10 border-red-500/20",
-  },
-}
-
 export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
-  const priority = priorityConfig[project.priority] || priorityConfig.MEDIUM
+  const { getPriorityInfo } = useEnumOptions()
+  const priority = getPriorityInfo(project?.priority || "MEDIUM", "project")
   const router = useRouter()
 
   const tCommon = useTranslations("common")

@@ -21,18 +21,10 @@ import { cn } from "@/lib/utils"
 import type { Project, ProjectPriority } from "@/types"
 import { useTranslations } from "next-intl"
 import { CreateProjectDialog } from "../projects/create-project-dialog"
+import { useEnumOptions } from "@/hooks/use-enums"
 
 interface RecentProjectsProps {
   projects: Project[]
-}
-
-const priorityStyles: Record<ProjectPriority, string> = {
-  HIGH: "border-red-500/20 bg-red-500/10 text-red-600 dark:text-red-400",
-  MEDIUM:
-    "border-yellow-500/20 bg-yellow-500/10 text-yellow-600 dark:text-yellow-400",
-  LOW: "border-green-500/20 bg-green-500/10 text-green-600 dark:text-green-400",
-  URGENT:
-    "border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400",
 }
 
 function getInitials(name?: string): string {
@@ -51,6 +43,8 @@ function getInitials(name?: string): string {
 export function RecentProjects({ projects }: RecentProjectsProps) {
   const tDashboard = useTranslations("dashboard")
   const tProjects = useTranslations("projects")
+
+  const { getPriorityInfo } = useEnumOptions()
 
   function getProgressColorClass(percentage: number): string {
     if (percentage >= 80)
@@ -100,9 +94,20 @@ export function RecentProjects({ projects }: RecentProjectsProps) {
                     <p className="truncate font-medium">{project.name}</p>
                     <Badge
                       variant="outline"
-                      className={cn("mt-1.5", priorityStyles[project.priority])}
+                      className={cn(
+                        "mt-1 text-xs font-normal",
+                        getPriorityInfo(
+                          project.priority as ProjectPriority,
+                          "project"
+                        ).className
+                      )}
                     >
-                      {project.priority}
+                      {
+                        getPriorityInfo(
+                          project.priority as ProjectPriority,
+                          "project"
+                        ).label
+                      }
                     </Badge>
                   </div>
                   <span className="shrink-0 text-sm font-medium text-muted-foreground tabular-nums">

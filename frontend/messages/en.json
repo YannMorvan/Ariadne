@@ -13,6 +13,9 @@
     "listView": "List view",
     "seeMore": "See more",
     "seeLess": "See less",
+    "priority": "Priority",
+    "status": "Status",
+    "clickToChange": "Click to change",
     "loading": "Loading..."
   },
   "daysShort": {
@@ -24,11 +27,18 @@
     "5": "Fri",
     "6": "Sat"
   },
-  "priorities": {
-    "low": "Low",
-    "medium": "Medium",
-    "high": "High",
-    "urgent": "Urgent"
+  "enums": {
+    "priority": {
+      "LOW": "Low",
+      "MEDIUM": "Medium",
+      "HIGH": "High",
+      "URGENT": "Urgent"
+    },
+    "status": {
+      "TODO": "To do",
+      "IN_PROGRESS": "In progress",
+      "DONE": "Done"
+    }
   },
   "notFound": {
     "title": "Page not found",
