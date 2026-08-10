@@ -1,27 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import {
-  CheckCircle2,
-  Circle,
-  Clock,
-  Trash2,
-  MoreHorizontal,
-  Loader2,
-} from "lucide-react"
+import { Circle } from "lucide-react"
 
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { CreateTaskDialog } from "../tasks/create-task-dialog"
 import { taskApi } from "@/api/task"
-import { cn } from "@/lib/utils"
-import type { Task, Priority, TaskStatus } from "@/types/task"
+import { TaskItem } from "../tasks/task-item"
+import type { Task, TaskStatus } from "@/types/task"
+import { useTranslations } from "next-intl"
 
 interface ProjectTasksTabProps {
   projectName?: string
@@ -30,30 +16,12 @@ interface ProjectTasksTabProps {
   onTasksUpdated?: () => void
 }
 
-const priorityConfig: Record<Priority, { label: string; className: string }> = {
-  LOW: {
-    label: "Low",
-    className: "text-muted-foreground bg-muted/40 border-border/40",
-  },
-  MEDIUM: {
-    label: "Medium",
-    className: "text-blue-500 bg-blue-500/10 border-blue-500/20",
-  },
-  HIGH: {
-    label: "High",
-    className: "text-amber-500 bg-amber-500/10 border-amber-500/20",
-  },
-  URGENT: {
-    label: "Urgent",
-    className: "text-red-500 bg-red-500/10 border-red-500/20",
-  },
-}
-
 export function ProjectTasksTab({
   projectId,
   tasks = [],
   onTasksUpdated,
 }: ProjectTasksTabProps) {
+  const tTasks = useTranslations("tasks")
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [updatingStatusId, setUpdatingStatusId] = useState<string | null>(null)
 
@@ -77,7 +45,7 @@ export function ProjectTasksTab({
       await taskApi.updateTask(task.id, { status: nextStatus })
       onTasksUpdated?.()
     } catch (error) {
-      console.error("Error occurred while updating the task status :", error)
+      console.error("Error updated status :", error)
     } finally {
       setUpdatingStatusId(null)
     }
@@ -89,7 +57,7 @@ export function ProjectTasksTab({
       await taskApi.deleteTask(taskId)
       onTasksUpdated?.()
     } catch (error) {
-      console.error("Error occurred while deleting the task :", error)
+      console.error("Error deleting task :", error)
     } finally {
       setDeletingId(null)
     }
@@ -99,15 +67,15 @@ export function ProjectTasksTab({
 
   return (
     <div className="space-y-4 rounded-2xl border border-border/50 bg-card/50 p-6 backdrop-blur-sm">
-      <div className="flex items-center justify-between">
-        <div>
+      <div className="flex items-center justify-between gap-4">
+        <div className="min-w-0">
           <h3 className="text-base font-semibold tracking-tight">
-            Project Tasks
+            {tTasks("titleProjectsTasks")}
           </h3>
-          <p className="text-xs text-muted-foreground">
+          <p className="truncate text-xs text-muted-foreground">
             {hasTasks
-              ? `${tasks.length} task${tasks.length > 1 ? "s" : ""} in total`
-              : "Manage the list of tasks associated with this project."}
+              ? ` ${tTasks("tasksCount", { count: tasks.length })}`
+              : tTasks("noTasksDescription")}
           </p>
         </div>
         <CreateTaskDialog projectId={projectId} onSuccess={onTasksUpdated} />
@@ -116,113 +84,23 @@ export function ProjectTasksTab({
       {!hasTasks ? (
         <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border/50 bg-card/20 p-8 text-center">
           <Circle className="mb-2 size-8 text-muted-foreground/50" />
-          <p className="text-sm font-medium">No tasks yet</p>
+          <p className="text-sm font-medium">{tTasks("noTasks")}</p>
           <p className="mt-1 max-w-xs text-xs text-muted-foreground">
-            Create a new task to get started and manage your project
-            effectively.
+            {tTasks("noTasksDescription")}
           </p>
         </div>
       ) : (
         <div className="space-y-2">
-          {tasks.map((task) => {
-            const priority =
-              priorityConfig[task.priority] || priorityConfig.MEDIUM
-            const isUpdating = updatingStatusId === task.id
-
-            return (
-              <div
-                key={task.id}
-                className="group relative flex items-center justify-between gap-3 rounded-xl border border-border/40 bg-card/40 p-4 transition-all hover:border-border/80 hover:bg-card/80"
-              >
-                <div className="flex min-w-0 flex-1 items-start gap-3">
-                  <button
-                    type="button"
-                    disabled={isUpdating}
-                    onClick={() => void handleToggleStatus(task)}
-                    title={`Actual status: ${task.status}. Click to change.`}
-                    className="mt-0.5 flex shrink-0 items-center justify-center rounded-full border border-border/50 bg-card/60 p-1 transition-all hover:scale-105 hover:border-border/80 hover:bg-card/90 focus:outline-none disabled:opacity-50"
-                  >
-                    {isUpdating ? (
-                      <Loader2 className="size-5 animate-spin text-muted-foreground" />
-                    ) : task.status === "DONE" ? (
-                      <CheckCircle2 className="size-5 text-emerald-500" />
-                    ) : task.status === "IN_PROGRESS" ? (
-                      <Clock className="size-5 text-amber-500" />
-                    ) : (
-                      <Circle className="size-5 text-muted-foreground/60 group-hover:text-foreground" />
-                    )}
-                  </button>
-
-                  <div className="min-w-0 space-y-1">
-                    <p
-                      className={cn(
-                        "truncate text-sm leading-none font-medium tracking-tight transition-colors",
-                        task.status === "DONE" &&
-                          "text-muted-foreground line-through"
-                      )}
-                    >
-                      {task.title}
-                    </p>
-                    {task.description && (
-                      <p className="line-clamp-1 text-xs text-muted-foreground">
-                        {task.description}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex shrink-0 items-center gap-3">
-                  {task.estimatedHours ? (
-                    <div className="hidden items-center gap-1 text-xs text-muted-foreground sm:flex">
-                      <Clock className="size-3.5" />
-                      <span>{task.estimatedHours}h</span>
-                    </div>
-                  ) : null}
-
-                  <Badge
-                    variant="outline"
-                    className={cn("text-xs font-normal", priority.className)}
-                  >
-                    {priority.label}
-                  </Badge>
-
-                  {task.assignee ? (
-                    <Avatar className="size-6 border border-border/50">
-                      <AvatarImage
-                        src={task.assignee.avatarUrl || undefined}
-                        alt={task.assignee.username}
-                      />
-                      <AvatarFallback className="text-[10px]">
-                        {task.assignee.username.slice(0, 2).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                  ) : null}
-
-                  <div onClick={(e) => e.stopPropagation()}>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-none">
-                        <MoreHorizontal className="size-4" />
-                        <span className="sr-only">Actions</span>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent
-                        align="end"
-                        className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm"
-                      >
-                        <DropdownMenuItem
-                          disabled={deletingId === task.id}
-                          onClick={() => void handleDeleteTask(task.id)}
-                          className="text-destructive focus:text-destructive"
-                        >
-                          <Trash2 className="mr-2 size-4" />
-                          Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </div>
-              </div>
-            )
-          })}
+          {tasks.map((task) => (
+            <TaskItem
+              key={task.id}
+              task={task}
+              isUpdating={updatingStatusId === task.id}
+              isDeleting={deletingId === task.id}
+              onToggleStatus={handleToggleStatus}
+              onDeleteTask={handleDeleteTask}
+            />
+          ))}
         </div>
       )}
     </div>

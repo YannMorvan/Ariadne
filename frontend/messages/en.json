@@ -11,6 +11,8 @@
     "description": "Description",
     "gridView": "Grid view",
     "listView": "List view",
+    "seeMore": "See more",
+    "seeLess": "See less",
     "loading": "Loading..."
   },
   "daysShort": {
@@ -177,6 +179,32 @@
         "label": "Global Progress",
         "subValue": "{current} / {max} steps completed"
       }
+    }
+  },
+  "tasks": {
+    "title": "Tasks",
+    "projectsTasks": "Tasks of the project",
+    "searchPlaceholder": "Search tasks...",
+    "noResults": "No tasks found.",
+    "noTasks": "No tasks at the moment.",
+    "noTasksDescription": "Create a new task to start managing your work and progress.",
+    "createTasks": "+ New Tasks",
+    "tasksCount": "{count} {count, plural, =0 {Tasks} =1 {Task} other {Tasks}}",
+    "create": {
+      "title": "Create a task",
+      "details": "Fill in the details for your new task.",
+      "name": "Task Name",
+      "namePlaceholder": "Task name...",
+      "description": "Task Description",
+      "descriptionPlaceholder": "Brief description of the task...",
+      "priorities": "Priorities",
+      "priority": "Priority",
+      "priorityPlaceholder": "Select a priority",
+      "dueDate": "Due Date",
+      "status": "Status",
+      "statusPlaceholder": "Select a status",
+      "estimatedTime": "Estimated Time",
+      "estimatedTimePlaceholder": "Estimated time in hours..."
     }
   }
 }

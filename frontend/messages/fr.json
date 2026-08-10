@@ -11,6 +11,8 @@
     "description": "Description",
     "gridView": "Vue en grille",
     "listView": "Vue en liste",
+    "seeMore": "Voir plus",
+    "seeLess": "Voir moins",
     "loading": "Chargement..."
   },
   "daysShort": {
@@ -177,6 +179,32 @@
         "label": "Progression Globale",
         "subValue": "{current} / {max} étapes validées"
       }
+    }
+  },
+  "tasks": {
+    "title": "Tâches",
+    "titleProjectsTasks": "Tâches du projet",
+    "searchPlaceholder": "Rechercher une tâche",
+    "noResults": "Aucune tâche trouvée.",
+    "noTasks": "Pas encore de tâches",
+    "noTasksDescription": "Crée une nouvelle tâche pour commencer à gérer ton travail et ton avancement.",
+    "createTasks": "+ Nouvelle tâche",
+    "tasksCount": "{count} {count, plural, =0 {Tâche} =1 {Tâche} other {Tâches}}",
+    "create": {
+      "title": "Créer une tâche",
+      "details": "Remplis les détails de ta nouvelle tâche.",
+      "name": "Nom de la tâche",
+      "namePlaceholder": "Nom de la tâche...",
+      "description": "Description de la tâche",
+      "descriptionPlaceholder": "Brève description de la tâche...",
+      "priorities": "Priorités",
+      "priority": "Priorité",
+      "priorityPlaceholder": "Sélectionne une priorité",
+      "dueDate": "Date d'échéance",
+      "status": "Statut",
+      "statusPlaceholder": "Sélectionne un statut",
+      "estimatedTime": "Temps estimé",
+      "estimatedTimePlaceholder": "Temps estimé en heures..."
     }
   }
 }
