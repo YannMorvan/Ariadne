@@ -25,10 +25,14 @@ export const createTaskSchema = z.object({
 
   dueDate: z.string().optional(),
 
-  estimatedHours: z
-    .number({ message: "The estimated hours must be a number" })
-    .min(0, "The hours cannot be negative")
-    .optional(),
+  estimatedHours: z.preprocess(
+    (val) =>
+      val === "" || val === null || Number.isNaN(val) ? undefined : Number(val),
+    z
+      .number({ message: "The estimated hours must be a number" })
+      .min(0, "The hours cannot be negative")
+      .optional()
+  ),
 
   assigneeId: z
     .string()
