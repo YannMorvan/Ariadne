@@ -1,13 +1,15 @@
 "use client"
 
+import * as React from "react"
 import { Progress as ProgressPrimitive } from "@base-ui/react/progress"
+import { motion } from "framer-motion"
 
 import { cn } from "@/lib/utils"
 
 function Progress({
   className,
   children,
-  value,
+  value = 0,
   ...props
 }: ProgressPrimitive.Root.Props) {
   return (
@@ -19,7 +21,7 @@ function Progress({
     >
       {children}
       <ProgressTrack>
-        <ProgressIndicator />
+        <ProgressIndicator value={value} />
       </ProgressTrack>
     </ProgressPrimitive.Root>
   )
@@ -38,14 +40,31 @@ function ProgressTrack({ className, ...props }: ProgressPrimitive.Track.Props) {
   )
 }
 
+interface AnimatedProgressIndicatorProps extends React.ComponentPropsWithoutRef<
+  typeof motion.div
+> {
+  value?: number | null
+}
+
 function ProgressIndicator({
   className,
+  value = 0,
   ...props
-}: ProgressPrimitive.Indicator.Props) {
+}: AnimatedProgressIndicatorProps) {
+  const safeValue = Math.min(100, Math.max(0, value ?? 0))
+
   return (
-    <ProgressPrimitive.Indicator
+    <motion.div
       data-slot="progress-indicator"
-      className={cn("h-full bg-primary transition-all", className)}
+      className={cn("h-full rounded-2xl bg-primary", className)}
+      initial={{ width: 0 }}
+      animate={{ width: `${safeValue}%` }}
+      transition={{
+        type: "spring",
+        stiffness: 80,
+        damping: 15,
+        mass: 0.5,
+      }}
       {...props}
     />
   )
