@@ -158,7 +158,7 @@ export function TaskFormFields() {
                     id="dueDate"
                     value={displayValue}
                     placeholder="YYYY-MM-DD"
-                    onChange={(e: any) => {
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       const val = e.target.value
                       field.onChange(val)
                       const parsed = parse(val, "yyyy-MM-dd", new Date())
@@ -166,7 +166,7 @@ export function TaskFormFields() {
                         field.onChange(parsed.toISOString())
                       }
                     }}
-                    onKeyDown={(e: any) => {
+                    onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                       if (e.key === "ArrowDown") {
                         e.preventDefault()
                         setPopoverOpen(true)
