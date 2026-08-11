@@ -16,6 +16,7 @@ import { EmptyProjectsState } from "@/components/projects/empty-projects-state"
 
 import type { Project, StatMetric } from "@/types"
 import { useTranslations } from "next-intl"
+import { EditProjectDialog } from "./edit-project-dialog"
 
 interface ProjectGridProps {
   projects: Project[]
@@ -46,6 +47,7 @@ export function ProjectGrid({
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
 
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null)
+  const [projectToEdit, setProjectToEdit] = useState<Project | null>(null)
 
   const tProjects = useTranslations("projects")
   const tCommon = useTranslations("common")
@@ -64,6 +66,11 @@ export function ProjectGrid({
   }, [initialProjects, searchQuery, selectedPriority])
 
   function handleProjectDeleted() {
+    setProjectToDelete(null)
+    onProjectsUpdated?.()
+  }
+
+  function handleProjectEdited() {
     setProjectToDelete(null)
     onProjectsUpdated?.()
   }
@@ -166,6 +173,7 @@ export function ProjectGrid({
               <ProjectCard
                 key={project.id}
                 project={project}
+                onEdit={() => setProjectToEdit(project)}
                 onDelete={() => setProjectToDelete(project)}
               />
             ))}
@@ -183,6 +191,12 @@ export function ProjectGrid({
         )}
       </motion.div>
 
+      <EditProjectDialog
+        project={projectToEdit}
+        open={!!projectToEdit}
+        onOpenChange={(open) => !open && setProjectToEdit(null)}
+        onSuccess={handleProjectEdited}
+      />
       <DeleteProjectDialog
         projectId={projectToDelete?.id || null}
         projectName={projectToDelete?.name}

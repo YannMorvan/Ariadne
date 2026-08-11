@@ -1,8 +1,14 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { ProjectEntity } from './entities/project.entity';
 import { ProjectStatsDto } from './dto/project-stats.dto';
+import { UpdateProjectDto } from './dto/update-project.dto';
 
 @Injectable()
 export class ProjectsService {
@@ -33,6 +39,36 @@ export class ProjectsService {
     });
 
     return new ProjectEntity(newProject);
+  }
+
+  async updateProject(
+    projectDto: UpdateProjectDto,
+    userId: string,
+  ): Promise<ProjectEntity> {
+    const project = await this.prisma.project.findUnique({
+      where: { id: projectDto.id },
+    });
+
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+
+    if (project.ownerId !== userId) {
+      throw new ForbiddenException(
+        "You don't have permission to update this project",
+      );
+    }
+
+    const updatedProject = await this.prisma.project.update({
+      where: { id: projectDto.id },
+      data: {
+        name: projectDto.name,
+        description: projectDto.description?.trim() || null,
+        priority: projectDto.priority,
+      },
+    });
+
+    return new ProjectEntity(updatedProject);
   }
 
   async getProjectsByUserId(userId: string): Promise<ProjectEntity[]> {
