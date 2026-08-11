@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import { Command } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { CreateProjectDialog } from "../projects/create-project-dialog"
+import { CreateProjectDialog } from "../projects/dialogs/create-project-dialog"
 import { useTranslations } from "next-intl"
 
 interface DashboardHeaderProps {

@@ -1,7 +1,7 @@
 "use client"
 
 import { FolderKanban } from "lucide-react"
-import { CreateProjectDialog } from "./create-project-dialog"
+import { CreateProjectDialog } from "./dialogs/create-project-dialog"
 import { useTranslations } from "next-intl"
 
 interface EmptyProjectsStateProps {
