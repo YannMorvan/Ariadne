@@ -14,45 +14,54 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 
 import {
-  type CreateProjectInput,
-  createProjectSchema,
+  UpdateProjectInput,
+  updateProjectSchema,
 } from "@/lib/validations/project"
 import { projectApi } from "@/api/project"
 import { ProjectFormFields } from "./project-form-fields"
 
-interface CreateProjectDialogProps {
+interface EditProjectDialogProps {
+  project: UpdateProjectInput | null
+  open: boolean
+  onOpenChange: (open: boolean) => void
   onSuccess?: () => void
 }
 
-export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
-  const [open, setOpen] = useState(false)
+export function EditProjectDialog({
+  project,
+  open,
+  onOpenChange,
+  onSuccess,
+}: EditProjectDialogProps) {
   const [apiError, setApiError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const tCommon = useTranslations("common")
-  const tProjects = useTranslations("projects")
 
   const methods = useForm({
-    resolver: zodResolver(createProjectSchema),
-    defaultValues: {
-      name: "",
-      priority: "MEDIUM",
-      description: "",
+    resolver: zodResolver(updateProjectSchema),
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+    values: {
+      id: project?.id ?? "",
+      name: project?.name ?? "",
+      priority: project?.priority ?? "MEDIUM",
+      description: project?.description ?? "",
     },
   })
 
-  const onSubmit = async (data: CreateProjectInput) => {
+  const onSubmit = async (data: UpdateProjectInput) => {
     setIsLoading(true)
     setApiError(null)
 
     try {
-      await projectApi.createProject(data)
-      methods.reset()
-      setOpen(false)
-      onSuccess?.()
+      await projectApi.updateProject(data)
+      onOpenChange(false)
+      setTimeout(() => {
+        onSuccess?.()
+      }, 0)
     } catch (error: unknown) {
       if (error instanceof Error) {
         setApiError(error.message || "An unexpected error occurred.")
@@ -64,23 +73,18 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
     }
   }
 
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger
-        render={
-          <Button className="rounded-xl font-medium">
-            {tProjects("createProject")}
-          </Button>
-        }
-      />
+  if (!project) return null
 
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="rounded-2xl border-border/50 bg-card/95 backdrop-blur-xl sm:max-w-md">
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
+            <input type="hidden" {...methods.register("id")} />
             <DialogHeader>
-              <DialogTitle>{tProjects("create.title")}</DialogTitle>
+              <DialogTitle>Edit Project</DialogTitle>
               <DialogDescription>
-                {tProjects("create.details")}
+                Make changes to your project here.
               </DialogDescription>
             </DialogHeader>
 
@@ -97,13 +101,13 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
                 type="button"
                 variant="ghost"
                 disabled={isLoading}
-                onClick={() => setOpen(false)}
+                onClick={() => onOpenChange(false)}
               >
                 {tCommon("cancel")}
               </Button>
               <Button type="submit" disabled={isLoading}>
                 {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
-                {isLoading ? tCommon("creating") : tCommon("create")}
+                {isLoading ? tCommon("updating") : tCommon("update")}
               </Button>
             </DialogFooter>
           </form>

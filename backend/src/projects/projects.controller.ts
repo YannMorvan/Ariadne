@@ -7,12 +7,14 @@ import {
   Delete,
   Param,
   ConflictException,
+  Patch,
 } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { TasksService } from '../tasks/tasks.service';
+import { UpdateProjectDto } from './dto/update-project.dto';
 
 @Controller('projects')
 @UseGuards(JwtAuthGuard)
@@ -28,6 +30,18 @@ export class ProjectsController {
     @CurrentUser('id') userId: string,
   ) {
     return this.projectsService.createProject(createProjectDto, userId);
+  }
+
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateProjectDto: UpdateProjectDto,
+    @CurrentUser('id') userId: string,
+  ) {
+    return this.projectsService.updateProject(
+      { ...updateProjectDto, id },
+      userId,
+    );
   }
 
   @Get()

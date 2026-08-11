@@ -27,6 +27,7 @@ import { cn } from "@/lib/utils"
 import type { ProjectWithTasks } from "@/types"
 import { useTranslations } from "next-intl"
 import { useEnumOptions } from "@/hooks/use-enums"
+import { EditProjectDialog } from "@/components/projects/edit-project-dialog"
 
 interface ProjectPageProps {
   params: Promise<{ id: string }>
@@ -283,6 +284,13 @@ export default function SingleProjectPage({ params }: ProjectPageProps) {
         projectId={project.id}
         open={isMembersOpen}
         onOpenChange={setIsMembersOpen}
+      />
+
+      <EditProjectDialog
+        project={project}
+        open={isEditOpen}
+        onOpenChange={setIsEditOpen}
+        onSuccess={fetchProject}
       />
 
       <DeleteProjectDialog
