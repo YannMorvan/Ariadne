@@ -49,23 +49,13 @@ export function PriorityTasks({
   }
 
   const handleToggleStatus = async (task: Task) => {
-    if (updatingStatusId) return
-
-    const currentStatus = optimisticStatuses[task.id] ?? task.status
-    const nextStatus = getNextStatus(currentStatus)
-
     try {
       setUpdatingStatusId(task.id)
-      setOptimisticStatuses((prev) => ({ ...prev, [task.id]: nextStatus }))
-
-      await taskApi.updateTask(task.id, { status: nextStatus })
-
-      if (onTasksUpdated) {
-        await onTasksUpdated()
-      }
+      const nextStatus = getNextStatus(task.status)
+      await taskApi.updateTask({ id: task.id, status: nextStatus })
+      onTasksUpdated?.()
     } catch (error) {
-      setOptimisticStatuses((prev) => ({ ...prev, [task.id]: currentStatus }))
-      console.error("Error occurred while updating the task status :", error)
+      console.error("Error updating status :", error)
     } finally {
       setUpdatingStatusId(null)
     }

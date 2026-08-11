@@ -37,13 +37,12 @@ export class TasksController {
     return this.tasksService.getPriorityTasks(userId, limit);
   }
 
-  @Patch(':id')
+  @Patch()
   async updateTask(
-    @CurrentUser('id') userId: string,
-    @Param('id') taskId: string,
     @Body() updateTaskDto: UpdateTaskDto,
+    @CurrentUser('id') userId: string,
   ) {
-    return this.tasksService.updateTask(userId, taskId, updateTaskDto);
+    return this.tasksService.updateTask(userId, updateTaskDto);
   }
 
   @Delete(':id')

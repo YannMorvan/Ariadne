@@ -8,6 +8,7 @@ import {
   Loader2,
   ChevronDown,
   ChevronUp,
+  Pencil,
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -28,6 +29,7 @@ interface TaskItemProps {
   isDeleting: boolean
   onToggleStatus: (task: Task) => Promise<void>
   onDeleteTask: (taskId: string) => Promise<void>
+  onEditTask: (task: Task) => void
 }
 
 export const TaskItem = ({
@@ -36,6 +38,7 @@ export const TaskItem = ({
   isDeleting,
   onToggleStatus,
   onDeleteTask,
+  onEditTask,
 }: TaskItemProps) => {
   const tCommon = useTranslations("common")
   const [isExpanded, setIsExpanded] = useState(false)
@@ -177,6 +180,14 @@ export const TaskItem = ({
               align="end"
               className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm"
             >
+              <DropdownMenuItem
+                disabled={isUpdating}
+                onClick={() => void onEditTask(task)}
+                className="flex items-center gap-2"
+              >
+                <Pencil className="mr-2 size-4" />
+                {tCommon("edit")}
+              </DropdownMenuItem>
               <DropdownMenuItem
                 disabled={isDeleting}
                 onClick={() => void onDeleteTask(task.id)}

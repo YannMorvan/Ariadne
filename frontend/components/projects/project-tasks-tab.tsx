@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Circle } from "lucide-react"
 
 import { CreateTaskDialog } from "../tasks/create-task-dialog"
+import { EditTaskDialog } from "../tasks/edit-task-dialog"
 import { taskApi } from "@/api/task"
 import { TaskItem } from "../tasks/task-item"
 import type { Task, TaskStatus } from "@/types/task"
@@ -25,6 +26,8 @@ export function ProjectTasksTab({
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [updatingStatusId, setUpdatingStatusId] = useState<string | null>(null)
 
+  const [taskToEdit, setTaskToEdit] = useState<Task | null>(null)
+
   const getNextStatus = (current: TaskStatus): TaskStatus => {
     switch (current) {
       case "TODO":
@@ -42,10 +45,10 @@ export function ProjectTasksTab({
     try {
       setUpdatingStatusId(task.id)
       const nextStatus = getNextStatus(task.status)
-      await taskApi.updateTask(task.id, { status: nextStatus })
+      await taskApi.updateTask({ id: task.id, status: nextStatus })
       onTasksUpdated?.()
     } catch (error) {
-      console.error("Error updated status :", error)
+      console.error("Error updating status :", error)
     } finally {
       setUpdatingStatusId(null)
     }
@@ -61,6 +64,10 @@ export function ProjectTasksTab({
     } finally {
       setDeletingId(null)
     }
+  }
+
+  const handleEditTask = (task: Task) => {
+    setTaskToEdit(task)
   }
 
   const hasTasks = tasks && tasks.length > 0
@@ -97,12 +104,25 @@ export function ProjectTasksTab({
               task={task}
               isUpdating={updatingStatusId === task.id}
               isDeleting={deletingId === task.id}
-              onToggleStatus={handleToggleStatus}
+              onToggleStatus={() => handleToggleStatus(task)}
               onDeleteTask={handleDeleteTask}
+              onEditTask={handleEditTask}
             />
           ))}
         </div>
       )}
+
+      <EditTaskDialog
+        task={taskToEdit}
+        open={!!taskToEdit}
+        onOpenChange={(open) => {
+          if (!open) setTaskToEdit(null)
+        }}
+        onSuccess={() => {
+          setTaskToEdit(null)
+          onTasksUpdated?.()
+        }}
+      />
     </div>
   )
 }

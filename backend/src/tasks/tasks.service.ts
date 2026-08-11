@@ -122,11 +122,10 @@ export class TasksService {
 
   async updateTask(
     userId: string,
-    taskId: string,
     updateData: UpdateTaskDto,
   ): Promise<TaskEntity> {
     const task = await this.prisma.task.findUnique({
-      where: { id: taskId },
+      where: { id: updateData.id },
       include: {
         project: {
           include: {
@@ -155,7 +154,7 @@ export class TasksService {
     }
 
     const updatedTask = await this.prisma.task.update({
-      where: { id: taskId },
+      where: { id: updateData.id },
       data: updateData,
     });
 
