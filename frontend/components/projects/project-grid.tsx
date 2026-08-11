@@ -71,7 +71,7 @@ export function ProjectGrid({
   }
 
   function handleProjectEdited() {
-    setProjectToDelete(null)
+    setProjectToEdit(null)
     onProjectsUpdated?.()
   }
 

@@ -9,6 +9,7 @@ import { useTranslations } from "next-intl"
 
 interface DashboardHeaderProps {
   username: string
+  onProjectsUpdated?: () => void
 }
 
 const containerVariants = {
@@ -28,8 +29,16 @@ const itemVariants = {
   },
 }
 
-export function DashboardHeader({ username }: DashboardHeaderProps) {
+export function DashboardHeader({
+  username,
+  onProjectsUpdated,
+}: DashboardHeaderProps) {
   const tDashboard = useTranslations("dashboard")
+
+  function handleProjectCreated() {
+    console.log("Project created successfully!")
+    onProjectsUpdated?.()
+  }
 
   return (
     <motion.div
@@ -48,7 +57,7 @@ export function DashboardHeader({ username }: DashboardHeaderProps) {
       </motion.div>
 
       <motion.div variants={itemVariants} className="flex shrink-0 gap-2">
-        <CreateProjectDialog />
+        <CreateProjectDialog onSuccess={handleProjectCreated} />
         <Button variant="outline">
           <Command data-icon="inline-start" />
           {tDashboard("quickActions")}
