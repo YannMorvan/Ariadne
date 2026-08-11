@@ -1,14 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { useForm, Controller } from "react-hook-form"
+import { useForm, FormProvider } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2 } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -16,26 +16,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Field, FieldGroup } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 
 import {
   type CreateProjectInput,
   createProjectSchema,
 } from "@/lib/validations/project"
 import { projectApi } from "@/api/project"
-import { useTranslations } from "next-intl"
-import { useEnumOptions } from "@/hooks/use-enums"
+import { ProjectFormFields } from "./project-form-fields"
 
 interface CreateProjectDialogProps {
   onSuccess?: () => void
@@ -47,14 +34,8 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
   const [isLoading, setIsLoading] = useState(false)
   const tCommon = useTranslations("common")
   const tProjects = useTranslations("projects")
-  const { priorityItems, getPriorityInfo } = useEnumOptions()
-  const {
-    register,
-    handleSubmit,
-    control,
-    reset,
-    formState: { errors },
-  } = useForm({
+
+  const methods = useForm({
     resolver: zodResolver(createProjectSchema),
     defaultValues: {
       name: "",
@@ -69,16 +50,14 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
 
     try {
       await projectApi.createProject(data)
-      reset()
+      methods.reset()
       setOpen(false)
       onSuccess?.()
     } catch (error: unknown) {
       if (error instanceof Error) {
-        setApiError(
-          error.message || "An unexpected error occurred. Please try again."
-        )
+        setApiError(error.message || "An unexpected error occurred.")
       } else {
-        setApiError("An unexpected error occurred. Please try again.")
+        setApiError("An unexpected error occurred.")
       }
     } finally {
       setIsLoading(false)
@@ -96,96 +75,39 @@ export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
       />
 
       <DialogContent className="rounded-2xl border-border/50 bg-card/95 backdrop-blur-xl sm:max-w-md">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <DialogHeader>
-            <DialogTitle>{tProjects("create.title")}</DialogTitle>
-            <DialogDescription>{tProjects("create.details")}</DialogDescription>
-          </DialogHeader>
+        <FormProvider {...methods}>
+          <form onSubmit={methods.handleSubmit(onSubmit)}>
+            <DialogHeader>
+              <DialogTitle>{tProjects("create.title")}</DialogTitle>
+              <DialogDescription>
+                {tProjects("create.details")}
+              </DialogDescription>
+            </DialogHeader>
 
-          {apiError && (
-            <div className="my-3 rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-xs text-red-500">
-              {apiError}
-            </div>
-          )}
+            {apiError && (
+              <div className="my-3 rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-xs text-red-500">
+                {apiError}
+              </div>
+            )}
 
-          <FieldGroup className="my-4 space-y-2">
-            <Field>
-              <Label htmlFor="name">{tProjects("create.name")}</Label>
-              <Input
-                id="name"
-                placeholder="ex: Ariadne MVP"
-                {...register("name")}
-              />
-              {errors.name && (
-                <p className="mt-1 text-xs text-destructive">
-                  {errors.name.message}
-                </p>
-              )}
-            </Field>
+            <ProjectFormFields />
 
-            <Field>
-              <Label htmlFor="description">
-                {tProjects("create.description")}
-              </Label>
-              <Input
-                id="description"
-                placeholder={tProjects("create.descriptionPlaceholder")}
-                {...register("description")}
-              />
-            </Field>
-
-            <Field>
-              <Label htmlFor="priority">{tProjects("create.priority")}</Label>
-              <Controller
-                name="priority"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger id="priority" className="w-full">
-                      <SelectValue
-                        placeholder={tProjects("create.priorityPlaceholder")}
-                      >
-                        {field.value
-                          ? getPriorityInfo(field.value).label
-                          : undefined}
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm">
-                      <SelectGroup>
-                        <SelectLabel>
-                          {tProjects("create.priority")}
-                        </SelectLabel>
-                        {priorityItems.map((item) => (
-                          <SelectItem key={item.value} value={item.value}>
-                            {item.label}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-            </Field>
-          </FieldGroup>
-
-          <DialogFooter className="mt-6 gap-2">
-            <Button
-              type="button"
-              variant="ghost"
-              disabled={isLoading}
-              onClick={() => setOpen(false)}
-            >
-              {tCommon("cancel")}
-            </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
-              {isLoading ? tCommon("creating") : tCommon("create")}
-            </Button>
-          </DialogFooter>
-        </form>
+            <DialogFooter className="mt-6 gap-2">
+              <Button
+                type="button"
+                variant="ghost"
+                disabled={isLoading}
+                onClick={() => setOpen(false)}
+              >
+                {tCommon("cancel")}
+              </Button>
+              <Button type="submit" disabled={isLoading}>
+                {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
+                {isLoading ? tCommon("creating") : tCommon("create")}
+              </Button>
+            </DialogFooter>
+          </form>
+        </FormProvider>
       </DialogContent>
     </Dialog>
   )
