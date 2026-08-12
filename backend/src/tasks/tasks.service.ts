@@ -121,11 +121,12 @@ export class TasksService {
   }
 
   async updateTask(
+    taskId: string,
     userId: string,
     updateData: UpdateTaskDto,
   ): Promise<TaskEntity> {
     const task = await this.prisma.task.findUnique({
-      where: { id: updateData.id },
+      where: { id: taskId },
       include: {
         project: {
           include: {
@@ -145,17 +146,25 @@ export class TasksService {
       (member) => member.userId === userId,
     );
 
-    const canUpdate = isProjectOwner || isAssignee || isProjectMember;
-
-    if (!canUpdate) {
+    if (!isProjectOwner && !isAssignee && !isProjectMember) {
       throw new ForbiddenException(
         "You don't have permission to update this task",
       );
     }
 
+    // Extract ID and convert dueDate if present
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, dueDate, ...restData } = updateData;
+
+    const dataToUpdate: Record<string, any> = { ...restData };
+
+    if (dueDate !== undefined) {
+      dataToUpdate.dueDate = dueDate ? new Date(dueDate) : null;
+    }
+
     const updatedTask = await this.prisma.task.update({
-      where: { id: updateData.id },
-      data: updateData,
+      where: { id: taskId },
+      data: dataToUpdate,
     });
 
     return new TaskEntity(updatedTask);

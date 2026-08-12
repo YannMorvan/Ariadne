@@ -1,8 +1,9 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { PartialType } from '@nestjs/mapped-types';
+import { IsOptional, IsString } from 'class-validator';
 import { CreateTaskDto } from './create-task.dto';
 
-export class UpdateTaskDto extends CreateTaskDto {
+export class UpdateTaskDto extends PartialType(CreateTaskDto) {
+  @IsOptional()
   @IsString()
-  @IsNotEmpty({ message: 'The project ID is required' })
-  id!: string;
+  id?: string;
 }
