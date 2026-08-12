@@ -28,7 +28,7 @@ export default function DashboardPage() {
         await Promise.allSettled([
           projectApi.getProjects(),
           projectApi.getRecentProjects(),
-          taskApi.getPriorityTasks(4),
+          taskApi.getPriorityTasks(5),
           dashboardApi.getStats(),
           dashboardApi.getWeeklyActivity(),
         ])

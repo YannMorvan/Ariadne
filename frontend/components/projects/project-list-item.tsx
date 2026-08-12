@@ -52,15 +52,9 @@ export function ProjectListItem({
 
       <div className="flex shrink-0 items-center gap-4">
         <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 text-muted-foreground hover:text-foreground"
-            >
-              <MoreHorizontal className="size-4" />
-              <span className="sr-only">Actions</span>
-            </Button>
+          <DropdownMenuTrigger className="flex items-center justify-center rounded-lg p-1 text-muted-foreground transition-colors hover:bg-accent/50 hover:text-accent-foreground focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
+            <MoreHorizontal className="size-4" />
+            <span className="sr-only">Actions</span>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"

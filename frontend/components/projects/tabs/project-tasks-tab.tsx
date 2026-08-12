@@ -3,10 +3,10 @@
 import { useState } from "react"
 import { Circle } from "lucide-react"
 
-import { CreateTaskDialog } from "../tasks/create-task-dialog"
-import { EditTaskDialog } from "../tasks/edit-task-dialog"
+import { CreateTaskDialog } from "../../tasks/create-task-dialog"
+import { EditTaskDialog } from "../../tasks/edit-task-dialog"
 import { taskApi } from "@/api/task"
-import { TaskItem } from "../tasks/task-item"
+import { TaskItem } from "../../tasks/task-item"
 import type { Task, TaskStatus } from "@/types/task"
 import { useTranslations } from "next-intl"
 

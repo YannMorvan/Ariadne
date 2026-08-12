@@ -5,6 +5,7 @@ import { getLocale, getMessages } from "next-intl/server"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
+import type { Metadata } from "next"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -12,6 +13,14 @@ const fontMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
 })
+
+export const metadata: Metadata = {
+  title: {
+    default: "Ariadne",
+    template: "%s | Ariadne",
+  },
+  description: "Project management platform",
+}
 
 export default async function RootLayout({
   children,

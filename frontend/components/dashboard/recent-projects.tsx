@@ -20,7 +20,7 @@ import { Progress } from "@/components/ui/progress"
 import { cn } from "@/lib/utils"
 import type { Project, ProjectPriority } from "@/types"
 import { useTranslations } from "next-intl"
-import { CreateProjectDialog } from "../projects/create-project-dialog"
+import { CreateProjectDialog } from "../projects/dialogs/create-project-dialog"
 import { useEnumOptions } from "@/hooks/use-enums"
 
 interface RecentProjectsProps {

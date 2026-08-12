@@ -10,13 +10,13 @@ import { ProjectCard } from "@/components/projects/project-card"
 import { ProjectListItem } from "@/components/projects/project-list-item"
 import { ProjectStats } from "@/components/projects/project-stats"
 import { ProjectFilters } from "@/components/projects/project-filters"
-import { CreateProjectDialog } from "@/components/projects/create-project-dialog"
-import { DeleteProjectDialog } from "@/components/projects/delete-project-dialog"
+import { CreateProjectDialog } from "@/components/projects/dialogs/create-project-dialog"
+import { DeleteProjectDialog } from "@/components/projects/dialogs/delete-project-dialog"
 import { EmptyProjectsState } from "@/components/projects/empty-projects-state"
 
 import type { Project, StatMetric } from "@/types"
 import { useTranslations } from "next-intl"
-import { EditProjectDialog } from "./edit-project-dialog"
+import { EditProjectDialog } from "./dialogs/edit-project-dialog"
 
 interface ProjectGridProps {
   projects: Project[]
