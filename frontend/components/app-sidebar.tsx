@@ -1,11 +1,14 @@
 "use client"
 
+import { useState } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import {
   CheckSquare,
   FolderKanban,
   LayoutDashboard,
+  LogOut,
+  Loader2,
   Settings,
   Sparkles,
   Trophy,
@@ -35,8 +38,11 @@ function getInitials(name: string) {
 
 export function AppSidebar() {
   const pathname = usePathname()
-  const { user } = useUser()
+  const router = useRouter()
+  const { user, logout } = useUser()
   const t = useTranslations("navigation")
+
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
 
   const mainNav = [
     { title: t("dashboard"), href: "/", icon: LayoutDashboard },
@@ -52,6 +58,20 @@ export function AppSidebar() {
   function isActive(href: string) {
     if (href === "/") return pathname === "/"
     return pathname.startsWith(href)
+  }
+
+  const handleLogout = async () => {
+    if (isLoggingOut) return
+    setIsLoggingOut(true)
+
+    try {
+      await logout()
+      router.push("/login")
+      router.refresh()
+    } catch (error) {
+      console.error("Logout error:", error)
+      setIsLoggingOut(false)
+    }
   }
 
   return (
@@ -121,21 +141,37 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg">
-              <Avatar size="sm">
-                <AvatarFallback>
-                  {getInitials(user?.username || "JD")}
-                </AvatarFallback>
-              </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">
-                  {user?.username || "JD"}
-                </span>
-                <span className="truncate text-xs text-muted-foreground">
-                  Niveau 8
-                </span>
+            <div className="flex items-center justify-between gap-2 p-1.5">
+              <div className="flex min-w-0 items-center gap-2">
+                <Avatar size="sm">
+                  <AvatarFallback>
+                    {getInitials(user?.username || "U")}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="grid min-w-0 flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-medium">
+                    {user?.username || "..."}
+                  </span>
+                  <span className="truncate text-xs text-muted-foreground">
+                    {user?.level ? `Level ${user.level}` : "Level 1"}
+                  </span>
+                </div>
               </div>
-            </SidebarMenuButton>
+
+              <SidebarMenuButton
+                size="sm"
+                onClick={() => void handleLogout()}
+                disabled={isLoggingOut}
+                tooltip="Logout"
+                className="size-8 p-0 text-muted-foreground hover:bg-destructive/10 hover:text-destructive disabled:opacity-50"
+              >
+                {isLoggingOut ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <LogOut className="size-4" />
+                )}
+              </SidebarMenuButton>
+            </div>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

@@ -15,4 +15,10 @@ export const authApi = {
       body: JSON.stringify(payload),
     })
   },
+
+  logout: () => {
+    return apiClient("/auth/logout", {
+      method: "POST",
+    })
+  },
 }
