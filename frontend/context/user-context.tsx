@@ -9,12 +9,14 @@ import {
   ReactNode,
 } from "react"
 import { userApi } from "@/api/user"
+import { authApi } from "@/api/auth"
 import { User } from "@/types/user"
 
 interface UserContextType {
   user: User | null
   isLoading: boolean
   refetchUser: () => Promise<void>
+  logout: () => Promise<void> // 👈 Ajout du type
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined)
@@ -57,8 +59,18 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setReloadIndex((prev) => prev + 1)
   }, [])
 
+  const logout = useCallback(async () => {
+    try {
+      await authApi.logout()
+    } catch (error) {
+      console.error("Error logging out:", error)
+    } finally {
+      setUser(null)
+    }
+  }, [])
+
   return (
-    <UserContext.Provider value={{ user, isLoading, refetchUser }}>
+    <UserContext.Provider value={{ user, isLoading, refetchUser, logout }}>
       {children}
     </UserContext.Provider>
   )
