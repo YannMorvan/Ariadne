@@ -53,7 +53,7 @@ export default function ProjectDetailsClient({
 
   useEffect(() => {
     if (project?.name) {
-      document.title = `${project.name} - Ariadne`
+      document.title = `${project.name} | Ariadne`
     }
   }, [project?.name])
 
