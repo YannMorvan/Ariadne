@@ -27,7 +27,7 @@ describe("createProjectSchema", () => {
 
   it("fails when project name is missing or too short", () => {
     const invalidData = {
-      name: "A", // Moins de 2 caractères
+      name: "A",
       priority: "MEDIUM",
     }
 
@@ -44,7 +44,7 @@ describe("createProjectSchema", () => {
   it("fails when priority is an invalid value", () => {
     const invalidData = {
       name: "Valid Name",
-      priority: "CRITICAL", // Pas dans l'enum LOW | MEDIUM | HIGH | URGENT
+      priority: "CRITICAL",
     }
 
     const result = createProjectSchema.safeParse(invalidData)
