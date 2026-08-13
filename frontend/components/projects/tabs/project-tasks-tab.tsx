@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select"
 import { DataPagination } from "@/components/ui/data-pagination"
 import { Field, FieldLabel } from "@/components/ui/field"
+import { filterAndSortTasks } from "@/lib/utils/task-utils"
 
 interface ProjectTasksTabProps {
   projectName?: string
@@ -71,26 +72,11 @@ export function ProjectTasksTab({
   }
 
   const filteredTasks = useMemo(() => {
-    return tasks
-      .filter((task) => {
-        const matchesSearch =
-          task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          task.description?.toLowerCase().includes(searchQuery.toLowerCase())
-
-        const matchesStatus =
-          statusFilter === "ALL" || task.status === statusFilter
-
-        const matchesPriority =
-          priorityFilter === "ALL" || task.priority === priorityFilter
-
-        return matchesSearch && matchesStatus && matchesPriority
-      })
-      .sort((a, b) => {
-        const statusDiff = STATUS_ORDER[a.status] - STATUS_ORDER[b.status]
-        if (statusDiff !== 0) return statusDiff
-
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      })
+    return filterAndSortTasks(tasks, {
+      searchQuery,
+      statusFilter,
+      priorityFilter,
+    })
   }, [tasks, searchQuery, statusFilter, priorityFilter])
 
   const totalPages = Math.ceil(filteredTasks.length / pageSize)
