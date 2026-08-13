@@ -17,6 +17,10 @@
     "seeLess": "Voir moins",
     "priority": "Priorité",
     "status": "Statut",
+    "search": "Recherche",
+    "searchPlaceholder": "Rechercher...",
+    "reset": "Réinitialiser",
+    "display": "Afficher",
     "clickToChange": "Cliquez pour changer",
     "loading": "Chargement..."
   },
@@ -31,12 +35,14 @@
   },
   "enums": {
     "priority": {
+      "ALL": "Tous",
       "LOW": "Bas",
       "MEDIUM": "Moyen",
       "HIGH": "Haut",
       "URGENT": "Urgent"
     },
     "status": {
+      "ALL": "Tous",
       "TODO": "À faire",
       "IN_PROGRESS": "En cours",
       "DONE": "Terminé"
