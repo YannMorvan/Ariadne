@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 export const createProjectSchema = z.object({
-  name: z.string().min(2, "Le nom doit faire au moins 2 caractères"),
+  name: z.string().min(2, "The name must be at least 2 characters long"),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]),
   description: z.string().optional(),
 })

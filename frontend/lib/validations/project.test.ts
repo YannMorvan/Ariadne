@@ -36,7 +36,7 @@ describe("createProjectSchema", () => {
 
     if (!result.success) {
       expect(result.error.issues[0].message).toBe(
-        "Le nom doit faire au moins 2 caractères"
+        "The name must be at least 2 characters long"
       )
     }
   })
