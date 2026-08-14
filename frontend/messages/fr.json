@@ -261,6 +261,10 @@
       "statusPlaceholder": "Sélectionne un statut",
       "estimatedTime": "Temps estimé",
       "estimatedTimePlaceholder": "Temps estimé en heures..."
+    },
+    "edit": {
+      "title": "Modifier la tâche",
+      "details": "Modifie les détails de ta tâche."
     }
   }
 }
