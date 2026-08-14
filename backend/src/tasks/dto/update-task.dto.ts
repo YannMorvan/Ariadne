@@ -1,9 +1,4 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { IsOptional, IsString } from 'class-validator';
+import { PartialType } from '@nestjs/swagger';
 import { CreateTaskDto } from './create-task.dto';
 
-export class UpdateTaskDto extends PartialType(CreateTaskDto) {
-  @IsOptional()
-  @IsString()
-  id?: string;
-}
+export class UpdateTaskDto extends PartialType(CreateTaskDto) {}

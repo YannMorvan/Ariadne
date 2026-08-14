@@ -10,9 +10,7 @@ export const taskApi = {
     })
   },
 
-  updateTask: async (
-    payload: Partial<Task> & { id: string }
-  ): Promise<Task> => {
+  updateTask: async (payload: Partial<Task>): Promise<Task> => {
     return apiClient<Task>(`/tasks/${payload.id}`, {
       method: "PATCH",
       body: JSON.stringify(payload),

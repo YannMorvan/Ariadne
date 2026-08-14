@@ -7,10 +7,30 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskEntity } from './entities/task.entity';
+import { Project, ProjectMember, Task } from '.prisma/client';
+
+type TaskWithProjectAndMembers = Task & {
+  project: Project & {
+    members: ProjectMember[];
+  };
+};
 
 @Injectable()
 export class TasksService {
   constructor(private prisma: PrismaService) {}
+
+  private canUserAccessTask(
+    task: TaskWithProjectAndMembers,
+    userId: string,
+  ): boolean {
+    const isProjectOwner = task.project.ownerId === userId;
+    const isAssignee = task.assigneeId === userId;
+    const isProjectMember = task.project.members.some(
+      (member) => member.userId === userId,
+    );
+
+    return isProjectOwner || isAssignee || isProjectMember;
+  }
 
   async createTask(
     taskDto: CreateTaskDto,
@@ -140,31 +160,15 @@ export class TasksService {
       throw new NotFoundException('Task not found');
     }
 
-    const isProjectOwner = task.project.ownerId === userId;
-    const isAssignee = task.assigneeId === userId;
-    const isProjectMember = task.project.members.some(
-      (member) => member.userId === userId,
-    );
-
-    if (!isProjectOwner && !isAssignee && !isProjectMember) {
+    if (!this.canUserAccessTask(task, userId)) {
       throw new ForbiddenException(
         "You don't have permission to update this task",
       );
     }
 
-    // Extract ID and convert dueDate if present
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { id, dueDate, ...restData } = updateData;
-
-    const dataToUpdate: Record<string, any> = { ...restData };
-
-    if (dueDate !== undefined) {
-      dataToUpdate.dueDate = dueDate ? new Date(dueDate) : null;
-    }
-
     const updatedTask = await this.prisma.task.update({
       where: { id: taskId },
-      data: dataToUpdate,
+      data: updateData,
     });
 
     return new TaskEntity(updatedTask);
@@ -186,15 +190,7 @@ export class TasksService {
       throw new NotFoundException('Task not found');
     }
 
-    const isProjectOwner = task.project.ownerId === userId;
-    const isAssignee = task.assigneeId === userId;
-    const isProjectMember = task.project.members.some(
-      (member) => member.userId === userId,
-    );
-
-    const canDelete = isProjectOwner || isAssignee || isProjectMember;
-
-    if (!canDelete) {
+    if (!this.canUserAccessTask(task, userId)) {
       throw new ForbiddenException(
         "You don't have permission to delete this task",
       );
