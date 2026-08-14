@@ -147,7 +147,7 @@ export function ProjectTasksTab({
       <div className="flex items-center justify-between gap-4">
         <div className="min-w-0">
           <h3 className="text-base font-semibold tracking-tight">
-            {tTasks("titleProjectsTasks")}
+            {tTasks("projectsTasks")}
           </h3>
           <p className="truncate text-xs text-muted-foreground">
             {hasTasks

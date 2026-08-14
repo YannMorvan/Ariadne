@@ -201,7 +201,7 @@
   },
   "tasks": {
     "title": "Tâches",
-    "titleProjectsTasks": "Tâches du projet",
+    "projectsTasks": "Tâches du projet",
     "searchPlaceholder": "Rechercher une tâche",
     "noResults": "Aucune tâche trouvée.",
     "noTasks": "Pas encore de tâches",
