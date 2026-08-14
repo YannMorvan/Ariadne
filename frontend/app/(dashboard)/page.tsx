@@ -9,6 +9,7 @@ import { useUser } from "@/context/user-context"
 import { useDashboardMetrics } from "@/lib/metrics/dashboard-metrics"
 import { recentActivities } from "@/lib/mock/dashboard-data"
 import { Project, Task, DashboardStatsDto, ActivityDataPoint } from "@/types"
+import { useTranslations } from "next-intl"
 import { useCallback, useEffect, useState } from "react"
 
 export default function DashboardPage() {
@@ -19,6 +20,7 @@ export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStatsDto | null>(null)
   const [weeklyActivity, setWeeklyActivity] = useState<ActivityDataPoint[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const tCommon = useTranslations("common")
 
   const metrics = useDashboardMetrics(stats ?? undefined) ?? []
 
@@ -68,7 +70,7 @@ export default function DashboardPage() {
     return (
       <div className="mx-auto flex min-h-[60vh] max-w-7xl items-center justify-center">
         <div className="animate-pulse text-sm font-medium text-muted-foreground">
-          Loading dashboard data...
+          {tCommon("loading")}
         </div>
       </div>
     )
@@ -78,7 +80,7 @@ export default function DashboardPage() {
     <div className="mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8 lg:py-10">
       <div className="space-y-8">
         <DashboardHeader
-          username={user?.username || "JD"}
+          username={user?.username || "..."}
           onProjectsUpdated={fetchDashboardData}
         />
         <DashboardGrid
@@ -88,6 +90,7 @@ export default function DashboardPage() {
           activities={recentActivities}
           tasks={priorityTasksData}
           onTasksUpdated={fetchDashboardData}
+          onProjectsCreated={fetchDashboardData}
         />
       </div>
     </div>

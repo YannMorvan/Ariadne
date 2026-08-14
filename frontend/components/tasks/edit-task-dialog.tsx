@@ -37,6 +37,7 @@ export function EditTaskDialog({
   const [apiError, setApiError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const tCommon = useTranslations("common")
+  const tTasksEdit = useTranslations("tasks.edit")
 
   const methods = useForm({
     resolver: zodResolver(updateTaskSchema),
@@ -86,10 +87,8 @@ export function EditTaskDialog({
             <input type="hidden" {...methods.register("id")} />
 
             <DialogHeader>
-              <DialogTitle>Edit Task</DialogTitle>
-              <DialogDescription>
-                Update the details of your task here.
-              </DialogDescription>
+              <DialogTitle>{tTasksEdit("title")}</DialogTitle>
+              <DialogDescription>{tTasksEdit("details")}</DialogDescription>
             </DialogHeader>
 
             {apiError && (

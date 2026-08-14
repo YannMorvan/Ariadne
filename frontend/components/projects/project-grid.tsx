@@ -166,6 +166,7 @@ export function ProjectGrid({
         {filteredProjects.length === 0 ? (
           <EmptyProjectsState
             hasFilters={searchQuery !== "" || selectedPriority !== "ALL"}
+            onProjectsCreated={handleProjectCreated}
           />
         ) : viewMode === "grid" ? (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

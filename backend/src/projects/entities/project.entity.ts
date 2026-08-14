@@ -9,7 +9,7 @@ export class ProjectEntity implements PrismaProject {
   name!: string;
 
   @ApiProperty({
-    example: 'Développement du dashboard et du backend NestJS',
+    example: 'This is a sample project description.',
     nullable: true,
   })
   description!: string | null;

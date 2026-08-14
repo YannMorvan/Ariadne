@@ -25,6 +25,7 @@ import { useEnumOptions } from "@/hooks/use-enums"
 
 interface RecentProjectsProps {
   projects: Project[]
+  onProjectsCreated?: () => void
 }
 
 function getInitials(name?: string): string {
@@ -40,7 +41,10 @@ function getInitials(name?: string): string {
     .toUpperCase()
 }
 
-export function RecentProjects({ projects }: RecentProjectsProps) {
+export function RecentProjects({
+  projects,
+  onProjectsCreated,
+}: RecentProjectsProps) {
   const tDashboard = useTranslations("dashboard")
   const tProjects = useTranslations("projects")
 
@@ -72,7 +76,7 @@ export function RecentProjects({ projects }: RecentProjectsProps) {
           <p className="mt-1 mb-6 max-w-sm text-sm text-muted-foreground">
             {tProjects("noProjectsDescription")}
           </p>
-          {<CreateProjectDialog />}
+          {<CreateProjectDialog onSuccess={onProjectsCreated} />}
         </CardContent>
       ) : (
         <CardContent className="space-y-4">

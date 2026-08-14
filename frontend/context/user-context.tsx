@@ -16,7 +16,7 @@ interface UserContextType {
   user: User | null
   isLoading: boolean
   refetchUser: () => Promise<void>
-  logout: () => Promise<void> // 👈 Ajout du type
+  logout: () => Promise<void>
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined)

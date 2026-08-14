@@ -50,6 +50,7 @@ export default function ProjectDetailsClient({
   const priority = getPriorityInfo(project?.priority || "MEDIUM", "project")
 
   const tCommon = useTranslations("common")
+  const tProjects = useTranslations("projects")
 
   useEffect(() => {
     if (project?.name) {
@@ -153,14 +154,14 @@ export default function ProjectDetailsClient({
   if (error || !project) {
     return (
       <div className="mx-auto max-w-7xl space-y-4 px-4 py-12 text-center">
-        <h2 className="text-xl font-semibold">Project not found</h2>
+        <h2 className="text-xl font-semibold">{tProjects("noResults")}</h2>
         <p className="text-sm text-muted-foreground">
-          {error || "This project does not exist or has been deleted."}
+          {error || tProjects("noResults")}
         </p>
         <Link href="/projects">
           <Button variant="outline" className="gap-2 rounded-xl">
             <ArrowLeft className="size-4" />
-            Return to Projects
+            {tProjects("returnToProjects")}
           </Button>
         </Link>
       </div>
@@ -185,7 +186,7 @@ export default function ProjectDetailsClient({
             className="gap-2 text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="size-4" />
-            Retour aux projets
+            {tProjects("returnToProjects")}
           </Button>
         </Link>
 
@@ -197,7 +198,7 @@ export default function ProjectDetailsClient({
             className="gap-2 rounded-xl border-border/50 bg-card/50 backdrop-blur-sm"
           >
             <Users className="size-3.5" />
-            Members
+            {tProjects("members.title")}
           </Button>
 
           <Button
@@ -242,8 +243,7 @@ export default function ProjectDetailsClient({
               </Badge>
             </div>
             <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-              {project.description ||
-                "No description provided for this project."}
+              {project.description || tProjects("noDescription")}
             </p>
           </div>
         </div>
@@ -251,7 +251,10 @@ export default function ProjectDetailsClient({
         <div className="space-y-2 border-t border-border/30 pt-4">
           <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
             <span>
-              Progress ({completedTasksCount}/{totalTasksCount} tasks)
+              {tProjects("progressCount", {
+                current: completedTasksCount,
+                max: totalTasksCount,
+              })}
             </span>
             <span className="text-foreground">{progressPercentage}%</span>
           </div>
@@ -266,11 +269,11 @@ export default function ProjectDetailsClient({
         <TabsList className="rounded-xl border border-border/50 bg-card/50 p-1 backdrop-blur-sm">
           <TabsTrigger value="tasks" className="gap-2 rounded-lg text-xs">
             <CheckSquare className="size-3.5" />
-            Tasks ({totalTasksCount})
+            {tProjects("tasksCount", { count: totalTasksCount })}
           </TabsTrigger>
           <TabsTrigger value="notes" className="gap-2 rounded-lg text-xs">
             <Calendar className="size-3.5" />
-            Notes & Specifications
+            {tProjects("notes.title")}
           </TabsTrigger>
         </TabsList>
 

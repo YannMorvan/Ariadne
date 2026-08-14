@@ -95,7 +95,7 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         <CardDescription className="line-clamp-2 text-sm text-muted-foreground">
-          {project.description || "No description provided for this project."}
+          {project.description || tProjects("noDescription")}
         </CardDescription>
 
         <div className="flex items-center justify-between border-t border-border/30 pt-2 text-xs text-muted-foreground">

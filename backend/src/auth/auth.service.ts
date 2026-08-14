@@ -27,10 +27,10 @@ export class AuthService {
 
     if (existingUser) {
       if (existingUser.email === email) {
-        throw new ConflictException('Cet email est déjà utilisé');
+        throw new ConflictException('This email is already in use');
       }
       if (existingUser.username === username) {
-        throw new ConflictException("Ce nom d'utilisateur est déjà pris");
+        throw new ConflictException('This username is already taken');
       }
     }
 
@@ -48,7 +48,7 @@ export class AuthService {
     delete (userWithoutPassword as { password?: string }).password;
 
     return {
-      message: 'Inscription réussie',
+      message: 'Registration successful',
       user: userWithoutPassword,
     };
   }
@@ -59,7 +59,7 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new UnauthorizedException('Identifiants invalides');
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     const isPasswordValid = await bcrypt.compare(
@@ -67,7 +67,7 @@ export class AuthService {
       user.password,
     );
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Identifiants invalides');
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     const payload = {
@@ -79,7 +79,7 @@ export class AuthService {
     const accessToken = await this.jwtService.signAsync(payload);
 
     return {
-      message: 'Connexion réussie',
+      message: 'Login successful',
       accessToken,
       user: {
         id: user.id,

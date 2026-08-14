@@ -7,6 +7,7 @@
     "updating": "Updating...",
     "cancel": "Cancel",
     "delete": "Delete",
+    "deleting": "Deleting...",
     "edit": "Edit",
     "create": "Create",
     "creating": "Creating...",
@@ -33,6 +34,11 @@
     "5": "Fri",
     "6": "Sat"
   },
+  "languages": {
+    "title": "Language",
+    "en": "English",
+    "fr": "French"
+  },
   "enums": {
     "priority": {
       "ALL": "All",
@@ -46,6 +52,10 @@
       "TODO": "To do",
       "IN_PROGRESS": "In progress",
       "DONE": "Done"
+    },
+    "roles": {
+      "ADMIN": "Admin",
+      "MEMBER": "Member"
     }
   },
   "notFound": {
@@ -75,7 +85,8 @@
       "photoLimits": "JPG, PNG or GIF. 2 MB maximum.",
       "username": "Username",
       "email": "Email address",
-      "role": "Bio / Role"
+      "role": "Bio / Role",
+      "rolePlaceholder": "Software Engineer / Student"
     },
     "security": {
       "tab": "Security",
@@ -156,17 +167,26 @@
   "projects": {
     "title": "Projects",
     "description": "Manage and track the progress of your projects in one place.",
+    "returnToProjects": "Return to projects",
     "searchPlaceholder": "Search projects...",
     "noResults": "No projects found.",
     "noProjects": "No projects at the moment.",
     "noProjectsDescription": "Start by creating your first project to track your tasks and progress.",
+    "noDescription": "No description provided for this project.",
     "createProject": "+ New Project",
     "totalProjects": "Total Projects",
     "urgentAndBlocked": "Urgent & Blocked",
     "completionRate": "Completion Rate",
     "globalProgress": "Global Progress",
+    "progressCount": "Progress ({current} / {max} tasks)",
     "archived": "Archived",
     "tasksCount": "{count} {count, plural, =0 {Tasks} =1 {Task} other {Tasks}}",
+    "notes": {
+      "title": "Notes & Discussions",
+      "description": "Space for project notes, discussions, and specifications.",
+      "noNotes": "No notes at the moment.",
+      "noNotesDescription": "Start by creating a note to document your project and collaborate with your team."
+    },
     "create": {
       "title": "Create a Project",
       "details": "Fill in the details for your new project.",
@@ -177,6 +197,22 @@
       "priorities": "Priorities",
       "priority": "Priority",
       "priorityPlaceholder": "Select a priority"
+    },
+    "edit": {
+      "title": "Edit Project",
+      "details": "Make changes to your project here."
+    },
+    "delete": {
+      "title": "Delete Project",
+      "description": "Are you sure you want to delete {projectName}? This action is irreversible and will remove all associated data.",
+      "confirmDelete": "Confirm Deletion"
+    },
+    "members": {
+      "title": "Project Members",
+      "description": "Manage access and invited members to collaborate on this project.",
+      "inviteMember": "Invite",
+      "inviteMemberPlaceholder": "Enter email address...",
+      "currentMembers": "Current Members"
     },
     "metrics": {
       "totalProjects": {
@@ -224,6 +260,10 @@
       "statusPlaceholder": "Select a status",
       "estimatedTime": "Estimated Time",
       "estimatedTimePlaceholder": "Estimated time in hours..."
+    },
+    "edit": {
+      "title": "Edit Task",
+      "details": "Make changes to your task here."
     }
   }
 }

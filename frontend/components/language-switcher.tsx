@@ -1,7 +1,7 @@
 "use client"
 
 import { useTransition } from "react"
-import { useLocale } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { Globe, Loader2 } from "lucide-react"
 
@@ -17,6 +17,9 @@ export function LanguageSwitcher() {
   const locale = useLocale()
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
+  const tLanguages = useTranslations("languages")
+
+  const currentLanguageLabel = tLanguages(`${locale}`)
 
   const handleLanguageChange = (newLocale: string) => {
     if (newLocale === locale) return
@@ -29,7 +32,7 @@ export function LanguageSwitcher() {
 
   return (
     <Select
-      value={locale}
+      value={currentLanguageLabel}
       onValueChange={(val) => val && handleLanguageChange(val)}
       disabled={isPending}
     >
@@ -40,12 +43,12 @@ export function LanguageSwitcher() {
           ) : (
             <Globe className="size-4 text-muted-foreground" />
           )}
-          <SelectValue placeholder="Langue" />
+          <SelectValue placeholder={tLanguages("title")} />
         </div>
       </SelectTrigger>
       <SelectContent className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm">
-        <SelectItem value="fr">Français (FR)</SelectItem>
-        <SelectItem value="en">English (EN)</SelectItem>
+        <SelectItem value="fr">{tLanguages("fr")}</SelectItem>
+        <SelectItem value="en">{tLanguages("en")}</SelectItem>
       </SelectContent>
     </Select>
   )

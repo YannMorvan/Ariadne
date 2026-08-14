@@ -8,7 +8,7 @@ export class UserEntity implements Omit<PrismaUser, 'password'> {
   @ApiProperty({ example: 'user@example.com' })
   email!: string;
 
-  @ApiProperty({ example: 'yann' })
+  @ApiProperty({ example: 'user' })
   username!: string;
 
   @ApiProperty({ example: 'https://example.com/avatar.png', nullable: true })

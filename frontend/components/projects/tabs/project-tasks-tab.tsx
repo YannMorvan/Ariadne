@@ -65,12 +65,6 @@ export function ProjectTasksTab({
     }
   }
 
-  const STATUS_ORDER: Record<TaskStatus, number> = {
-    IN_PROGRESS: 1,
-    TODO: 2,
-    DONE: 3,
-  }
-
   const filteredTasks = useMemo(() => {
     return filterAndSortTasks(tasks, {
       searchQuery,

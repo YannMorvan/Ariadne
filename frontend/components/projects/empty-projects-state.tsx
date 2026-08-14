@@ -6,9 +6,13 @@ import { useTranslations } from "next-intl"
 
 interface EmptyProjectsStateProps {
   hasFilters: boolean
+  onProjectsCreated?: () => void
 }
 
-export function EmptyProjectsState({ hasFilters }: EmptyProjectsStateProps) {
+export function EmptyProjectsState({
+  hasFilters,
+  onProjectsCreated,
+}: EmptyProjectsStateProps) {
   const tProjects = useTranslations("projects")
 
   return (
@@ -24,7 +28,7 @@ export function EmptyProjectsState({ hasFilters }: EmptyProjectsStateProps) {
           ? tProjects("noResultsDescription")
           : tProjects("noProjectsDescription")}
       </p>
-      {!hasFilters && <CreateProjectDialog />}
+      {!hasFilters && <CreateProjectDialog onSuccess={onProjectsCreated} />}
     </div>
   )
 }
