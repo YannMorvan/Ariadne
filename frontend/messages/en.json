@@ -75,7 +75,8 @@
       "photoLimits": "JPG, PNG or GIF. 2 MB maximum.",
       "username": "Username",
       "email": "Email address",
-      "role": "Bio / Role"
+      "role": "Bio / Role",
+      "rolePlaceholder": "Software Engineer / Student"
     },
     "security": {
       "tab": "Security",
@@ -156,6 +157,7 @@
   "projects": {
     "title": "Projects",
     "description": "Manage and track the progress of your projects in one place.",
+    "returnToProjects": "Return to projects",
     "searchPlaceholder": "Search projects...",
     "noResults": "No projects found.",
     "noProjects": "No projects at the moment.",
@@ -165,8 +167,10 @@
     "urgentAndBlocked": "Urgent & Blocked",
     "completionRate": "Completion Rate",
     "globalProgress": "Global Progress",
+    "progressCount": "Progress ({current} / {max} tasks)",
     "archived": "Archived",
     "tasksCount": "{count} {count, plural, =0 {Tasks} =1 {Task} other {Tasks}}",
+    "notes": "Notes & Discussions",
     "create": {
       "title": "Create a Project",
       "details": "Fill in the details for your new project.",
@@ -177,6 +181,9 @@
       "priorities": "Priorities",
       "priority": "Priority",
       "priorityPlaceholder": "Select a priority"
+    },
+    "members": {
+      "title": "Members"
     },
     "metrics": {
       "totalProjects": {

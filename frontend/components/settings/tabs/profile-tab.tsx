@@ -89,8 +89,8 @@ export default function ProfileTab() {
           </Label>
           <Input
             id="bio"
-            placeholder="ex: Software Engineer / Student at Epitech"
-            defaultValue="Full-stack Developer & Student"
+            placeholder={tSettings("profile.rolePlaceholder")}
+            value={user?.description || ""}
             className="rounded-xl border-border/50 bg-card/40 focus:bg-card/80"
           />
         </div>

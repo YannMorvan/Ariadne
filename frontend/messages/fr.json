@@ -75,7 +75,8 @@
       "photoLimits": "JPG, PNG ou GIF. 2 Mo maximum.",
       "username": "Nom d'utilisateur",
       "email": "Adresse e-mail",
-      "role": "Bio / Rôle"
+      "role": "Bio / Rôle",
+      "rolePlaceholder": "ex: Ingénieur logiciel / Étudiant"
     },
     "security": {
       "tab": "Sécurité",
@@ -156,6 +157,7 @@
   "projects": {
     "title": "Projets",
     "description": "Gère tes projets et collabore avec ton équipe.",
+    "returnToProjects": "Retour aux projets",
     "searchPlaceholder": "Rechercher un projet...",
     "noResults": "Aucun projet trouvé.",
     "noProjects": "Aucun projet pour le moment.",
@@ -165,8 +167,13 @@
     "urgentAndBlocked": "Urgences & Bloqueurs",
     "completionRate": "Taux de complétion",
     "globalProgress": "Progression globale",
+    "progressCount": "Progression ({current} / {max} tâches)",
     "archived": "Archivés",
     "tasksCount": "{count} {count, plural, =0 {Tâche} =1 {Tâche} other {Tâches}}",
+    "notes": "Notes & Discussions",
+    "members": {
+      "title": "Membres"
+    },
     "create": {
       "title": "Créer un projet",
       "details": "Remplis les détails de ton nouveau projet.",
