@@ -22,6 +22,7 @@ interface DashboardGridProps {
   activities: ActivityItem[]
   tasks: Task[]
   onTasksUpdated?: () => void
+  onProjectsCreated?: () => void
 }
 
 const sectionVariants = {
@@ -44,6 +45,7 @@ export function DashboardGrid({
   activities,
   tasks,
   onTasksUpdated,
+  onProjectsCreated,
 }: DashboardGridProps) {
   return (
     <div className="space-y-6">
@@ -66,7 +68,10 @@ export function DashboardGrid({
         <div className="lg:col-span-2">
           <ActivityChart data={weeklyActivity} />
         </div>
-        <RecentProjects projects={projects} />
+        <RecentProjects
+          projects={projects}
+          onProjectsCreated={onProjectsCreated}
+        />
       </motion.div>
 
       <motion.div

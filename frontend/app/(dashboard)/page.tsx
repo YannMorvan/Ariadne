@@ -78,7 +78,7 @@ export default function DashboardPage() {
     <div className="mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8 lg:py-10">
       <div className="space-y-8">
         <DashboardHeader
-          username={user?.username || "JD"}
+          username={user?.username || "..."}
           onProjectsUpdated={fetchDashboardData}
         />
         <DashboardGrid
@@ -88,6 +88,7 @@ export default function DashboardPage() {
           activities={recentActivities}
           tasks={priorityTasksData}
           onTasksUpdated={fetchDashboardData}
+          onProjectsCreated={fetchDashboardData}
         />
       </div>
     </div>
