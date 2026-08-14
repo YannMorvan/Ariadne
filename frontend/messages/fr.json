@@ -170,6 +170,7 @@
     "returnToProjects": "Retour aux projets",
     "searchPlaceholder": "Rechercher un projet...",
     "noResults": "Aucun projet trouvé.",
+    "noResultsDescription": "Essaie d'ajuster ta recherche ou ton filtre pour trouver ce que tu cherches.",
     "noProjects": "Aucun projet pour le moment.",
     "noProjectsDescription": "Commence par créer ton premier projet pour suivre tes tâches et ton avancement.",
     "noDescription": "Aucune description fournie pour ce projet.",
