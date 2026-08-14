@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="docs/assets/banner.png" alt="Ariadne Banner" width="75%" />
+  <img src="docs/assets/banner.png" alt="Ariadne Banner" width="100%" />
 
 **A modern, full-stack collaborative project management platform built for speed, scalability, and developer experience.**
 
