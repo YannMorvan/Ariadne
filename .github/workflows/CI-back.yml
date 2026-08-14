@@ -2,7 +2,7 @@ name: CI Backend NestJS
 
 on:
   push:
-    branches: ["*"]
+    branches: ["main"]
   pull_request:
     branches: ["*"]
 
@@ -34,8 +34,8 @@ jobs:
       - name: Run Linter
         run: npm run lint --if-present
 
-      # - name: Run Unit Tests
-      #   run: npm run test
+      - name: Run Unit Tests
+        run: npm run test
 
       - name: Build NestJS Application
         run: npm run build

@@ -3,6 +3,16 @@ import { PrismaService } from './prisma.service';
 
 describe('PrismaService', () => {
   let service: PrismaService;
+  const originalEnv = process.env.DATABASE_URL;
+
+  beforeAll(() => {
+    process.env.DATABASE_URL =
+      'postgresql://user:password@localhost:5432/testdb';
+  });
+
+  afterAll(() => {
+    process.env.DATABASE_URL = originalEnv;
+  });
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

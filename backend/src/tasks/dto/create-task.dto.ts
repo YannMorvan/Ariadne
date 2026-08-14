@@ -1,6 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Priority, TaskStatus } from '@prisma/client';
+import { Type } from 'class-transformer';
 import {
+  IsDate,
   IsEnum,
   IsNotEmpty,
   IsNumber,
@@ -57,12 +59,15 @@ export class CreateTaskDto {
 
   @ApiPropertyOptional({ example: '2026-08-15T18:00:00.000Z' })
   @IsOptional()
+  @Type(() => Date)
+  @IsDate({ message: 'The due date must be a valid Date' })
   dueDate?: Date;
 
   @ApiPropertyOptional({ example: 4.5 })
-  @IsNumber({}, { message: 'The estimated hours must be a number' })
-  @Min(0)
   @IsOptional()
+  @Type(() => Number)
+  @IsNumber({}, { message: 'The estimated hours must be a number' })
+  @Min(0, { message: 'Estimated hours cannot be negative' })
   estimatedHours?: number;
 
   @ApiPropertyOptional({ example: 'user-uuid-1234' })
