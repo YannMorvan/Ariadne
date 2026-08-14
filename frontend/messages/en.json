@@ -33,6 +33,11 @@
     "5": "Fri",
     "6": "Sat"
   },
+  "languages": {
+    "title": "Language",
+    "en": "English",
+    "fr": "French"
+  },
   "enums": {
     "priority": {
       "ALL": "All",

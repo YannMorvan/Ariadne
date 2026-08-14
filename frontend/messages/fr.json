@@ -33,6 +33,11 @@
     "5": "Ven",
     "6": "Sam"
   },
+  "languages": {
+    "title": "Langue",
+    "en": "Anglais",
+    "fr": "Français"
+  },
   "enums": {
     "priority": {
       "ALL": "Tous",
