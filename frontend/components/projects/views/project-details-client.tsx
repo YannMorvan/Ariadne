@@ -156,7 +156,7 @@ export default function ProjectDetailsClient({
       <div className="mx-auto max-w-7xl space-y-4 px-4 py-12 text-center">
         <h2 className="text-xl font-semibold">{tProjects("noResults")}</h2>
         <p className="text-sm text-muted-foreground">
-          {error || "This project does not exist or has been deleted."}
+          {error || tProjects("noResults")}
         </p>
         <Link href="/projects">
           <Button variant="outline" className="gap-2 rounded-xl">
@@ -243,8 +243,7 @@ export default function ProjectDetailsClient({
               </Badge>
             </div>
             <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-              {project.description ||
-                "No description provided for this project."}
+              {project.description || tProjects("noDescription")}
             </p>
           </div>
         </div>
@@ -274,7 +273,7 @@ export default function ProjectDetailsClient({
           </TabsTrigger>
           <TabsTrigger value="notes" className="gap-2 rounded-lg text-xs">
             <Calendar className="size-3.5" />
-            {tProjects("notes")}
+            {tProjects("notes.title")}
           </TabsTrigger>
         </TabsList>
 

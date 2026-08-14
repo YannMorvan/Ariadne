@@ -39,6 +39,7 @@ export function EditProjectDialog({
   const [apiError, setApiError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const tCommon = useTranslations("common")
+  const tProjectsEdit = useTranslations("projects.edit")
 
   const methods = useForm({
     resolver: zodResolver(updateProjectSchema),
@@ -82,10 +83,8 @@ export function EditProjectDialog({
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <input type="hidden" {...methods.register("id")} />
             <DialogHeader>
-              <DialogTitle>Edit Project</DialogTitle>
-              <DialogDescription>
-                Make changes to your project here.
-              </DialogDescription>
+              <DialogTitle>{tProjectsEdit("title")}</DialogTitle>
+              <DialogDescription>{tProjectsEdit("details")}</DialogDescription>
             </DialogHeader>
 
             {apiError && (

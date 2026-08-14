@@ -13,6 +13,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { useTranslations } from "next-intl"
+import { useUser } from "@/context/user-context"
 
 interface ProjectMembersDialogProps {
   projectId: string
@@ -25,8 +27,11 @@ export function ProjectMembersDialog({
   open,
   onOpenChange,
 }: ProjectMembersDialogProps) {
+  const { user } = useUser()
   const [email, setEmail] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const tProjectsMembers = useTranslations("projects.members")
+  const tEnumRoles = useTranslations("enums.roles")
 
   const handleAddMember = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -47,9 +52,9 @@ export function ProjectMembersDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="rounded-2xl border-border/50 bg-card/95 backdrop-blur-xl sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Project Members</DialogTitle>
+          <DialogTitle>{tProjectsMembers("title")}</DialogTitle>
           <DialogDescription>
-            Manage access and invited members to collaborate on this project.
+            {tProjectsMembers("description")}
           </DialogDescription>
         </DialogHeader>
 
@@ -59,7 +64,7 @@ export function ProjectMembersDialog({
         >
           <Input
             type="email"
-            placeholder="email@exemple.com"
+            placeholder={tProjectsMembers("inviteMemberPlaceholder")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="flex-1 rounded-xl"
@@ -74,24 +79,30 @@ export function ProjectMembersDialog({
             ) : (
               <UserPlus className="size-4" />
             )}
-            Invite
+            {tProjectsMembers("inviteMember")}
           </Button>
         </form>
 
         <div className="mt-4 space-y-3">
           <p className="text-xs font-medium text-muted-foreground">
-            Current Members
+            {tProjectsMembers("currentMembers")}
           </p>
 
           <div className="max-h-60 space-y-2 overflow-y-auto pr-1">
             <div className="flex items-center justify-between rounded-xl border border-border/40 bg-card/40 p-2.5">
               <div className="flex items-center gap-3">
                 <Avatar className="size-8">
-                  <AvatarFallback className="text-xs">YO</AvatarFallback>
+                  <AvatarFallback className="text-xs">
+                    {user?.username.charAt(0)}
+                  </AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="text-sm leading-none font-medium">You</p>
-                  <p className="text-xs text-muted-foreground">Owner</p>
+                  <p className="text-sm leading-none font-medium">
+                    {user?.username}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {tEnumRoles("ADMIN")}
+                  </p>
                 </div>
               </div>
               <Shield className="size-4 text-violet-500" />

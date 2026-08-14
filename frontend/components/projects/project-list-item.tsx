@@ -12,6 +12,7 @@ import {
 import { cn } from "@/lib/utils"
 import type { Project } from "@/types"
 import { useEnumOptions } from "@/hooks/use-enums"
+import { useTranslations } from "next-intl"
 
 interface ProjectListItemProps {
   project: Project
@@ -26,6 +27,9 @@ export function ProjectListItem({
 }: ProjectListItemProps) {
   const { getPriorityInfo } = useEnumOptions()
   const priority = getPriorityInfo(project?.priority || "MEDIUM", "project")
+  const tProjects = useTranslations("projects")
+  const tCommon = useTranslations("common")
+
   return (
     <div className="flex items-center justify-between gap-4 rounded-xl border border-border/40 bg-card/40 p-4 transition-all hover:border-border hover:bg-card/80">
       <div className="flex min-w-0 items-center gap-3.5">
@@ -45,7 +49,7 @@ export function ProjectListItem({
             </Badge>
           </div>
           <p className="mt-0.5 truncate text-xs text-muted-foreground">
-            {project.description || "Aucune description"}
+            {project.description || tProjects("noDescription")}
           </p>
         </div>
       </div>
@@ -61,13 +65,13 @@ export function ProjectListItem({
             className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm"
           >
             <DropdownMenuItem onClick={() => onEdit?.(project)}>
-              Edit
+              {tCommon("edit")}
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => onDelete?.(project.id)}
               className="text-destructive focus:text-destructive"
             >
-              Delete
+              {tCommon("delete")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

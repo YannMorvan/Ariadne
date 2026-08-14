@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { projectApi } from "@/api/project"
+import { useTranslations } from "next-intl"
 
 interface DeleteProjectDialogProps {
   projectId: string | null
@@ -31,6 +32,8 @@ export function DeleteProjectDialog({
 }: DeleteProjectDialogProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [apiError, setApiError] = useState<string | null>(null)
+  const tProjectsDelete = useTranslations("projects.delete")
+  const tCommon = useTranslations("common")
 
   const handleDelete = async () => {
     if (!projectId) return
@@ -58,16 +61,14 @@ export function DeleteProjectDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="rounded-2xl border-border/50 bg-card/95 backdrop-blur-xl sm:max-w-md">
         <DialogHeader>
-          <div className="mb-2 flex size-10 items-center justify-center rounded-xl bg-red-500/10 text-red-500">
-            <AlertTriangle className="size-5" />
+          <div className="mb-2 flex flex-row items-center justify-center gap-2">
+            <div className="flex size-10 items-center justify-center rounded-xl bg-red-500/10 text-red-500">
+              <AlertTriangle className="size-5" />
+            </div>
+            <DialogTitle>{tProjectsDelete("title")}</DialogTitle>
           </div>
-          <DialogTitle>Delete project?</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete{" "}
-            <span className="font-semibold text-foreground">
-              {projectName || "this project"}
-            </span>{" "}
-            ? This action is irreversible and will delete all associated data.
+            {tProjectsDelete("description", { projectName: projectName || "" })}
           </DialogDescription>
         </DialogHeader>
 
@@ -85,7 +86,7 @@ export function DeleteProjectDialog({
             disabled={isLoading}
             className="rounded-xl"
           >
-            Cancel
+            {tCommon("cancel")}
           </Button>
           <Button
             type="button"
@@ -95,7 +96,7 @@ export function DeleteProjectDialog({
             className="rounded-xl"
           >
             {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
-            {isLoading ? "Deleting..." : "Delete project"}
+            {isLoading ? tCommon("deleting") : tCommon("delete")}
           </Button>
         </DialogFooter>
       </DialogContent>
