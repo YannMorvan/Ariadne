@@ -5,10 +5,10 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskEntity } from './entities/task.entity';
+import { Priority, TaskStatus } from '@prisma/client';
 
 describe('TasksService', () => {
   let service: TasksService;
-  let prisma: PrismaService;
 
   const mockUserId = 'user-123';
   const mockProjectId = 'project-abc';
@@ -25,8 +25,8 @@ describe('TasksService', () => {
     id: mockTaskId,
     title: 'Setup Jest unit tests',
     description: 'Write complete test suite for tasks service',
-    status: 'TODO',
-    priority: 'HIGH',
+    status: TaskStatus.TODO,
+    priority: Priority.HIGH,
     dueDate: new Date('2026-09-01'),
     estimatedHours: 4,
     projectId: mockProjectId,
@@ -61,7 +61,6 @@ describe('TasksService', () => {
     }).compile();
 
     service = module.get<TasksService>(TasksService);
-    prisma = module.get<PrismaService>(PrismaService);
 
     jest.clearAllMocks();
   });
@@ -77,8 +76,8 @@ describe('TasksService', () => {
     const createTaskDto: CreateTaskDto = {
       title: 'New Task',
       description: 'Description',
-      status: 'TODO' as any,
-      priority: 'MEDIUM' as any,
+      status: TaskStatus.TODO,
+      priority: Priority.MEDIUM,
       projectId: mockProjectId,
       assigneeId: mockUserId,
     };
@@ -87,7 +86,11 @@ describe('TasksService', () => {
       mockPrismaService.project.findFirst.mockResolvedValue(mockProject);
       mockPrismaService.task.create.mockResolvedValue(mockTask);
 
-      const result = await service.createTask(createTaskDto, mockUserId);
+      const result: TaskEntity = await service.createTask(
+        createTaskDto,
+        mockUserId,
+      );
+
       expect(mockPrismaService.project.findFirst).toHaveBeenCalledWith({
         where: {
           id: mockProjectId,
@@ -123,7 +126,10 @@ describe('TasksService', () => {
     it('should return a list of priority tasks excluding DONE status', async () => {
       mockPrismaService.task.findMany.mockResolvedValue([mockTask]);
 
-      const result = await service.getPriorityTasks(mockUserId, 5);
+      const result: TaskEntity[] = await service.getPriorityTasks(
+        mockUserId,
+        5,
+      );
 
       expect(mockPrismaService.task.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -146,7 +152,7 @@ describe('TasksService', () => {
       mockPrismaService.project.findFirst.mockResolvedValue(mockProject);
       mockPrismaService.task.findMany.mockResolvedValue([mockTask]);
 
-      const result = await service.getTasksByProjectId(
+      const result: TaskEntity[] = await service.getTasksByProjectId(
         mockUserId,
         mockProjectId,
       );
@@ -181,7 +187,7 @@ describe('TasksService', () => {
         dueDate: new Date('2026-10-15T00:00:00.000Z'),
       });
 
-      const result = await service.updateTask(
+      const result: TaskEntity = await service.updateTask(
         mockTaskId,
         mockUserId,
         updateDto,
