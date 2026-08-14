@@ -52,7 +52,7 @@ export function PriorityTasks({
     try {
       setUpdatingStatusId(task.id)
       const nextStatus = getNextStatus(task.status)
-      await taskApi.updateTask({ id: task.id, status: nextStatus })
+      await taskApi.updateTask({ status: nextStatus }, task.id)
       onTasksUpdated?.()
     } catch (error) {
       console.error("Error updating status :", error)

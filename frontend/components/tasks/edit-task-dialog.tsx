@@ -57,8 +57,10 @@ export function EditTaskDialog({
     setIsLoading(true)
     setApiError(null)
 
+    const { id, ...payload } = data
+
     try {
-      await taskApi.updateTask(data)
+      await taskApi.updateTask(payload, id)
       onOpenChange(false)
       setTimeout(() => {
         onSuccess?.()
