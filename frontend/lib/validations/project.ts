@@ -7,7 +7,9 @@ export const createProjectSchema = z.object({
 })
 
 export const updateProjectSchema = createProjectSchema.extend({
-  id: z.string().uuid(),
+  id: z
+    .string({ message: "The project ID is required" })
+    .uuid("The project ID must be a valid UUID"),
 })
 export type CreateProjectInput = z.infer<typeof createProjectSchema>
 export type UpdateProjectInput = z.infer<typeof updateProjectSchema>

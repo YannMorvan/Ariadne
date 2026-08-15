@@ -57,8 +57,10 @@ export function EditProjectDialog({
     setIsLoading(true)
     setApiError(null)
 
+    const { id, ...payload } = data
+
     try {
-      await projectApi.updateProject(data)
+      await projectApi.updateProject(payload, id)
       onOpenChange(false)
       setTimeout(() => {
         onSuccess?.()

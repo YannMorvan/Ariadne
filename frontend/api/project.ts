@@ -14,8 +14,11 @@ export const projectApi = {
     })
   },
 
-  updateProject: async (payload: UpdateProjectInput): Promise<Project> => {
-    return apiClient<Project>(`/projects/${payload.id}`, {
+  updateProject: async (
+    payload: Partial<Project>,
+    id: string
+  ): Promise<Project> => {
+    return apiClient<Project>(`/projects/${id}`, {
       method: "PATCH",
       body: JSON.stringify(payload),
     })
