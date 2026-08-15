@@ -42,11 +42,12 @@ export class ProjectsService {
   }
 
   async updateProject(
-    projectDto: UpdateProjectDto,
+    projectId: string,
     userId: string,
+    updateData: UpdateProjectDto,
   ): Promise<ProjectEntity> {
     const project = await this.prisma.project.findUnique({
-      where: { id: projectDto.id },
+      where: { id: projectId },
     });
 
     if (!project) {
@@ -60,12 +61,8 @@ export class ProjectsService {
     }
 
     const updatedProject = await this.prisma.project.update({
-      where: { id: projectDto.id },
-      data: {
-        name: projectDto.name,
-        description: projectDto.description?.trim() || null,
-        priority: projectDto.priority,
-      },
+      where: { id: projectId },
+      data: updateData,
     });
 
     return new ProjectEntity(updatedProject);

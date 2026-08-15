@@ -38,10 +38,7 @@ export class ProjectsController {
     @Body() updateProjectDto: UpdateProjectDto,
     @CurrentUser('id') userId: string,
   ) {
-    return this.projectsService.updateProject(
-      { ...updateProjectDto, id },
-      userId,
-    );
+    return this.projectsService.updateProject(id, userId, updateProjectDto);
   }
 
   @Get()
