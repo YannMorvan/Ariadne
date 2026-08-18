@@ -14,7 +14,7 @@ import { CreateProjectDialog } from "@/components/projects/dialogs/create-projec
 import { DeleteProjectDialog } from "@/components/projects/dialogs/delete-project-dialog"
 import { EmptyProjectsState } from "@/components/projects/empty-projects-state"
 
-import type { Project, ProjectInvitation, StatMetric } from "@/types"
+import type { Project, StatMetric } from "@/types"
 import { useTranslations } from "next-intl"
 import { EditProjectDialog } from "./dialogs/edit-project-dialog"
 import { ProjectInvitationsDialog } from "./dialogs/project-invitations-dialog"
@@ -196,12 +196,12 @@ export function ProjectGrid({
         )}
       </motion.div>
 
-      {/* <EditProjectDialog
+      <EditProjectDialog
         project={projectToEdit}
         open={!!projectToEdit}
         onOpenChange={(open) => !open && setProjectToEdit(null)}
         onSuccess={handleProjectEdited}
-      /> */}
+      />
       <DeleteProjectDialog
         projectId={projectToDelete?.id || null}
         projectName={projectToDelete?.name}

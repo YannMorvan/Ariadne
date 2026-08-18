@@ -27,7 +27,7 @@ import { cn } from "@/lib/utils"
 import type { ProjectWithTasks } from "@/types"
 import { useTranslations } from "next-intl"
 import { useEnumOptions } from "@/hooks/use-enums"
-// import { EditProjectDialog } from "@/components/projects/dialogs/edit-project-dialog"
+import { EditProjectDialog } from "@/components/projects/dialogs/edit-project-dialog"
 
 interface ProjectDetailsClientProps {
   id: string
@@ -298,12 +298,12 @@ export default function ProjectDetailsClient({
         onOpenChange={setIsMembersOpen}
       />
 
-      {/* <EditProjectDialog
+      <EditProjectDialog
         project={project}
         open={isEditOpen}
         onOpenChange={setIsEditOpen}
         onSuccess={fetchProject}
-      /> */}
+      />
 
       <DeleteProjectDialog
         projectId={project.id}

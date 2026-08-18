@@ -22,9 +22,10 @@ import {
 } from "@/lib/validations/project"
 import { projectApi } from "@/api/project"
 import { ProjectFormFields } from "./project-form-fields"
+import { Project } from "@/types"
 
 interface EditProjectDialogProps {
-  project: UpdateProjectInput | null
+  project: Project | null
   open: boolean
   onOpenChange: (open: boolean) => void
   onSuccess?: () => void
@@ -46,21 +47,18 @@ export function EditProjectDialog({
     mode: "onSubmit",
     reValidateMode: "onSubmit",
     values: {
-      id: project?.id ?? "",
       name: project?.name ?? "",
       priority: project?.priority ?? "MEDIUM",
       description: project?.description ?? "",
     },
   })
 
-  const onSubmit = async (data: UpdateProjectInput) => {
+  const onSubmit = async (payload: UpdateProjectInput) => {
     setIsLoading(true)
     setApiError(null)
 
-    const { id, ...payload } = data
-
     try {
-      await projectApi.updateProject(payload, id)
+      await projectApi.updateProject(project?.id ?? "", payload)
       onOpenChange(false)
       setTimeout(() => {
         onSuccess?.()
@@ -83,7 +81,7 @@ export function EditProjectDialog({
       <DialogContent className="rounded-2xl border-border/50 bg-card/95 backdrop-blur-xl sm:max-w-md">
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
-            <input type="hidden" {...methods.register("id")} />
+            <input type="hidden" />
             <DialogHeader>
               <DialogTitle>{tProjectsEdit("title")}</DialogTitle>
               <DialogDescription>{tProjectsEdit("details")}</DialogDescription>
