@@ -1,6 +1,6 @@
 import { apiClient } from "@/lib/api-client"
 import type { Task } from "@/types/task"
-import type { CreateTaskInput } from "@/lib/validations/task"
+import type { CreateTaskInput, UpdateTaskInput } from "@/lib/validations/task"
 
 export const taskApi = {
   createTask: async (payload: CreateTaskInput): Promise<Task> => {
@@ -10,7 +10,7 @@ export const taskApi = {
     })
   },
 
-  updateTask: async (payload: Partial<Task>, id: string): Promise<Task> => {
+  updateTask: async (id: string, payload: UpdateTaskInput): Promise<Task> => {
     return apiClient<Task>(`/tasks/${id}`, {
       method: "PATCH",
       body: JSON.stringify(payload),

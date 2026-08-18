@@ -41,11 +41,7 @@ export const createTaskSchema = z.object({
     .or(z.literal("")),
 })
 
-export const updateTaskSchema = createTaskSchema.partial().extend({
-  id: z
-    .string({ message: "The task ID is required" })
-    .uuid("The task ID must be a valid UUID"),
-})
+export const updateTaskSchema = createTaskSchema.partial()
 
 export type CreateTaskInput = z.infer<typeof createTaskSchema>
 export type UpdateTaskInput = z.infer<typeof updateTaskSchema>

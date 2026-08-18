@@ -1,7 +1,9 @@
 import { describe, it, expect } from "vitest"
-import { createProjectSchema, updateProjectSchema } from "./project"
-
-const VALID_UUID = "123e4567-e89b-12d3-a456-426614174000"
+import {
+  createProjectSchema,
+  updateProjectSchema,
+  addProjectMemberSchema,
+} from "./project"
 
 describe("createProjectSchema", () => {
   it("validates a correct project payload with optional fields", () => {
@@ -53,10 +55,10 @@ describe("createProjectSchema", () => {
 })
 
 describe("updateProjectSchema", () => {
-  it("validates a correct update payload with a valid UUID", () => {
+  it("validates a full update payload without ID", () => {
     const validUpdate = {
-      id: VALID_UUID,
       name: "Updated Project Name",
+      description: "Updated description",
       priority: "URGENT",
     }
 
@@ -64,24 +66,69 @@ describe("updateProjectSchema", () => {
     expect(result.success).toBe(true)
   })
 
-  it("fails when update payload is missing the project ID", () => {
+  it("validates a partial update with only name", () => {
+    const partialUpdate = {
+      name: "New Name Only",
+    }
+
+    const result = updateProjectSchema.safeParse(partialUpdate)
+    expect(result.success).toBe(true)
+  })
+
+  it("validates a partial update with only priority", () => {
+    const partialUpdate = {
+      priority: "LOW",
+    }
+
+    const result = updateProjectSchema.safeParse(partialUpdate)
+    expect(result.success).toBe(true)
+  })
+
+  it("fails when updated name is too short", () => {
     const invalidUpdate = {
-      name: "Updated Name Without ID",
-      priority: "MEDIUM",
+      name: "A",
     }
 
     const result = updateProjectSchema.safeParse(invalidUpdate)
     expect(result.success).toBe(false)
   })
 
-  it("fails when project ID is not a valid UUID", () => {
+  it("fails when updated priority is invalid", () => {
     const invalidUpdate = {
-      id: "invalid-uuid-format",
-      name: "Updated Name",
-      priority: "LOW",
+      priority: "INVALID_PRIORITY",
     }
 
     const result = updateProjectSchema.safeParse(invalidUpdate)
+    expect(result.success).toBe(false)
+  })
+})
+
+describe("addProjectMemberSchema", () => {
+  it("validates a member invitation with email or username", () => {
+    const validPayload = {
+      identifier: "john.doe@example.com",
+      role: "MEMBER",
+    }
+
+    const result = addProjectMemberSchema.safeParse(validPayload)
+    expect(result.success).toBe(true)
+  })
+
+  it("validates when role is omitted", () => {
+    const validPayload = {
+      identifier: "johndoe",
+    }
+
+    const result = addProjectMemberSchema.safeParse(validPayload)
+    expect(result.success).toBe(true)
+  })
+
+  it("fails when identifier is too short", () => {
+    const invalidPayload = {
+      identifier: "a",
+    }
+
+    const result = addProjectMemberSchema.safeParse(invalidPayload)
     expect(result.success).toBe(false)
   })
 })

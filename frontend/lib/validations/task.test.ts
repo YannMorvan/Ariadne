@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest"
 import { createTaskSchema, updateTaskSchema } from "./task"
 
 const VALID_UUID = "123e4567-e89b-12d3-a456-426614174000"
+const ANOTHER_VALID_UUID = "987fcdeb-51a2-43d7-9012-345678901234"
 
 describe("createTaskSchema", () => {
   it("validates a correct task payload", () => {
@@ -78,6 +79,44 @@ describe("createTaskSchema", () => {
     }
   })
 
+  describe("assigneeId validation", () => {
+    it("accepts a valid UUID for assigneeId", () => {
+      const validData = {
+        title: "Assigned Task",
+        projectId: VALID_UUID,
+        assigneeId: ANOTHER_VALID_UUID,
+      }
+
+      const result = createTaskSchema.safeParse(validData)
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.assigneeId).toBe(ANOTHER_VALID_UUID)
+      }
+    })
+
+    it("accepts an empty string for assigneeId (unassigning)", () => {
+      const validData = {
+        title: "Unassigned Task",
+        projectId: VALID_UUID,
+        assigneeId: "",
+      }
+
+      const result = createTaskSchema.safeParse(validData)
+      expect(result.success).toBe(true)
+    })
+
+    it("fails when assigneeId is not a valid UUID", () => {
+      const invalidData = {
+        title: "Task with bad assignee ID",
+        projectId: VALID_UUID,
+        assigneeId: "not-a-uuid",
+      }
+
+      const result = createTaskSchema.safeParse(invalidData)
+      expect(result.success).toBe(false)
+    })
+  })
+
   describe("estimatedHours preprocessing edge cases", () => {
     it("converts empty string, null and NaN to undefined", () => {
       const resEmpty = createTaskSchema.safeParse({
@@ -117,19 +156,47 @@ describe("createTaskSchema", () => {
 })
 
 describe("updateTaskSchema", () => {
-  it("validates a correct update payload", () => {
+  it("validates a partial update payload without ID", () => {
     const validUpdate = {
-      id: VALID_UUID,
       title: "Updated Title",
+      status: "IN_PROGRESS",
+      priority: "URGENT",
     }
 
     const result = updateTaskSchema.safeParse(validUpdate)
     expect(result.success).toBe(true)
   })
 
-  it("fails when task id is missing", () => {
+  it("validates updating only the status", () => {
+    const statusUpdate = {
+      status: "DONE",
+    }
+
+    const result = updateTaskSchema.safeParse(statusUpdate)
+    expect(result.success).toBe(true)
+  })
+
+  it("validates updating only the assignee", () => {
+    const assigneeUpdate = {
+      assigneeId: ANOTHER_VALID_UUID,
+    }
+
+    const result = updateTaskSchema.safeParse(assigneeUpdate)
+    expect(result.success).toBe(true)
+  })
+
+  it("validates unassigning a user with empty string", () => {
+    const unassignUpdate = {
+      assigneeId: "",
+    }
+
+    const result = updateTaskSchema.safeParse(unassignUpdate)
+    expect(result.success).toBe(true)
+  })
+
+  it("fails when an invalid field value is passed in update", () => {
     const invalidUpdate = {
-      title: "Updated Title Without ID",
+      status: "INVALID_STATUS",
     }
 
     const result = updateTaskSchema.safeParse(invalidUpdate)
