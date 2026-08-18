@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react"
 import { motion } from "framer-motion"
-import { LayoutGrid, List, MailOpen, Search } from "lucide-react"
+import { LayoutGrid, List, Search } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -49,9 +49,6 @@ export function ProjectGrid({
 
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null)
   const [projectToEdit, setProjectToEdit] = useState<Project | null>(null)
-
-  const [invitations, setInvitations] = useState<ProjectInvitation[]>([])
-  const [invitationsOpen, setInvitationsOpen] = useState(false)
 
   const tProjects = useTranslations("projects")
   const tCommon = useTranslations("common")

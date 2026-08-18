@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Check, X, MailOpen, Loader2, FolderKanban } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -32,7 +32,7 @@ export function ProjectInvitationsDialog({
   const tInvitations = useTranslations("projects.invitations")
   const tRoles = useTranslations("enums.roles")
 
-  const fetchInvitations = async () => {
+  const fetchInvitations = useCallback(async () => {
     try {
       setIsLoadingList(true)
       const data = await projectApi.getPendingInvitations()
@@ -42,10 +42,6 @@ export function ProjectInvitationsDialog({
     } finally {
       setIsLoadingList(false)
     }
-  }
-
-  useEffect(() => {
-    fetchInvitations()
   }, [])
 
   const handleRespond = async (
