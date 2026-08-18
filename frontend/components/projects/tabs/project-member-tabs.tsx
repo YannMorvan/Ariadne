@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { type Member, type ProjectRole } from "@/types"
+import { useTranslations } from "next-intl"
 
 interface MembersTabProps {
   ownerId: string
@@ -13,8 +14,6 @@ interface MembersTabProps {
   pendingMembers: Member[]
   deletingId: string | null
   onRemove: (id: string) => void
-  tProjectsMembers: (key: string, values?: any) => string
-  tEnumRoles: (key: string) => string
 }
 
 export function MembersTab({
@@ -23,8 +22,6 @@ export function MembersTab({
   pendingMembers,
   deletingId,
   onRemove,
-  tProjectsMembers,
-  tEnumRoles,
 }: MembersTabProps) {
   const renderRoleIcon = (role: ProjectRole) => {
     switch (role) {
@@ -38,6 +35,9 @@ export function MembersTab({
         return <User className="size-4 text-zinc-400" />
     }
   }
+
+  const tProjectsMembers = useTranslations("projects.members")
+  const tEnumRoles = useTranslations("enums.roles")
 
   return (
     <div className="mt-4 space-y-4">

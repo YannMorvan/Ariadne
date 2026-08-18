@@ -71,10 +71,12 @@ export function ProjectMembersDialog({
       onMembersChange?.([...members, newMember])
       setIdentifier("")
       setRole("MEMBER")
-    } catch (error: any) {
-      setErrorMessage(
-        error?.message || "An unexpected error occurred. Please try again."
-      )
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setErrorMessage(
+          error?.message || "An unexpected error occurred. Please try again."
+        )
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -85,8 +87,10 @@ export function ProjectMembersDialog({
       setDeletingId(memberId)
       await projectApi.removeMember(projectId, memberId)
       onMembersChange?.(members.filter((m) => m.id !== memberId))
-    } catch (error: any) {
-      setErrorMessage(error?.message || "Failed to remove member.")
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setErrorMessage(error?.message || "Failed to remove member.")
+      }
     } finally {
       setDeletingId(null)
     }
@@ -158,8 +162,6 @@ export function ProjectMembersDialog({
           pendingMembers={pendingMembers}
           deletingId={deletingId}
           onRemove={handleRemoveMember}
-          tProjectsMembers={tProjectsMembers}
-          tEnumRoles={tEnumRoles}
         />
       </DialogContent>
     </Dialog>
