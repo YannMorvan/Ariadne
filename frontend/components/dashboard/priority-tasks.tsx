@@ -33,7 +33,7 @@ export function PriorityTasks({
   const [optimisticStatuses, setOptimisticStatuses] = useState<
     Record<string, TaskStatus>
   >({})
-  const { getPriorityInfo, getStatusLabel } = useEnumOptions()
+  const { getPriorityInfo } = useEnumOptions()
 
   const getNextStatus = (current: TaskStatus): TaskStatus => {
     switch (current) {

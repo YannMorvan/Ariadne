@@ -54,8 +54,10 @@
       "DONE": "Terminé"
     },
     "roles": {
+      "OWNER": "Propriétaire",
       "ADMIN": "Administrateur",
-      "MEMBER": "Membre"
+      "MEMBER": "Membre",
+      "VIEWER": "Spectateur"
     }
   },
   "notFound": {
@@ -213,7 +215,19 @@
       "description": "Gère l'accès et les membres invités pour collaborer sur ce projet.",
       "inviteMember": "Inviter",
       "inviteMemberPlaceholder": "Saisir l'adresse e-mail...",
-      "currentMembers": "Membres actuels"
+      "currentMembers": "Membres actuels",
+      "pendingInvitations": "Invitations en attente ({count})",
+      "pending": "En attente"
+    },
+    "invitations": {
+      "dialogTitle": "Invitations",
+      "title": "Invitations de projets",
+      "description": "Gère les invitations en attente et leurs statuts.",
+      "noInvitations": "Aucune invitation en attente.",
+      "noInvitationsDescription": "Tu peux inviter de nouveaux membres à collaborer sur ce projet.",
+      "invitedBy": "Invité par {inviterName}",
+      "accept": "Accepter",
+      "decline": "Refuser"
     },
     "metrics": {
       "totalProjects": {

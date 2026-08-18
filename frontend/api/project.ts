@@ -1,10 +1,11 @@
 import { apiClient } from "@/lib/api-client"
-import type { Project } from "@/types/project"
+import type { Project, Member, ProjectInvitation } from "@/types/project"
 import type {
   CreateProjectInput,
   UpdateProjectInput,
+  AddProjectMemberInput,
 } from "@/lib/validations/project"
-import { ProjectStatsDto } from "@/types/stats"
+import type { ProjectStatsDto } from "@/types/stats"
 
 export const projectApi = {
   createProject: async (payload: CreateProjectInput): Promise<Project> => {
@@ -15,8 +16,8 @@ export const projectApi = {
   },
 
   updateProject: async (
-    payload: Partial<Project>,
-    id: string
+    id: string,
+    payload: UpdateProjectInput
   ): Promise<Project> => {
     return apiClient<Project>(`/projects/${id}`, {
       method: "PATCH",
@@ -51,7 +52,51 @@ export const projectApi = {
   deleteProject: async (id: string): Promise<void> => {
     return apiClient<void>(`/projects/${id}`, {
       method: "DELETE",
-      body: JSON.stringify({ id }),
+    })
+  },
+
+  // Members Management
+
+  addMember: async (
+    projectId: string,
+    payload: AddProjectMemberInput
+  ): Promise<Member> => {
+    return apiClient<Member>(`/projects/${projectId}/members`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+    })
+  },
+
+  getMembers: async (projectId: string): Promise<Member[]> => {
+    return apiClient<Member[]>(`/projects/${projectId}/members`, {
+      method: "GET",
+    })
+  },
+
+  removeMember: async (
+    projectId: string,
+    memberUserId: string
+  ): Promise<void> => {
+    return apiClient<void>(`/projects/${projectId}/members/${memberUserId}`, {
+      method: "DELETE",
+    })
+  },
+
+  getPendingInvitations: async (): Promise<ProjectInvitation[]> => {
+    return apiClient<ProjectInvitation[]>("/projects/invitations/pending", {
+      method: "GET",
+    })
+  },
+
+  acceptInvitation: async (projectId: string): Promise<void> => {
+    return apiClient<void>(`/projects/${projectId}/invitations/accept`, {
+      method: "PATCH",
+    })
+  },
+
+  declineInvitation: async (projectId: string): Promise<void> => {
+    return apiClient<void>(`/projects/${projectId}/invitations/decline`, {
+      method: "PATCH",
     })
   },
 }

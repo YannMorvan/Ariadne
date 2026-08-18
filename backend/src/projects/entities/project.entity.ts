@@ -1,6 +1,29 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Priority, Project as PrismaProject } from '@prisma/client';
 
+export class MemberEntity {
+  @ApiProperty({ example: 'user-uuid-1234' })
+  id!: string;
+
+  @ApiProperty({ example: 'user' })
+  username!: string;
+
+  @ApiProperty({ example: 'user@example.com' })
+  email!: string;
+
+  @ApiProperty({ example: 'https://...', nullable: true })
+  avatarUrl!: string | null;
+
+  @ApiProperty({ example: 'MEMBER' })
+  role!: string;
+
+  @ApiProperty({ example: 'ACCEPTED' })
+  status!: string;
+
+  @ApiProperty({ example: '2026-08-15T12:00:00.000Z' })
+  joinedAt!: string;
+}
+
 export class ProjectEntity implements PrismaProject {
   @ApiProperty({ example: '8f7d9a1e-3b2c-4a5d-6e7f-8a9b0c1d2e3f' })
   id!: string;
@@ -17,9 +40,6 @@ export class ProjectEntity implements PrismaProject {
   @ApiProperty({ enum: Priority, example: Priority.MEDIUM })
   priority!: Priority;
 
-  @ApiProperty({ example: '#3b82f6', nullable: true })
-  color!: string | null;
-
   @ApiProperty({ example: 'user-uuid-1234' })
   ownerId!: string;
 
@@ -32,10 +52,13 @@ export class ProjectEntity implements PrismaProject {
   @ApiProperty()
   isArchived!: boolean;
 
-  @ApiProperty({ example: 5, nullable: true })
+  @ApiProperty({ type: () => [MemberEntity], required: false })
+  members?: MemberEntity[];
+
+  @ApiProperty({ example: 5, nullable: true, required: false })
   tasksCount?: number | null;
 
-  @ApiProperty({ example: 10, nullable: true })
+  @ApiProperty({ example: 10, nullable: true, required: false })
   completedTasksCount?: number | null;
 
   constructor(partial: Partial<ProjectEntity>) {

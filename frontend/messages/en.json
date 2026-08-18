@@ -54,8 +54,10 @@
       "DONE": "Done"
     },
     "roles": {
+      "OWNER": "Owner",
       "ADMIN": "Admin",
-      "MEMBER": "Member"
+      "MEMBER": "Member",
+      "VIEWER": "Viewer"
     }
   },
   "notFound": {
@@ -213,7 +215,19 @@
       "description": "Manage access and invited members to collaborate on this project.",
       "inviteMember": "Invite",
       "inviteMemberPlaceholder": "Enter email address...",
-      "currentMembers": "Current Members"
+      "currentMembers": "Current Members",
+      "pendingInvitations": "Pending Invitations ({count})",
+      "pending": "Pending"
+    },
+    "invitations": {
+      "dialogTitle": "Invitations",
+      "title": "Project Invitations",
+      "description": "Manage pending invitations and their statuses.",
+      "noInvitations": "No pending invitations.",
+      "noInvitationsDescription": "You can invite new members to collaborate on this project.",
+      "invitedBy": "Invited by {inviterName}",
+      "accept": "Accept",
+      "decline": "Decline"
     },
     "metrics": {
       "totalProjects": {

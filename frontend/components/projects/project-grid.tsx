@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react"
 import { motion } from "framer-motion"
-import { LayoutGrid, List, Search } from "lucide-react"
+import { LayoutGrid, List, MailOpen, Search } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,9 +14,10 @@ import { CreateProjectDialog } from "@/components/projects/dialogs/create-projec
 import { DeleteProjectDialog } from "@/components/projects/dialogs/delete-project-dialog"
 import { EmptyProjectsState } from "@/components/projects/empty-projects-state"
 
-import type { Project, StatMetric } from "@/types"
+import type { Project, ProjectInvitation, StatMetric } from "@/types"
 import { useTranslations } from "next-intl"
 import { EditProjectDialog } from "./dialogs/edit-project-dialog"
+import { ProjectInvitationsDialog } from "./dialogs/project-invitations-dialog"
 
 interface ProjectGridProps {
   projects: Project[]
@@ -48,6 +49,9 @@ export function ProjectGrid({
 
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null)
   const [projectToEdit, setProjectToEdit] = useState<Project | null>(null)
+
+  const [invitations, setInvitations] = useState<ProjectInvitation[]>([])
+  const [invitationsOpen, setInvitationsOpen] = useState(false)
 
   const tProjects = useTranslations("projects")
   const tCommon = useTranslations("common")
@@ -97,7 +101,10 @@ export function ProjectGrid({
           </p>
         </div>
 
-        <CreateProjectDialog onSuccess={handleProjectCreated} />
+        <div className="flex items-center gap-2">
+          <ProjectInvitationsDialog />
+          <CreateProjectDialog onSuccess={handleProjectCreated} />
+        </div>
       </motion.div>
 
       {metrics && metrics.length > 0 && (
@@ -192,12 +199,12 @@ export function ProjectGrid({
         )}
       </motion.div>
 
-      <EditProjectDialog
+      {/* <EditProjectDialog
         project={projectToEdit}
         open={!!projectToEdit}
         onOpenChange={(open) => !open && setProjectToEdit(null)}
         onSuccess={handleProjectEdited}
-      />
+      /> */}
       <DeleteProjectDialog
         projectId={projectToDelete?.id || null}
         projectName={projectToDelete?.name}
