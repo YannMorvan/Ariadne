@@ -17,6 +17,7 @@ import { EmptyProjectsState } from "@/components/projects/empty-projects-state"
 import type { Project, StatMetric } from "@/types"
 import { useTranslations } from "next-intl"
 import { EditProjectDialog } from "./dialogs/edit-project-dialog"
+import { ProjectInvitationsDialog } from "./dialogs/project-invitations-dialog"
 
 interface ProjectGridProps {
   projects: Project[]
@@ -97,7 +98,10 @@ export function ProjectGrid({
           </p>
         </div>
 
-        <CreateProjectDialog onSuccess={handleProjectCreated} />
+        <div className="flex items-center gap-2">
+          <ProjectInvitationsDialog />
+          <CreateProjectDialog onSuccess={handleProjectCreated} />
+        </div>
       </motion.div>
 
       {metrics && metrics.length > 0 && (

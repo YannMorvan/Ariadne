@@ -109,7 +109,7 @@ export function ProjectTasksTab({
     try {
       setUpdatingStatusId(task.id)
       const nextStatus = getNextStatus(task.status)
-      await taskApi.updateTask({ status: nextStatus }, task.id)
+      await taskApi.updateTask(task.id, { status: nextStatus })
       onTasksUpdated?.()
     } catch (error) {
       console.error("Error updating status :", error)

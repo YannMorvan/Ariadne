@@ -292,6 +292,8 @@ export default function ProjectDetailsClient({
 
       <ProjectMembersDialog
         projectId={project.id}
+        ownerId={project.ownerId}
+        members={project.members}
         open={isMembersOpen}
         onOpenChange={setIsMembersOpen}
       />

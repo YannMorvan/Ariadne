@@ -33,7 +33,7 @@ export function PriorityTasks({
   const [optimisticStatuses, setOptimisticStatuses] = useState<
     Record<string, TaskStatus>
   >({})
-  const { getPriorityInfo, getStatusLabel } = useEnumOptions()
+  const { getPriorityInfo } = useEnumOptions()
 
   const getNextStatus = (current: TaskStatus): TaskStatus => {
     switch (current) {
@@ -52,7 +52,7 @@ export function PriorityTasks({
     try {
       setUpdatingStatusId(task.id)
       const nextStatus = getNextStatus(task.status)
-      await taskApi.updateTask({ status: nextStatus }, task.id)
+      await taskApi.updateTask(task.id, { status: nextStatus })
       onTasksUpdated?.()
     } catch (error) {
       console.error("Error updating status :", error)

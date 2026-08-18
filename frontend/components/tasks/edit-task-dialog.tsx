@@ -44,7 +44,6 @@ export function EditTaskDialog({
     mode: "onSubmit",
     reValidateMode: "onSubmit",
     values: {
-      id: task?.id ?? "",
       title: task?.title ?? "",
       description: task?.description ?? "",
       status: task?.status ?? "TODO",
@@ -54,14 +53,12 @@ export function EditTaskDialog({
     },
   })
 
-  const onSubmit = async (data: UpdateTaskInput) => {
+  const onSubmit = async (payload: UpdateTaskInput) => {
     setIsLoading(true)
     setApiError(null)
 
-    const { id, ...payload } = data
-
     try {
-      await taskApi.updateTask(payload, id)
+      await taskApi.updateTask(task?.id || "", payload)
       onOpenChange(false)
       setTimeout(() => {
         onSuccess?.()
@@ -84,8 +81,6 @@ export function EditTaskDialog({
       <DialogContent className="rounded-2xl border-border/50 bg-card/95 backdrop-blur-xl sm:max-w-md">
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
-            <input type="hidden" {...methods.register("id")} />
-
             <DialogHeader>
               <DialogTitle>{tTasksEdit("title")}</DialogTitle>
               <DialogDescription>{tTasksEdit("details")}</DialogDescription>
