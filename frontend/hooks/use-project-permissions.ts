@@ -51,7 +51,7 @@ export function useProjectPermissions(
       canManageMembers: isAdmin,
       canCreateTasks: isMember,
       canEditTasks: isMember,
-      canDeleteTasks: isAdmin,
+      canDeleteTasks: isMember,
     }
   }, [user, project])
 }
