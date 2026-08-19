@@ -28,6 +28,7 @@ import type { ProjectWithTasks } from "@/types"
 import { useTranslations } from "next-intl"
 import { useEnumOptions } from "@/hooks/use-enums"
 import { EditProjectDialog } from "@/components/projects/dialogs/edit-project-dialog"
+import { useProjectPermissions } from "@/hooks/use-project-permissions"
 
 interface ProjectDetailsClientProps {
   id: string
@@ -51,6 +52,14 @@ export default function ProjectDetailsClient({
 
   const tCommon = useTranslations("common")
   const tProjects = useTranslations("projects")
+
+  const {
+    canEditProject,
+    canDeleteProject,
+    canManageMembers,
+    canEditTasks,
+    canDeleteTasks,
+  } = useProjectPermissions(project)
 
   useEffect(() => {
     if (project?.name) {
@@ -191,35 +200,41 @@ export default function ProjectDetailsClient({
         </Link>
 
         <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setIsMembersOpen(true)}
-            className="gap-2 rounded-xl border-border/50 bg-card/50 backdrop-blur-sm"
-          >
-            <Users className="size-3.5" />
-            {tProjects("members.title")}
-          </Button>
+          {canManageMembers && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsMembersOpen(true)}
+              className="gap-2 rounded-xl border-border/50 bg-card/50 backdrop-blur-sm"
+            >
+              <Users className="size-3.5" />
+              {tProjects("members.title")}
+            </Button>
+          )}
 
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setIsEditOpen(true)}
-            className="gap-2 rounded-xl border-border/50 bg-card/50 backdrop-blur-sm"
-          >
-            <Edit2 className="size-3.5" />
-            {tCommon("edit")}
-          </Button>
+          {canEditProject && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsEditOpen(true)}
+              className="gap-2 rounded-xl border-border/50 bg-card/50 backdrop-blur-sm"
+            >
+              <Edit2 className="size-3.5" />
+              {tCommon("edit")}
+            </Button>
+          )}
 
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setIsDeleteOpen(true)}
-            className="gap-2 rounded-xl border-red-500/20 bg-red-500/10 text-red-500 hover:bg-red-500/20 hover:text-red-500"
-          >
-            <Trash2 className="size-3.5" />
-            {tCommon("delete")}
-          </Button>
+          {canDeleteProject && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsDeleteOpen(true)}
+              className="gap-2 rounded-xl border-red-500/20 bg-red-500/10 text-red-500 hover:bg-red-500/20 hover:text-red-500"
+            >
+              <Trash2 className="size-3.5" />
+              {tCommon("delete")}
+            </Button>
+          )}
         </div>
       </div>
 
@@ -281,6 +296,7 @@ export default function ProjectDetailsClient({
           <ProjectTasksTab
             projectId={project.id}
             tasks={project.tasks}
+            canHandleTasks={canEditTasks || canDeleteTasks}
             onTasksUpdated={fetchProject}
           />
         </TabsContent>

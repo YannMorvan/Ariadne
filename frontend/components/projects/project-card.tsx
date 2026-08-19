@@ -20,6 +20,7 @@ import type { Project } from "@/types"
 import { useRouter } from "next/navigation"
 import { useTranslations, useFormatter } from "next-intl"
 import { useEnumOptions } from "@/hooks/use-enums"
+import { useProjectPermissions } from "@/hooks/use-project-permissions"
 
 interface ProjectCardProps {
   project: Project
@@ -35,6 +36,8 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
   const tCommon = useTranslations("common")
   const tProjects = useTranslations("projects")
   const format = useFormatter()
+
+  const { canEditProject, canDeleteProject } = useProjectPermissions(project)
 
   const updatedDate = project.updatedAt
     ? new Date(project.updatedAt)
@@ -60,37 +63,42 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
               {priority.label}
             </Badge>
           </div>
-
-          <div onClick={(e) => e.stopPropagation()}>
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-none">
-                <MoreHorizontal className="size-4" />
-                <span className="sr-only">Actions</span>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="end"
-                className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm"
-              >
-                <DropdownMenuItem
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    onEdit?.(project)
-                  }}
+          {canEditProject || canDeleteProject ? (
+            <div onClick={(e) => e.stopPropagation()}>
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-none">
+                  <MoreHorizontal className="size-4" />
+                  <span className="sr-only">Actions</span>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm"
                 >
-                  {tCommon("edit")}
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    onDelete?.(project.id)
-                  }}
-                  className="text-destructive focus:text-destructive"
-                >
-                  {tCommon("delete")}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+                  {canEditProject && (
+                    <DropdownMenuItem
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onEdit?.(project)
+                      }}
+                    >
+                      {tCommon("edit")}
+                    </DropdownMenuItem>
+                  )}
+                  {canDeleteProject && (
+                    <DropdownMenuItem
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onDelete?.(project.id)
+                      }}
+                      className="text-destructive focus:text-destructive"
+                    >
+                      {tCommon("delete")}
+                    </DropdownMenuItem>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          ) : null}
         </div>
       </CardHeader>
       <CardContent className="space-y-4">

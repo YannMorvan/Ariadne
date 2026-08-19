@@ -22,17 +22,20 @@ import {
 import { DataPagination } from "@/components/ui/data-pagination"
 import { Field, FieldLabel } from "@/components/ui/field"
 import { filterAndSortTasks } from "@/lib/utils/task-utils"
+import { useProjectPermissions } from "@/hooks/use-project-permissions"
 
 interface ProjectTasksTabProps {
   projectName?: string
   projectId: string
   tasks?: Task[]
+  canHandleTasks: boolean
   onTasksUpdated?: () => void
 }
 
 export function ProjectTasksTab({
   projectId,
   tasks = [],
+  canHandleTasks = false,
   onTasksUpdated,
 }: ProjectTasksTabProps) {
   const tTasks = useTranslations("tasks")
@@ -149,7 +152,9 @@ export function ProjectTasksTab({
               : tTasks("noTasksDescription")}
           </p>
         </div>
-        <CreateTaskDialog projectId={projectId} onSuccess={onTasksUpdated} />
+        {canHandleTasks && (
+          <CreateTaskDialog projectId={projectId} onSuccess={onTasksUpdated} />
+        )}
       </div>
 
       {!hasTasks ? (
@@ -284,6 +289,7 @@ export function ProjectTasksTab({
                   task={task}
                   isUpdating={updatingStatusId === task.id}
                   isDeleting={deletingId === task.id}
+                  canHandleTasks={canHandleTasks}
                   onToggleStatus={() => handleToggleStatus(task)}
                   onDeleteTask={(id) => handleDeleteTask(id)}
                   onEditTask={handleEditTask}

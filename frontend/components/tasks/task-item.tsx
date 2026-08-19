@@ -27,6 +27,7 @@ interface TaskItemProps {
   task: Task
   isUpdating: boolean
   isDeleting: boolean
+  canHandleTasks: boolean
   onToggleStatus: (task: Task) => Promise<void>
   onDeleteTask: (taskId: string) => Promise<void>
   onEditTask: (task: Task) => void
@@ -36,6 +37,7 @@ export const TaskItem = ({
   task,
   isUpdating,
   isDeleting,
+  canHandleTasks,
   onToggleStatus,
   onDeleteTask,
   onEditTask,
@@ -167,38 +169,40 @@ export const TaskItem = ({
           ) : null}
         </div>
 
-        <div
-          onClick={(e) => e.stopPropagation()}
-          className="flex size-7 items-center justify-center"
-        >
-          <DropdownMenu>
-            <DropdownMenuTrigger className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-none">
-              <MoreHorizontal className="size-4" />
-              <span className="sr-only">Actions</span>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm"
-            >
-              <DropdownMenuItem
-                disabled={isUpdating}
-                onClick={() => void onEditTask(task)}
-                className="flex items-center gap-2"
+        {canHandleTasks && (
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="flex size-7 items-center justify-center"
+          >
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-none">
+                <MoreHorizontal className="size-4" />
+                <span className="sr-only">Actions</span>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="rounded-xl border-border/50 bg-popover/95 backdrop-blur-sm"
               >
-                <Pencil className="mr-2 size-4" />
-                {tCommon("edit")}
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                disabled={isDeleting}
-                onClick={() => void onDeleteTask(task.id)}
-                className="text-destructive focus:text-destructive"
-              >
-                <Trash2 className="mr-2 size-4" />
-                {tCommon("delete")}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+                <DropdownMenuItem
+                  disabled={isUpdating}
+                  onClick={() => void onEditTask(task)}
+                  className="flex items-center gap-2"
+                >
+                  <Pencil className="mr-2 size-4" />
+                  {tCommon("edit")}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  disabled={isDeleting}
+                  onClick={() => void onDeleteTask(task.id)}
+                  className="text-destructive focus:text-destructive"
+                >
+                  <Trash2 className="mr-2 size-4" />
+                  {tCommon("delete")}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )}
       </div>
     </div>
   )
